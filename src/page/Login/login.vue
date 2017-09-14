@@ -3,7 +3,7 @@
     <div class="wrapper">
       <div class="dialog dialog-shadow" style="display: block; margin-top: -362px;">
         <div class="title" v-if="loginPage">
-          <h4>使用 Smartisan ID 登录官网</h4></div>
+          <h4>使用 XMall 账号 登录官网</h4></div>
         <div v-if="loginPage" class="content">
           <ul class="common-form">
             <li class="username border-1p">
@@ -18,7 +18,7 @@
             </li>
             <li style="text-align: right" class="pr">
               <span class="pa" style="top: 0;left: 0;color: #d44d44">{{ruleForm.errMsg}}</span>
-              <a href="javascript:;" style="padding: 0 5px" @click="loginPage=false">注册 Smartisan ID</a>
+              <a href="javascript:;" style="padding: 0 5px" @click="loginPage=false">注册 XMall 账号</a>
             </li>
           </ul>
           <!--登陆-->
@@ -28,9 +28,15 @@
                       @btnClick="login"
                       style="margin: 0;width: 100%;height: 48px;font-size: 18px;line-height: 48px"></y-button>
           </div>
+          <!--返回-->
+          <div>
+            <y-button text="返回" @btnClick="login_back"
+              style="marginTop: 10px;marginBottom: 15px;width: 100%;height: 48px;font-size: 18px;line-height: 48px">
+            </y-button>
+          </div>
         </div>
         <div class="registered" v-else>
-          <h4>注册 Smartisan ID</h4>
+          <h4>注册 XMall 账号</h4>
           <div class="content" style="margin-top: 20px;">
             <ul class="common-form">
               <li class="username border-1p">
@@ -67,7 +73,7 @@
             <ul class="common-form pr">
               <li class="pa" style="left: 0;top: 0;margin: 0;color: #d44d44">{{registered.errMsg}}</li>
               <li style="text-align: center;line-height: 48px;margin-bottom: 0;">
-                <span>如果您已拥有 Smartisan ID，则可在此</span>
+                <span>如果您已拥有 XMall 账号，则可在此</span>
                 <a href="javascript:;"
                    style="margin: 0 5px"
                    @click="loginPage=true">登陆</a>
@@ -109,6 +115,10 @@
       }
     },
     methods: {
+      // 登录返回按钮
+      login_back () {
+        this.$router.go(-1)
+      },
       // 登陆时将本地的添加到用户购物车
       login_addCart () {
         let cartArr = []

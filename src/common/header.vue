@@ -5,7 +5,7 @@
         <div class="w-box">
           <div class="nav-logo">
             <h1>
-              <router-link to="/" title="锤子科技官网">Smartisan</router-link>
+              <router-link to="/" title="XMall商城官网">XMall商城</router-link>
             </h1>
           </div>
           <div class="right-box">
