@@ -17,7 +17,7 @@ Vue.use(VueLazyload, {
   // attempt: 1
 })
 Vue.config.productionTip = false
-const whiteList = ['/home', '/goods', '/login', '/goodsDetails'] // 不需要登陆的页面
+const whiteList = ['/home', '/goods', '/login', '/goodsDetails', '/thanks'] // 不需要登陆的页面
 router.beforeEach(function (to, from, next) {
   userInfo().then(res => {
     if (res.status === '1') { // 没登录

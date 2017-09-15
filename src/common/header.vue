@@ -14,12 +14,14 @@
                 placeholder="请输入商品信息"
                 icon="search"
                 v-model="input"
+                minlength=1
+                maxlength=100
                 :fetch-suggestions="querySearchAsync"
                 @select="handleSelect"
                 :on-icon-click="handleIconClick">
               </el-autocomplete>
               <router-link to="goods">全部商品</router-link>
-              <router-link to="/">捐赠</router-link>
+              <router-link to="thanks">捐赠</router-link>
               <!-- <router-link to="/">Smartisan M1 / M1L</router-link>
               <router-link to="/">Smartisan OS</router-link>
               <router-link to="/">欢喜云</router-link>
@@ -135,7 +137,7 @@
                   <router-link to="/goods"><a @click="changePage(2)" :class="{active:choosePage===2}">全部商品</a></router-link>
                 </li>
                 <li>
-                  <router-link to="/"><a @click="changePage(3)" :class="{active:choosePage===3}">捐赠名单</a></router-link>
+                  <router-link to="/thanks"><a @click="changePage(3)" :class="{active:choosePage===3}">捐赠名单</a></router-link>
                 </li>
               </ul>
               <div></div>
@@ -409,7 +411,7 @@
       align-items: center;
       margin-right: 22px;
       .el-autocomplete{
-        width: 18vw;
+        width: 20vw;
       }
       a {
         // width: 10vw;

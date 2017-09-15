@@ -17,6 +17,7 @@ const support = resolve => require(['/page/User/children/support'], resolve)
 const checkout = resolve => require(['/page/Checkout/checkout'], resolve)
 const payment = resolve => require(['/page/Order/payment'], resolve)
 const paysuccess = resolve => require(['/page/Order/paysuccess'], resolve)
+const Thanks = resolve => require(['/page/Thanks/thanks'], resolve)
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -28,7 +29,8 @@ export default new Router({
       children: [
         {path: 'home', component: Home},
         {path: 'goods', component: GoodS},
-        {path: 'goodsDetails', name: 'goodsDetails', component: goodsDetails}
+        {path: 'goodsDetails', name: 'goodsDetails', component: goodsDetails},
+        {path: 'thanks', name: '捐赠名单', component: Thanks}
       ]
     },
     {path: '/login', name: 'login', component: Login},
