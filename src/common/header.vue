@@ -10,9 +10,17 @@
           </div>
           <div class="right-box">
             <div class="nav-list">
+              <el-autocomplete
+                placeholder="请输入商品信息"
+                icon="search"
+                v-model="input"
+                :fetch-suggestions="querySearchAsync"
+                @select="handleSelect"
+                :on-icon-click="handleIconClick">
+              </el-autocomplete>
               <router-link to="goods">全部商品</router-link>
-              <!-- <router-link to="/">坚果 Pro</router-link>
-              <router-link to="/">Smartisan M1 / M1L</router-link>
+              <router-link to="/">捐赠</router-link>
+              <!-- <router-link to="/">Smartisan M1 / M1L</router-link>
               <router-link to="/">Smartisan OS</router-link>
               <router-link to="/">欢喜云</router-link>
               <router-link to="/">应用下载</router-link>
@@ -119,12 +127,15 @@
           <div class="nav-sub-bg"></div>
           <div class="nav-sub-wrapper" :class="{fixed:st}">
             <div class="w">
-              <ul class="nav-list">
+              <ul class="nav-list2">
                 <li>
-                  <router-link to="/">首页</router-link>
+                  <router-link to="/"><a @click="changePage(1)" :class="{active:choosePage===1}">首页</a></router-link>
                 </li>
                 <li>
-                  <router-link to="/goods">全部商品</router-link>
+                  <router-link to="/goods"><a @click="changePage(2)" :class="{active:choosePage===2}">全部商品</a></router-link>
+                </li>
+                <li>
+                  <router-link to="/"><a @click="changePage(3)" :class="{active:choosePage===3}">捐赠名单</a></router-link>
                 </li>
               </ul>
               <div></div>
@@ -142,6 +153,7 @@
   import { getCartList, cartDel } from '/api/goods'
   import { loginOut } from '/api/index'
   import { setStore, removeStore } from '/utils/storage'
+  import 'element-ui/lib/theme-default/index.css'
   export default{
     data () {
       return {
@@ -152,7 +164,12 @@
         cartShow: false,
         positionL: 0,
         positionT: 0,
-        timerCartShow: null // 定时隐藏购物车
+        timerCartShow: null, // 定时隐藏购物车
+        input: '',
+        choosePage: 1,
+        restaurants: [],
+        state4: '',
+        timeout: null
       }
     },
     computed: {
@@ -178,6 +195,37 @@
     },
     methods: {
       ...mapMutations(['ADD_CART', 'INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'REDUCE_CART', 'RECORD_USERINFO', 'EDIT_CART']),
+      handleIconClick (ev) {
+        console.log(ev)
+      },
+      // 导航栏文字样式改变
+      changePage (v) {
+        this.choosePage = v
+      },
+      // 搜索框提示
+      loadAll () {
+        return [
+          { 'value': '三全鲜食（北新泾店）', 'address': '长宁区新渔路144号' },
+          { 'value': 'Hot honey 首尔炸鸡（仙霞路）', 'address': '上海市长宁区淞虹路661号' }
+        ]
+      },
+      querySearchAsync (queryString, cb) {
+        var restaurants = this.restaurants
+        var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants
+
+        clearTimeout(this.timeout)
+        this.timeout = setTimeout(() => {
+          cb(results)
+        }, 1000 * Math.random())
+      },
+      createStateFilter (queryString) {
+        return (state) => {
+          return (state.value.indexOf(queryString.toLowerCase()) === 0)
+        }
+      },
+      handleSelect (item) {
+        console.log(item)
+      },
       // 购物车显示
       cartShowState (state) {
         this.SHOW_CART({showCart: state})
@@ -235,6 +283,7 @@
       this.navFixed()
       window.addEventListener('scroll', this.navFixed)
       window.addEventListener('resize', this.navFixed)
+      this.restaurants = this.loadAll()
     },
     components: {
       YButton
@@ -359,7 +408,11 @@
       justify-content: center;
       align-items: center;
       margin-right: 22px;
+      .el-autocomplete{
+        width: 18vw;
+      }
       a {
+        // width: 10vw;
         color: #c8c8c8;
         display: block;
         font-size: 14px;
@@ -367,6 +420,15 @@
         &:hover {
           color: #fff;
         }
+      }
+      a:nth-child(2){
+        width: 10vw;
+        margin-right: -50px;
+        margin-left: 10px;
+      }
+      a:nth-child(3){
+        width: 8vw;
+        margin-right: -50px;
       }
     }
     .nav-aside {
@@ -377,8 +439,10 @@
         content: " ";
         @include wh(1px, 13px);
         overflow: hidden;
-        position: absolute;
-        top: 4px;
+        // position: absolute;
+        display: flex;
+        align-items: center;
+        // top: 4px;
         left: 0;
       }
       &.fixed {
@@ -416,6 +480,7 @@
     }
     .nav-aside {
       display: flex;
+      align-items: center;
     }
     // 用户
     .user {
@@ -844,7 +909,7 @@
       display: flex;
       justify-content: space-between;
     }
-    .nav-list {
+    .nav-list2 {
       height: 28px;
       line-height: 28px;
       display: flex;
@@ -862,8 +927,14 @@
         padding-left: 2px;
         a {
           display: block;
-          padding: 0 20px;
+          padding: 0 10px;
           color: #666;
+          &.active {
+            font-weight: bold;
+          }
+        }
+        a:hover {
+          color: #5683EA;
         }
       }
       li:before {
