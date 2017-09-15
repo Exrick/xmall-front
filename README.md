@@ -8,7 +8,8 @@
 
 ### 后端接口项目请跳转至 [xmall](https://github.com/Exrick/xmall) 项目仓库查看
     
-### 所用技术    
+### 所用技术
+
 - Vue 2.x
 - Vuex
 - Vue Router
@@ -18,4 +19,4 @@
 - axios
 - Node.js
 
-    TODO
+TODO
