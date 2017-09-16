@@ -5,7 +5,7 @@
       <a href="javascript:;">繁体</a>
       <a href="javascript:;">English</a>
       <a href="javascript:;">常见问题</a></div>
-    <div class="cop"><p>Copyright © 2004-2017  xx.com 版权所有</p></div>
+    <div class="cop"><p>Copyright © 2017  xx.com 版权所有</p></div>
 
   </div>
 </template>

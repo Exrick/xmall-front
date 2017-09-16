@@ -4,7 +4,7 @@
       <header class="w">
         <div class="w-box">
           <div class="nav-logo">
-            <h1>
+            <h1 @click="changePage(1)">
               <router-link to="/" title="XMall商城官网">XMall商城</router-link>
             </h1>
           </div>
@@ -20,8 +20,8 @@
                 @select="handleSelect"
                 :on-icon-click="handleIconClick">
               </el-autocomplete>
-              <router-link to="goods">全部商品</router-link>
-              <router-link to="thanks">捐赠</router-link>
+              <router-link to="goods"><a @click="changePage(2)">全部商品</a></router-link>
+              <router-link to="thanks"><a @click="changePage(3)">捐赠</a></router-link>
               <!-- <router-link to="/">Smartisan M1 / M1L</router-link>
               <router-link to="/">Smartisan OS</router-link>
               <router-link to="/">欢喜云</router-link>
@@ -58,8 +58,6 @@
                       <li>
                         <router-link to="/user/coupon">我的优惠</router-link>
                       </li>
-
-
                       <li>
                         <a href="javascript:;" @click="_loginOut">退出</a>
                       </li>
@@ -145,7 +143,6 @@
           </div>
         </div>
       </slot>
-
     </div>
   </div>
 </template>
@@ -256,7 +253,7 @@
       },
       // 控制顶部
       navFixed () {
-        if (this.$route.path === '/goods' || this.$route.path === '/home' || this.$route.path === '/goodsDetails') {
+        if (this.$route.path === '/goods' || this.$route.path === '/home' || this.$route.path === '/goodsDetails' || this.$route.path === '/thanks') {
           var st = document.body.scrollTop
           st >= 100 ? this.st = true : this.st = false
           // 计算小圆当前位置
@@ -274,6 +271,16 @@
           removeStore('buyCart')
           window.location.href = '/'
         })
+      },
+      // 通过路由改变导航文字样式
+      getPage () {
+        if (this.$route.path === '/') {
+          this.changePage(1)
+        } else if (this.$route.path === '/goods') {
+          this.changePage(2)
+        } else if (this.$route.path === '/thanks') {
+          this.changePage(3)
+        }
       }
     },
     mounted () {
@@ -283,6 +290,7 @@
         this.INIT_BUYCART()
       }
       this.navFixed()
+      this.getPage()
       window.addEventListener('scroll', this.navFixed)
       window.addEventListener('resize', this.navFixed)
       this.restaurants = this.loadAll()
@@ -414,7 +422,7 @@
         width: 20vw;
       }
       a {
-        // width: 10vw;
+        width: 110px;
         color: #c8c8c8;
         display: block;
         font-size: 14px;
@@ -424,14 +432,12 @@
         }
       }
       a:nth-child(2){
-        width: 10vw;
-        margin-right: -50px;
-        margin-left: 10px;
+        // width: 5vw;
+        margin-left: -10px;
       }
-      a:nth-child(3){
-        width: 8vw;
-        margin-right: -50px;
-      }
+      // a:nth-child(3){
+      //   width: 5vw;
+      // }
     }
     .nav-aside {
       position: relative;

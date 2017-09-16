@@ -3,14 +3,13 @@
     <section class="w mt30 clearfix">
       <y-shelf title="捐赠名单">
         <div slot="content" class="table">
-          <p>佛祖保佑这些人写程序永无BUG，工资翻倍，长命百岁，迎娶白富美，走上人生巅峰！</p>
+          <p>佛祖保佑这些好心人写程序永无BUG，工资翻倍，长命百岁，迎娶白富美，走上人生巅峰！</p>
           <el-table border :data="tableData" :default-sort = "{prop: 'date', order: 'descending'}" stripe style="width: 90%">
-            <el-table-column sortable prop="date" label="日期" width="180">
-            </el-table-column>
-            <el-table-column sortable prop="name" label="姓名" width="180">
-            </el-table-column>
-            <el-table-column sortable prop="address" label="地址">
-            </el-table-column>
+            <el-table-column sortable prop="date" label="昵称" align="center"></el-table-column>
+            <el-table-column sortable prop="name" label="登录账号" align="center"> </el-table-column>
+            <el-table-column sortable prop="address" label="捐赠金额" align="center"></el-table-column>
+            <el-table-column sortable prop="address" label="捐赠人信息" align="center"></el-table-column>
+            <el-table-column sortable prop="address" label="时间" align="center"></el-table-column>
           </el-table>
 
           <el-pagination
@@ -19,7 +18,7 @@
             :current-page="currentPage"
             :page-sizes="[5, 10, 20, 50]"
             :page-size="10"
-            layout="total, sizes, prev, pager, next, jumper"
+            layout="total, sizes, prev, pager, next"
             :total="123">
           </el-pagination>
         </div>
@@ -33,6 +32,8 @@
         </div>
       </y-shelf>
     </section>
+
+    <div id="SOHUCS" sid="123456" style="width:1218px;"></div>
   </div>
 </template>
 <script>
@@ -49,19 +50,43 @@
         tableData: [{
           date: '2016-05-02',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          address: '3'
         }, {
           date: '2016-05-04',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
+          address: '3'
         }, {
           date: '2016-05-01',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
+          address: '3'
         }, {
           date: '2016-05-03',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
+          address: '3'
+        }, {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '3'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '3'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '3'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '3'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '3'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '3'
         }],
         currentPage: 1
       }
@@ -192,7 +217,7 @@
     }
     .el-pagination{
       align-self: flex-end;
-      margin: 0 3vw 1vw;
+      margin: 0 3.5vw 2vw;
     }
   }
 

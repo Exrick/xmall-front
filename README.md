@@ -18,5 +18,6 @@
 - webpack
 - axios
 - Node.js
-
+- 第三方插件
+    - [畅言评论插件](http://changyan.kuaizhan.com/)
 TODO
