@@ -48,9 +48,7 @@
       <y-shelf title="产品信息">
         <div slot="content">
           <div class="img-item" v-if="productMsg">
-            <img v-for="item in productMsg.pieces_num"
-                 v-lazy="`${productMsg.url}?x-oss-process=image/resize,w_2440/indexcrop,y_1440,i_${item-1}/quality,Q_100/format,webp`"
-                 alt="">
+            <div v-html="productMsg">{{ productMsg }}</div>
           </div>
           <div class="no-info" v-else>
             该产品暂无内容
@@ -85,7 +83,7 @@
         productDet({params: {productId}}).then(res => {
           let result = res.result
           this.product = result
-          this.productMsg = result.productMsg || ''
+          this.productMsg = result.detail || ''
           this.small = result.productImageSmall
           this.big = this.small[0]
         })
@@ -244,6 +242,7 @@
     }
     .img-item {
       width: 1220px;
+      text-align: center;
       img {
         width: 100%;
         height: auto;

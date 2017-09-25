@@ -33,8 +33,8 @@ module.exports = {
         target: 'http://mall.yucccc.com:3333' // 请求线上 可直接运行
       },
       '/goods/*': {
-        //target: 'http://127.0.0.1:3333'
-        target: 'http://mall.yucccc.com:3333'
+        target: 'http://127.0.0.1:8888'
+        //target: 'http://mall.yucccc.com:3333'
       },
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
