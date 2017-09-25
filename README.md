@@ -4,6 +4,8 @@
     
     ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170915134720.png)
 
+    ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170925230559.png)
+
     ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170915135622.png)
 
 ### 后端接口项目请跳转至 [xmall](https://github.com/Exrick/xmall) 项目仓库查看
