@@ -51,7 +51,9 @@
             <div v-html="productMsg">{{ productMsg }}</div>
           </div>
           <div class="no-info" v-else>
-            该产品暂无内容
+            <img src="/static/images/no-data.png">
+            <br>
+            该商品暂无内容数据
           </div>
         </div>
       </y-shelf>

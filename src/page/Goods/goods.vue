@@ -56,7 +56,7 @@
           }
         }
         getComputer(params).then(res => {
-          if (res.result.count) {
+          if (res.result.success === true) {
             let data = res.result.data
             if (flag) {
               this.computer = this.computer.concat(data)

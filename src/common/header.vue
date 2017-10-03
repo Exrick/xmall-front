@@ -113,7 +113,7 @@
                       </div>
                     </div>
                     <div v-show="!totalNum" style="height: 313px;text-align: center" class="cart-con">
-                      <p>你的购物车竟然是空的!</p>
+                      <p>您的购物车竟然是空的!</p>
                     </div>
                   </div>
                 </div>
@@ -196,6 +196,7 @@
       ...mapMutations(['ADD_CART', 'INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'REDUCE_CART', 'RECORD_USERINFO', 'EDIT_CART']),
       handleIconClick (ev) {
         console.log(ev)
+        this.$router.push('/search')
       },
       // 导航栏文字样式改变
       changePage (v) {

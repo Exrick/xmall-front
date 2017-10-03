@@ -26,14 +26,6 @@
     </section>
 
     <section class="w mt30 clearfix">
-      <y-shelf title="我要捐赠">
-        <div slot="content" class="hot">
-          <mall-goods :msg="item" v-for="(item,i) in hot" :key="i"></mall-goods>
-        </div>
-      </y-shelf>
-    </section>
-
-    <section class="w mt30 clearfix">
       <y-shelf title="为什么要捐赠">
         <div slot="content" class="donate">
           <p>捐赠是国外用来支持开发者和资源贡献者的一种常见的方式。</p>
@@ -45,6 +37,14 @@
           <p>你也可以不做任何事。你的捐赠意味着你对我过去所做的表示感谢，而不是表达对未来的期望。</p>
           <p>但你的捐赠会提高我的积极性和设备配置让我努力把手头上的事做的更好。</p>
           <p>我会维护一份名单以感谢所有的捐赠者。正如我所说，捐赠是一个向我表示感谢的方式。</p>
+        </div>
+      </y-shelf>
+    </section>
+    
+    <section class="w mt30 clearfix">
+      <y-shelf title="我要捐赠">
+        <div slot="content" class="hot">
+          <mall-goods :msg="item" v-for="(item,i) in hot" :key="i"></mall-goods>
         </div>
       </y-shelf>
     </section>

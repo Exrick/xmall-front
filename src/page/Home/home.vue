@@ -11,7 +11,6 @@
       </div>
     </div>
 
-
     <section class="w mt30 clearfix">
       <y-shelf title="热门商品">
         <div slot="content" class="hot">
