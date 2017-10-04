@@ -10,7 +10,7 @@
               <a class="active">搜索结果</a>
             </li>
             <li>
-              <a>共为您找到 10 款商品信息</a>
+              <a>共为您找到 {{total}} 款商品信息</a>
             </li>
           </ul>
           <div></div>
@@ -21,8 +21,8 @@
     <div class="nav">
       <div class="w">
         <a href="javascript:;" :class="{active:sortType===1}" @click="reset()">综合排序</a>
-        <a href="javascript:;" @click="sort(1)" :class="{active:sortType===2}">价格从低到高</a>
-        <a href="javascript:;" @click="sort(-1)" :class="{active:sortType===3}">价格从高到低</a>
+        <a href="javascript:;" @click="sortByPrice(1)" :class="{active:sortType===2}">价格从低到高</a>
+        <a href="javascript:;" @click="sortByPrice(-1)" :class="{active:sortType===3}">价格从高到低</a>
         <div class="price-interval">
           <input type="number" class="input" placeholder="价格" v-model="min">
           <span style="margin: 0 5px"> - </span>
@@ -31,22 +31,40 @@
         </div>
       </div>
     </div>
-
     
-    <div class="img-item" v-if="productMsg">
+    <div v-loading="loading" element-loading-text="加载中..." class="img-item" v-if="goods != ''">
       <!--商品-->
       <div class="goods-box w">
-        <mall-goods v-for="(item,i) in computer" :key="i" :msg="item"></mall-goods>
+        <mall-goods v-for="(item,i) in goods" :key="i" :msg="item"></mall-goods>
       </div>
-      <div v-show="!busy" class="w" style="text-align: center;background: #fff" v-infinite-scroll="loadMore"
-          infinite-scroll-disabled="busy" infinite-scroll-distance="100">
-        正在加载中...
-      </div>
+
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[8, 20, 40, 80]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
-    <div class="no-info" v-else>
+    <div v-loading="loading" element-loading-text="加载中..." class="no-info" v-else-if="goods == ''">
       <div class="no-data">
         <img src="/static/images/no-search.png">
         <br> 抱歉！没有为您找到相关的商品
+      </div>
+      <section class="section">
+        <y-shelf title="为您推荐">
+          <div slot="content" class="recommend">
+            <mall-goods :msg="item" v-for="(item,i) in recommend" :key="i"></mall-goods>
+          </div>
+        </y-shelf>
+      </section>
+    </div>
+    <div v-else>
+      <div class="no-data">
+        <img src="/static/images/error.png">
+        <br> 抱歉！出错了...
       </div>
       <section class="section">
         <y-shelf title="为您推荐">
@@ -60,50 +78,59 @@
   </div>
 </template>
 <script>
-  import {getComputer} from '/api/goods.js'
+  import {getSearch} from '/api/goods.js'
+  import {productHome} from '/api/index.js'
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
-  import {productHome} from '/api/index.js'
   import YShelf from '/components/shelf'
   export default {
     data () {
       return {
-        computer: [],
+        goods: [0],
         min: '',
         max: '',
-        busy: false,
+        loading: true,
         timer: null,
         sortType: 1,
         windowHeight: null,
         windowWidth: null,
-        params: {
-          page: 1,
-          sort: ''
-        },
-        recommend: []
+        sort: '',
+        recommend: [],
+        currentPage: 1,
+        pageSize: 20,
+        total: 0,
+        key: ''
       }
     },
     methods: {
-      _getComputer (flag) {
+      handleSizeChange (val) {
+        this.pageSize = val
+        this._getSearch()
+        this.loading = true
+      },
+      handleCurrentChange (val) {
+        this.currentPage = val
+        this._getSearch()
+        this.loading = true
+      },
+      _getSearch () {
         let params = {
           params: {
-            page: this.params.page,
-            sort: this.params.sort,
+            key: this.key,
+            page: this.currentPage,
+            sort: this.sort,
             priceGt: this.min,
             priceLte: this.max
           }
         }
-        getComputer(params).then(res => {
-          if (res.result.count) {
-            let data = res.result.data
-            if (flag) {
-              this.computer = this.computer.concat(data)
-            } else {
-              this.computer = data
-            }
+        getSearch(params).then(res => {
+          if (res.success === true) {
+            this.goods = res.result.itemList
+            this.total = res.result.recordCount
+            this.loading = false
           } else {
             clearTimeout(this.timer)
-            this.busy = true
+            this.loading = false
           }
         })
       },
@@ -112,33 +139,35 @@
         this.sortType = 1
         this.params.sort = ''
         this.params.page = 1
-        this.busy = false
-        this._getComputer()
+        this.loading = true
+        this._getSearch()
       },
       // 价格排序
-      sort (v) {
+      sortByPrice (v) {
         v === 1 ? this.sortType = 2 : this.sortType = 3
         this.params.sort = v
         this.params.page = 1
-        this.busy = false
-        this._getComputer()
+        this.loading = true
+        this._getSearch()
       },
       // 加载更多
       loadMore () {
-        this.busy = true
+        this.loading = true
         this.timer = setTimeout(() => {
           this.params.page++
-          this._getComputer(true)
-          this.busy = false
+          this._getSearch(true)
+          this.loading = true
         }, 500)
       }
     },
     created () {
-      this._getComputer()
+      
     },
     mounted () {
       this.windowHeight = window.innerHeight
       this.windowWidth = window.innerWidth
+      this.key = this.$route.query.key
+      this._getSearch()
       productHome().then(res => {
         let data = res.result
         this.recommend = data.home_hot
@@ -319,6 +348,16 @@
       flex: 1;
       width: 25%;
     }
+  }
+
+  .img-item{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .el-pagination{
+    align-self: flex-end;
+    margin: 3vw 10vw 2vw;
   }
 
 

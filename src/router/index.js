@@ -43,7 +43,7 @@ export default new Router({
       children: [
         {path: 'paysuccess', name: 'paysuccess', component: paysuccess},
         {path: 'payment', name: 'payment', component: payment},
-        {path: '/search', name: '搜索商品', component: Search}
+        {path: '/search', name: 'search', component: Search}
       ]
     },
     {

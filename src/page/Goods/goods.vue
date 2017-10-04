@@ -3,8 +3,8 @@
     <div class="nav">
       <div class="w">
         <a href="javascript:;" :class="{active:sortType===1}" @click="reset()">综合排序</a>
-        <a href="javascript:;" @click="sort(1)" :class="{active:sortType===2}">价格从低到高</a>
-        <a href="javascript:;" @click="sort(-1)" :class="{active:sortType===3}">价格从高到低</a>
+        <a href="javascript:;" @click="sortByPrice(1)" :class="{active:sortType===2}">价格从低到高</a>
+        <a href="javascript:;" @click="sortByPrice(-1)" :class="{active:sortType===3}">价格从高到低</a>
         <div class="price-interval">
           <input type="number" class="input" placeholder="价格" v-model="min">
           <span style="margin: 0 5px"> - </span>
@@ -14,97 +14,138 @@
       </div>
     </div>
 
-    <!--商品-->
-    <div class="goods-box w">
-      <mall-goods v-for="(item,i) in computer" :key="i" :msg="item"></mall-goods>
+    <div v-loading="loading" element-loading-text="加载中..." class="img-item" v-if="goods != ''">
+      <!--商品-->
+      <div class="goods-box w">
+        <mall-goods v-for="(item,i) in goods" :key="i" :msg="item"></mall-goods>
+      </div>
+
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[8, 20, 40, 80]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
-    <div v-show="!busy" class="w" style="text-align: center;background: #fff" v-infinite-scroll="loadMore"
-         infinite-scroll-disabled="busy" infinite-scroll-distance="100">
-      正在加载中...
+    <div v-loading="loading" element-loading-text="加载中..." class="no-info" v-else-if="goods == ''">
+      <div class="no-data">
+        <img src="/static/images/no-search.png">
+        <br> 抱歉！没有为您找到相关的商品
+      </div>
+      <section class="section">
+        <y-shelf title="为您推荐">
+          <div slot="content" class="recommend">
+            <mall-goods :msg="item" v-for="(item,i) in recommend" :key="i"></mall-goods>
+          </div>
+        </y-shelf>
+      </section>
+    </div>
+    <div v-else>
+      <div class="no-data">
+        <img src="/static/images/error.png">
+        <br> 抱歉！出错了...
+      </div>
+      <section class="section">
+        <y-shelf title="为您推荐">
+          <div slot="content" class="recommend">
+            <mall-goods :msg="item" v-for="(item,i) in recommend" :key="i"></mall-goods>
+          </div>
+        </y-shelf>
+      </section>
     </div>
   </div>
 </template>
 <script>
-  import {getComputer} from '/api/goods.js'
+  import {getAllGoods} from '/api/goods.js'
+  import {productHome} from '/api/index.js'
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
+  import YShelf from '/components/shelf'
   export default {
     data () {
       return {
-        computer: [],
+        goods: [0],
         min: '',
         max: '',
-        busy: false,
+        loading: true,
         timer: null,
         sortType: 1,
         windowHeight: null,
         windowWidth: null,
-        params: {
-          page: 1,
-          sort: ''
-        }
+        recommend: [],
+        sort: '',
+        currentPage: 1,
+        total: 0,
+        pageSize: 20
       }
     },
     methods: {
-      _getComputer (flag) {
+      handleSizeChange (val) {
+        this.pageSize = val
+        this._getAllGoods()
+        this.loading = true
+      },
+      handleCurrentChange (val) {
+        this.currentPage = val
+        this._getAllGoods()
+        this.loading = true
+      },
+      _getAllGoods () {
         let params = {
           params: {
-            page: this.params.page,
-            sort: this.params.sort,
+            page: this.currentPage,
+            size: this.pageSize,
+            sort: this.sort,
             priceGt: this.min,
             priceLte: this.max
           }
         }
-        getComputer(params).then(res => {
-          if (res.result.success === true) {
-            let data = res.result.data
-            if (flag) {
-              this.computer = this.computer.concat(data)
-            } else {
-              this.computer = data
-            }
+        getAllGoods(params).then(res => {
+          if (res.success === true) {
+            this.total = res.result.total
+            this.goods = res.result.data
+            this.loading = false
           } else {
-            clearTimeout(this.timer)
-            this.busy = true
+            this.loading = false
           }
         })
       },
       // 默认排序
       reset () {
         this.sortType = 1
-        this.params.sort = ''
-        this.params.page = 1
-        this.busy = false
-        this._getComputer()
+        this.sort = ''
+        this.currentPage = 1
+        this.loading = true
+        this._getAllGoods()
       },
       // 价格排序
-      sort (v) {
+      sortByPrice (v) {
         v === 1 ? this.sortType = 2 : this.sortType = 3
-        this.params.sort = v
-        this.params.page = 1
-        this.busy = false
-        this._getComputer()
-      },
-      // 加载更多
-      loadMore () {
-        this.busy = true
-        this.timer = setTimeout(() => {
-          this.params.page++
-          this._getComputer(true)
-          this.busy = false
-        }, 500)
+        this.sort = v
+        this.currentPage = 1
+        this.loading = true
+        this._getAllGoods()
       }
     },
     created () {
-      this._getComputer()
+      
     },
     mounted () {
       this.windowHeight = window.innerHeight
       this.windowWidth = window.innerWidth
+      this._getAllGoods()
+      productHome().then(res => {
+        let data = res.result
+        this.recommend = data.home_hot
+      })
     },
     components: {
       mallGoods,
-      YButton
+      YButton,
+      YShelf
     }
   }
 </script>
@@ -157,6 +198,43 @@
       border: 1px solid #efefef;
     }
   }
+
+  .no-info {
+    padding: 100px 0;
+    text-align: center;
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    .no-data{
+      align-self: center;
+    }
+  }
+
+  .img-item{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .el-pagination{
+    align-self: flex-end;
+    margin: 3vw 10vw 2vw;
+  }
+
+  .section {
+    padding-top: 8vw;
+    margin-bottom: -5vw;
+    width: 1218px;
+    align-self: center;
+  }
+
+  .recommend {
+    display: flex;
+    > div {
+      flex: 1;
+      width: 25%;
+    }
+  }
+
 
 
 </style>

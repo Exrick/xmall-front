@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home">
     <div class="banner">
       <div class="bg" ref="bg"
            @mouseover="bgOver($refs.bg)"
@@ -11,23 +11,25 @@
       </div>
     </div>
 
-    <section class="w mt30 clearfix">
-      <y-shelf title="热门商品">
-        <div slot="content" class="hot">
-          <mall-goods :msg="item" v-for="(item,i) in hot" :key="i"></mall-goods>
-        </div>
-      </y-shelf>
-    </section>
-    <section class="w mt30 clearfix" v-for="(item,i) in floors" :key="i">
-      <y-shelf :title="item.title">
-        <div slot="content" class="floors">
-          <div class="imgbanner">
-            <img v-lazy="floors[i].image.image" :alt="item.title">
+    <div v-loading="loading" element-loading-text="加载中...">
+      <section class="w mt30 clearfix">
+        <y-shelf title="热门商品">
+          <div slot="content" class="hot">
+            <mall-goods :msg="item" v-for="(item,i) in hot" :key="i"></mall-goods>
           </div>
-          <mall-goods :msg="tab" v-for="(tab,i) in item.tabs" :key="i"></mall-goods>
-        </div>
-      </y-shelf>
-    </section>
+        </y-shelf>
+      </section>
+      <section class="w mt30 clearfix" v-for="(item,i) in floors" :key="i">
+        <y-shelf :title="item.title">
+          <div slot="content" class="floors">
+            <div class="imgbanner">
+              <img v-lazy="floors[i].image.image" :alt="item.title">
+            </div>
+            <mall-goods :msg="tab" v-for="(tab,i) in item.tabs" :key="i"></mall-goods>
+          </div>
+        </y-shelf>
+      </section>
+    </div>
   </div>
 </template>
 <script>
@@ -46,7 +48,8 @@
           h: 0
         },
         floors: [],
-        hot: []
+        hot: [],
+        loading: true
       }
     },
     methods: {
@@ -84,6 +87,7 @@
         let data = res.result
         this.floors = data.home_floors
         this.hot = data.home_hot
+        this.loading = false
       })
     },
     components: {
@@ -94,6 +98,11 @@
   }
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
+  .home {
+    display: flex;
+    flex-direction: column;
+  }
+
   .banner, .banner span, .banner div {
     font-family: "Microsoft YaHei";
     transition: all .3s;
@@ -267,5 +276,6 @@
       height: 100%;
     }
   }
+
 
 </style>

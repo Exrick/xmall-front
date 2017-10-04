@@ -167,7 +167,6 @@
         input: '',
         choosePage: 1,
         restaurants: [],
-        state4: '',
         timeout: null
       }
     },
@@ -195,8 +194,12 @@
     methods: {
       ...mapMutations(['ADD_CART', 'INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'REDUCE_CART', 'RECORD_USERINFO', 'EDIT_CART']),
       handleIconClick (ev) {
-        console.log(ev)
-        this.$router.push('/search')
+        this.$router.push({
+          path: '/search',
+          query: {
+            key: this.input
+          }
+        })
       },
       // 导航栏文字样式改变
       changePage (v) {
