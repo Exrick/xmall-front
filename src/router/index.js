@@ -19,6 +19,7 @@ const payment = resolve => require(['/page/Order/payment'], resolve)
 const paysuccess = resolve => require(['/page/Order/paysuccess'], resolve)
 const Thanks = resolve => require(['/page/Thanks/thanks'], resolve)
 const Search = resolve => require(['/page/Search/search'], resolve)
+const RefreshSearch = resolve => require(['/page/Refresh/refreshsearch'], resolve)
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -31,11 +32,12 @@ export default new Router({
         {path: 'home', component: Home},
         {path: 'goods', component: GoodS},
         {path: 'goodsDetails', name: 'goodsDetails', component: goodsDetails},
-        {path: 'thanks', name: '捐赠名单', component: Thanks}
+        {path: 'thanks', name: 'thanks', component: Thanks}
       ]
     },
     {path: '/login', name: 'login', component: Login},
     {path: '/cart', name: 'cart', component: Cart},
+    {path: '/refreshsearch', name: 'refreshsearch', component: RefreshSearch},
     {
       path: '/order',
       name: 'order',

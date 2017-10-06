@@ -107,10 +107,8 @@
           if (res.success === true) {
             this.total = res.result.total
             this.goods = res.result.data
-            this.loading = false
-          } else {
-            this.loading = false
           }
+          this.loading = false
         })
       },
       // 默认排序
@@ -131,7 +129,6 @@
       }
     },
     created () {
-      
     },
     mounted () {
       this.windowHeight = window.innerHeight

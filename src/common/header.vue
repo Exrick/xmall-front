@@ -137,6 +137,9 @@
                 <li>
                   <router-link to="/thanks"><a @click="changePage(3)" :class="{active:choosePage===3}">捐赠名单</a></router-link>
                 </li>
+                <li>
+                  <a href="https://github.com/Exrick/xmall" target="_blank">Github</a>
+                </li>
               </ul>
               <div></div>
             </div>
@@ -149,7 +152,7 @@
 <script>
   import YButton from '/components/YButton'
   import { mapMutations, mapState } from 'vuex'
-  import { getCartList, cartDel } from '/api/goods'
+  import { getCartList, cartDel, getQuickSearch } from '/api/goods'
   import { loginOut } from '/api/index'
   import { setStore, removeStore } from '/utils/storage'
   import 'element-ui/lib/theme-default/index.css'
@@ -166,7 +169,7 @@
         timerCartShow: null, // 定时隐藏购物车
         input: '',
         choosePage: 1,
-        restaurants: [],
+        searchResults: [],
         timeout: null
       }
     },
@@ -194,6 +197,14 @@
     methods: {
       ...mapMutations(['ADD_CART', 'INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'REDUCE_CART', 'RECORD_USERINFO', 'EDIT_CART']),
       handleIconClick (ev) {
+        if (this.$route.path === '/search') {
+          this.$router.push({
+            path: '/refreshsearch',
+            query: {
+              key: this.input
+            }
+          })
+        }
         this.$router.push({
           path: '/search',
           query: {
@@ -207,23 +218,34 @@
       },
       // 搜索框提示
       loadAll () {
-        return [
-          { 'value': '三全鲜食（北新泾店）', 'address': '长宁区新渔路144号' },
-          { 'value': 'Hot honey 首尔炸鸡（仙霞路）', 'address': '上海市长宁区淞虹路661号' }
-        ]
+        getQuickSearch(this.input).then(res => {
+          var array = []
+          var maxSize = 5
+          if (res.hits.hits.length <= 5) {
+            maxSize = res.hits.hits.length
+          }
+          for (var i = 0; i < maxSize; i++) {
+            var obj = {}
+            obj.value = res.hits.hits[i]._source.productName
+            array.push(obj)
+          }
+          if (array.length !== 0) {
+            this.searchResults = array
+          } else {
+            this.searchResults = []
+          }
+        })
       },
       querySearchAsync (queryString, cb) {
-        var restaurants = this.restaurants
-        var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants
-
-        clearTimeout(this.timeout)
-        this.timeout = setTimeout(() => {
-          cb(results)
-        }, 1000 * Math.random())
-      },
-      createStateFilter (queryString) {
-        return (state) => {
-          return (state.value.indexOf(queryString.toLowerCase()) === 0)
+        this.input = this.input.trim()
+        if (this.input === '') {
+          cb([])
+          return
+        } else {
+          this.loadAll()
+          setTimeout(() => {
+            cb(this.searchResults)
+          }, 300)
         }
       },
       handleSelect (item) {
@@ -297,7 +319,9 @@
       this.getPage()
       window.addEventListener('scroll', this.navFixed)
       window.addEventListener('resize', this.navFixed)
-      this.restaurants = this.loadAll()
+      if (typeof (this.$route.query.key) === undefined) {
+        this.input = this.$route.query.key
+      }
     },
     components: {
       YButton

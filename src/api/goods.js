@@ -67,3 +67,7 @@ export const delOrder = (params) => {
 export const getSearch = (params) => {
   return http.fetchGet('/goods/search', params)
 }
+// 快速搜索
+export const getQuickSearch = (key) => {
+  return http.fetchQuickSearch(`http://123.207.121.135:9200/item/itemList/_search?q=productName: ${key} `)
+}

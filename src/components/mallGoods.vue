@@ -31,7 +31,7 @@
   import { mapMutations, mapState } from 'vuex'
   export default {
     props: {
-      msg: {type: [Object, Array]}
+      msg: {}
     },
     data () {
       return {}

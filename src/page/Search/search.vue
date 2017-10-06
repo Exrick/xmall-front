@@ -1,16 +1,22 @@
 <template>
   <div class="goods">
       
-    <div class="nav-sub">
+    <div class="nav-sub" :class="{fixed:st}">
       <div class="nav-sub-bg"></div>
-      <div class="nav-sub-wrapper">
+      <div class="nav-sub-wrapper" :class="{fixed:st}">
         <div class="w">
           <ul class="nav-list2">
+            <li>
+              <router-link to="/">
+                <a>首页</a>
+              </router-link>
+            </li>
             <li>
               <a class="active">搜索结果</a>
             </li>
             <li>
-              <a>共为您找到 {{total}} 款商品信息</a>
+              <a v-if="searching === true">拼命搜索中...</a>
+              <a v-if="searching === false">共为您找到 {{total}} 款商品信息</a>
             </li>
           </ul>
           <div></div>
@@ -83,6 +89,7 @@
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
   import YShelf from '/components/shelf'
+  import mapMutations from 'vuex'
   export default {
     data () {
       return {
@@ -90,6 +97,7 @@
         min: '',
         max: '',
         loading: true,
+        searching: true,
         timer: null,
         sortType: 1,
         windowHeight: null,
@@ -99,10 +107,14 @@
         currentPage: 1,
         pageSize: 20,
         total: 0,
-        key: ''
+        key: '',
+        st: false,
+        positionL: 0,
+        positionT: 0
       }
     },
     methods: {
+      ...mapMutations(['ADD_ANIMATION']),
       handleSizeChange (val) {
         this.pageSize = val
         this._getSearch()
@@ -117,6 +129,7 @@
         let params = {
           params: {
             key: this.key,
+            size: this.pageSize,
             page: this.currentPage,
             sort: this.sort,
             priceGt: this.min,
@@ -127,41 +140,39 @@
           if (res.success === true) {
             this.goods = res.result.itemList
             this.total = res.result.recordCount
-            this.loading = false
-          } else {
-            clearTimeout(this.timer)
-            this.loading = false
           }
+          this.loading = false
+          this.searching = false
         })
       },
       // 默认排序
       reset () {
         this.sortType = 1
-        this.params.sort = ''
-        this.params.page = 1
+        this.sort = ''
+        this.currentPage = 1
         this.loading = true
         this._getSearch()
       },
       // 价格排序
       sortByPrice (v) {
         v === 1 ? this.sortType = 2 : this.sortType = 3
-        this.params.sort = v
-        this.params.page = 1
+        this.sort = v
+        this.currentPage = 1
         this.loading = true
         this._getSearch()
-      },
-      // 加载更多
-      loadMore () {
-        this.loading = true
-        this.timer = setTimeout(() => {
-          this.params.page++
-          this._getSearch(true)
-          this.loading = true
-        }, 500)
       }
     },
+    // 控制顶部
+    navFixed () {
+      var st = document.body.scrollTop
+      st >= 100 ? this.st = true : this.st = false
+      // 计算小圆当前位置
+      let num = document.querySelector('.num')
+      this.positionL = num.getBoundingClientRect().left
+      this.positionT = num.getBoundingClientRect().top
+      this.ADD_ANIMATION({ cartPositionL: this.positionL, cartPositionT: this.positionT })
+    },
     created () {
-      
     },
     mounted () {
       this.windowHeight = window.innerHeight
@@ -172,6 +183,7 @@
         let data = res.result
         this.recommend = data.home_hot
       })
+      this.navFixed()
     },
     components: {
       mallGoods,
@@ -295,16 +307,16 @@
         padding-left: 2px;
         a {
           display: block;
-          cursor: default;
+          // cursor: default;
           padding: 0 10px;
           color: #666;
           &.active {
             font-weight: bold;
           }
         }
-        // a:hover {
-        //   color: #5683EA;
-        // }
+        a:hover {
+          color: #5683EA;
+        }
       }
       li:before {
         content: ' ';
