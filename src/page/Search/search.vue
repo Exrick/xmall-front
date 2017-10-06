@@ -1,9 +1,9 @@
 <template>
   <div class="goods">
       
-    <div class="nav-sub" :class="{fixed:st}">
+    <div class="nav-sub">
       <div class="nav-sub-bg"></div>
-      <div class="nav-sub-wrapper" :class="{fixed:st}">
+      <div class="nav-sub-wrapper">
         <div class="w">
           <ul class="nav-list2">
             <li>
@@ -89,7 +89,6 @@
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
   import YShelf from '/components/shelf'
-  import mapMutations from 'vuex'
   export default {
     data () {
       return {
@@ -107,14 +106,10 @@
         currentPage: 1,
         pageSize: 20,
         total: 0,
-        key: '',
-        st: false,
-        positionL: 0,
-        positionT: 0
+        key: ''
       }
     },
     methods: {
-      ...mapMutations(['ADD_ANIMATION']),
       handleSizeChange (val) {
         this.pageSize = val
         this._getSearch()
@@ -162,16 +157,6 @@
         this._getSearch()
       }
     },
-    // 控制顶部
-    navFixed () {
-      var st = document.body.scrollTop
-      st >= 100 ? this.st = true : this.st = false
-      // 计算小圆当前位置
-      let num = document.querySelector('.num')
-      this.positionL = num.getBoundingClientRect().left
-      this.positionT = num.getBoundingClientRect().top
-      this.ADD_ANIMATION({ cartPositionL: this.positionL, cartPositionT: this.positionT })
-    },
     created () {
     },
     mounted () {
@@ -183,7 +168,6 @@
         let data = res.result
         this.recommend = data.home_hot
       })
-      this.navFixed()
     },
     components: {
       mallGoods,

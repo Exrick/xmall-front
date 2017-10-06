@@ -249,7 +249,7 @@
         }
       },
       handleSelect (item) {
-        console.log(item)
+        this.input = item.value
       },
       // 购物车显示
       cartShowState (state) {
