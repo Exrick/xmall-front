@@ -24,5 +24,5 @@
     - [搜狐畅言评论插件](http://changyan.kuaizhan.com/)
 
 ### 本地开发运行部署
-- 在 `config/index.js` 中修改你的后端接口地址配置，默认端口9999
+- 在 `config/index.js` 中修改你的后端接口地址配置，默认前端端口9999
 - 在项目根文件夹下先后执行命令 `npm install` 、 `npm run dev`

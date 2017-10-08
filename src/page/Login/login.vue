@@ -3,7 +3,8 @@
     <div class="wrapper">
       <div class="dialog dialog-shadow" style="display: block; margin-top: -362px;">
         <div class="title" v-if="loginPage">
-          <h4>使用 XMall 账号 登录官网</h4></div>
+          <h4>使用 XMall 账号 登录官网</h4>
+        </div>
         <div v-if="loginPage" class="content">
           <ul class="common-form">
             <li class="username border-1p">
@@ -17,12 +18,14 @@
               </div>
             </li>
             <li style="text-align: right" class="pr">
-              <span class="pa" style="top: 0;left: 0;color: #d44d44">{{ruleForm.errMsg}}</span>
-              <a href="javascript:;" style="padding: 0 5px" @click="loginPage=false">注册 XMall 账号</a>
+              <el-checkbox class="auto-login" v-model="autoLogin">自动登录</el-checkbox>
+              <!-- <span class="pa" style="top: 0;left: 0;color: #d44d44">{{ruleForm.errMsg}}</span> -->
+              <a href="javascript:;" class="register" @click="loginPage=false">注册 XMall 账号</a>
+              <a style="padding: 1px 0 0 10px" @click="open('找回密码','请联系作者邮箱找回密码或使用测试账号登录：test | test')">忘记密码 ?</a>
             </li>
           </ul>
           <!--登陆-->
-          <div>
+          <div style="margin-top: 25px">
             <y-button text="登陆"
                       :classStyle="ruleForm.userPwd&& ruleForm.userName?'main-btn':'disabled-btn'"
                       @btnClick="login"
@@ -34,13 +37,18 @@
               style="marginTop: 10px;marginBottom: 15px;width: 100%;height: 48px;font-size: 18px;line-height: 48px">
             </y-button>
           </div>
+          <div class="border"></div>
+          <div class="footer">
+            <div class="other">其它账号登录：</div>
+            <a><img @click="open('待开发','此功能开发中...')" style="height: 15px; margin-top: 22px;" src="/static/images/other-login.png"></a>
+          </div>
         </div>
         <div class="registered" v-else>
           <h4>注册 XMall 账号</h4>
           <div class="content" style="margin-top: 20px;">
             <ul class="common-form">
               <li class="username border-1p">
-                <div class="input">
+                <div style="margin-top: 40px;" class="input">
                   <input type="text"
                          v-model="registered.userName" placeholder="账号"
                          @keyup="registered.userName=registered.userName.replace(/[^\w\.\/]/ig,'')">
@@ -61,7 +69,12 @@
                 </div>
               </li>
             </ul>
-            <div>
+            <el-checkbox class="agree" v-model="agreement">
+              我已阅读并同意遵守 
+              <a @click="open('法律声明','此仅为个人练习开源模仿项目，仅供学习参考，承担不起任何法律问题')">法律声明</a> 和 
+              <a @click="open('隐私条款','本网站将不会严格遵守有关法律法规和本隐私政策所载明的内容收集、使用您的信息')">隐私条款</a>
+            </el-checkbox>
+            <div style="margin-bottom: 30px;">
               <y-button
                 :classStyle="registered.userPwd&&registered.userPwd2&&registered.userName?'main-btn':'disabled-btn'"
                 text="注册"
@@ -70,9 +83,10 @@
               >
               </y-button>
             </div>
+            <div class="border" style="margin-bottom: 10px;"></div>
             <ul class="common-form pr">
               <li class="pa" style="left: 0;top: 0;margin: 0;color: #d44d44">{{registered.errMsg}}</li>
-              <li style="text-align: center;line-height: 48px;margin-bottom: 0;">
+              <li style="text-align: center;line-height: 48px;margin-bottom: 0;font-size: 12px;color: #999;">
                 <span>如果您已拥有 XMall 账号，则可在此</span>
                 <a href="javascript:;"
                    style="margin: 0 5px"
@@ -90,7 +104,7 @@
   import YButton from '/components/YButton'
   import { userLogin, register } from '/api/index.js'
   import { addCart1 } from '/api/goods.js'
-  import { getStore, removeStore } from '/utils/storage.js'
+  import { setStore, getStore, removeStore } from '/utils/storage.js'
   export default {
     data () {
       return {
@@ -106,7 +120,9 @@
           userPwd: '',
           userPwd2: '',
           errMsg: ''
-        }
+        },
+        autoLogin: false,
+        agreement: false
       }
     },
     computed: {
@@ -115,6 +131,23 @@
       }
     },
     methods: {
+      open (t, m) {
+        this.$notify.info({
+          title: t,
+          message: m
+        })
+      },
+      messageSuccess () {
+        this.$message({
+          message: '恭喜您，注册成功！赶紧登录体验吧',
+          type: 'success'
+        })
+      },
+      message (m) {
+        this.$message.error({
+          message: m
+        })
+      },
       // 登录返回按钮
       login_back () {
         this.$router.go(-1)
@@ -135,15 +168,18 @@
       },
       login () {
         if (!this.ruleForm.userName || !this.ruleForm.userPwd) {
-          this.ruleForm.errMsg = '账号或者密码不能为空!'
+          // this.ruleForm.errMsg = '账号或者密码不能为空!'
+          this.message('账号或者密码不能为空!')
           return false
         }
         var params = {userName: this.ruleForm.userName, userPwd: this.ruleForm.userPwd}
         userLogin(params).then(res => {
-          if (res.status === '0') {
+          if (res.result.state === 1) {
+            setStore('token', res.result.token)
+            // this.$store.state.login = true
             if (this.cart.length) {
               addCart1({productMsg: this.cart}).then(res => {
-                if (res.status === '1') {
+                if (res.result.state === 1) {
                   removeStore('buyCart')
                 }
               }).then(this.$router.go(-1))
@@ -151,7 +187,7 @@
               this.$router.go(-1)
             }
           } else {
-            this.ruleForm.errMsg = res.msg
+            this.message(res.result.message)
             return false
           }
         })
@@ -161,22 +197,30 @@
         let userPwd = this.registered.userPwd
         let userPwd2 = this.registered.userPwd2
         if (!userName || !userPwd || !userPwd2) {
-          this.registered.errMsg = '账号密码不能为空'
+          this.message('账号密码不能为空!')
           return false
         }
         if (userPwd2 !== userPwd) {
-          this.registered.errMsg = '两次输入的密码不相同'
+          this.message('两次输入的密码不相同!')
+          return false
+        }
+        if (!this.agreement) {
+          this.message('您未勾选同意我们的相关注册协议!')
           return false
         }
         register({userName, userPwd}).then(res => {
-          this.registered.errMsg = res.msg
-          if (res.status === '0') {
+          if (res.result === 1) {
+            this.messageSuccess()
             setTimeout(() => {
               this.ruleForm.errMsg = ''
               this.registered.errMsg = ''
               this.loginPage = true
             }, 500)
-          } else {
+          } else if (res.result === 0) {
+            this.message('该用户名已被注册')
+            return false
+          } else if (res.result === -1) {
+            this.message('用户名密码不能为空')
             return false
           }
         })
@@ -236,7 +280,7 @@
       box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
       position: relative;
       background-image: url(/static/images/smartisan_4ada7fecea.png);
-      background-size: 160px;
+      background-size: 140px;
       background-position: top center;
       background-repeat: no-repeat;
       height: 92px;
@@ -319,6 +363,36 @@
       clear: both;
       margin-bottom: 15px;
       position: relative;
+    }
+    .auto-login {
+      position: absolute;
+      top: 0px;
+      left: 2px;
+      color: #999;
+    }
+    .register {
+      padding: 1px 10px 0;
+      border-right: 1px solid #ccc;
+    }
+    .border {
+      margin-top: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    .other {
+      margin: 20px 5px 0 0;
+      width: auto;
+      color: #bbb;
+      font-size: 12px;
+      cursor: default;
+      color: #999;
+    }
+    .footer {
+      display: flex;
+      flex-direction: row;
+    }
+    .agree {
+      margin-bottom: 30px;
+      color: #999;
     }
   }
 

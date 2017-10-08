@@ -28,9 +28,9 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/users/*': {
-        //target: 'http://127.0.0.1:6666'  // 请求本地 需要clone node-api项目
-        target: 'http://mall.yucccc.com:3333' // 请求线上 可直接运行
+      '/member/*': {
+        target: 'http://127.0.0.1:6666'  // 请求本地 需要clone node-api项目
+        //target: 'http://mall.yucccc.com:3333' // 请求线上 可直接运行
       },
       '/goods/*': {
         target: 'http://127.0.0.1:6666'

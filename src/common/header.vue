@@ -38,10 +38,10 @@
                       <!--头像-->
                       <li class="nav-user-avatar">
                         <div>
-                          <span class="avatar" :style="{backgroundImage:'url('+userInfo.info.avatar+')'}">
+                          <span class="avatar" :style="{backgroundImage:'url('+userInfo.info.file+')'}">
                           </span>
                         </div>
-                        <p class="name">{{userInfo.info.name}}</p>
+                        <p class="name">{{userInfo.info.username}}</p>
                       </li>
                       <li>
                         <router-link to="/user/orderList">我的订单</router-link>
@@ -154,7 +154,8 @@
   import { mapMutations, mapState } from 'vuex'
   import { getCartList, cartDel, getQuickSearch } from '/api/goods'
   import { loginOut } from '/api/index'
-  import { setStore, removeStore } from '/utils/storage'
+  import { setStore, getStore, removeStore } from '/utils/storage'
+  // import store from '../store/'
   import 'element-ui/lib/theme-default/index.css'
   export default{
     data () {
@@ -237,6 +238,10 @@
         })
       },
       querySearchAsync (queryString, cb) {
+        if (this.input === undefined) {
+          cb([])
+          return
+        }
         this.input = this.input.trim()
         if (this.input === '') {
           cb([])
@@ -293,7 +298,12 @@
       },
       // 退出登陆
       _loginOut () {
-        loginOut().then(res => {
+        let params = {
+          params: {
+            token: getStore('token')
+          }
+        }
+        loginOut(params).then(res => {
           removeStore('buyCart')
           window.location.href = '/'
         })
@@ -319,7 +329,7 @@
       this.getPage()
       window.addEventListener('scroll', this.navFixed)
       window.addEventListener('resize', this.navFixed)
-      if (typeof (this.$route.query.key) === undefined) {
+      if (typeof (this.$route.query.key) !== undefined) {
         this.input = this.$route.query.key
       }
     },
