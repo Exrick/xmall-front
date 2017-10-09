@@ -67,7 +67,7 @@
               </div>
               <div class="shop pr" @mouseover="cartShowState(true)" @mouseout="cartShowState(false)"
                    ref="positionMsg">
-                <router-link to="cart"></router-link>
+                <router-link to="/cart"></router-link>
                 <span class="cart-num">
                   <i class="num" :class="{no:totalNum <= 0,move_in_cart:receiveInCart}">{{totalNum}}</i></span>
                 <!--购物车显示块-->
@@ -90,7 +90,7 @@
                                     </h4>
                                       <p class="attrs"><span>白色</span>
                                       </p> <h6><span class="price-icon">¥</span><span
-                                        class="price-num">{{item.productPrice}}</span><span
+                                        class="price-num">{{item.salePrice}}</span><span
                                         class="item-num">x {{item.productNum}}</span>
                                       </h6></div>
                                   </div>
@@ -171,7 +171,8 @@
         input: '',
         choosePage: 1,
         searchResults: [],
-        timeout: null
+        timeout: null,
+        token: ''
       }
     },
     computed: {
@@ -182,7 +183,7 @@
       totalPrice () {
         var totalPrice = 0
         this.cartList && this.cartList.forEach(item => {
-          totalPrice += (item.productNum * item.productPrice)
+          totalPrice += (item.productNum * item.salePrice)
         })
         return totalPrice
       },
@@ -262,8 +263,8 @@
       },
       // 登陆时获取一次购物车商品
       _getCartList () {
-        getCartList().then(res => {
-          if (res.status === '1') {
+        getCartList({userId: getStore('userId')}).then(res => {
+          if (res.success === true) {
             setStore('buyCart', res.result)
           }
           // 重新初始化一次本地数据
@@ -272,7 +273,7 @@
       // 删除商品
       delGoods (productId) {
         if (this.login) { // 登陆了
-          cartDel({productId}).then(res => {
+          cartDel({userId: getStore('userId'), productId}).then(res => {
             this.EDIT_CART({productId})
           })
         } else {
@@ -280,7 +281,7 @@
         }
       },
       toCart () {
-        this.$router.push({path: 'cart'})
+        this.$router.push({path: '/cart'})
       },
       // 控制顶部
       navFixed () {
@@ -300,7 +301,7 @@
       _loginOut () {
         let params = {
           params: {
-            token: getStore('token')
+            token: this.token
           }
         }
         loginOut(params).then(res => {
@@ -320,6 +321,7 @@
       }
     },
     mounted () {
+      this.token = getStore('token')
       if (this.login) {
         this._getCartList()
       } else {

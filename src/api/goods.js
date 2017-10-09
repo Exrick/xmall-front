@@ -9,7 +9,7 @@ export const getCartList = (params) => {
 }
 // 加入购物车
 export const addCart = (params) => {
-  return http.fetchPost('/goods/addCart', params)
+  return http.fetchPost('/member/addCart', params)
 }
 // 加入购物车
 export const addCart1 = (params) => {
@@ -17,7 +17,7 @@ export const addCart1 = (params) => {
 }
 // 删除购物车
 export const delCart = (params) => {
-  return http.fetchPost('/goods/delCart', params)
+  return http.fetchPost('/member/delCart', params)
 }
 // 编辑购物车
 export const cartEdit = (params) => {
@@ -29,7 +29,7 @@ export const editCheckAll = (params) => {
 }
 // 删除整条购物车
 export const cartDel = (params) => {
-  return http.fetchPost('/users/cartDel', params)
+  return http.fetchPost('/member/cartDel', params)
 }
 // 获取用户地址
 export const addressList = (params) => {
@@ -69,5 +69,5 @@ export const getSearch = (params) => {
 }
 // 快速搜索
 export const getQuickSearch = (key) => {
-  return http.fetchQuickSearch(`http://123.207.121.135:9200/item/itemList/_search?q=productName: ${key} `)
+  return http.fetchQuickSearch(`/item/itemList/_search?q=productName: ${key} `)
 }

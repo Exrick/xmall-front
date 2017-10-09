@@ -103,7 +103,7 @@
   import YFooter from '/common/footer'
   import YButton from '/components/YButton'
   import { userLogin, register } from '/api/index.js'
-  import { addCart1 } from '/api/goods.js'
+  import { addCart } from '/api/goods.js'
   import { setStore, getStore, removeStore } from '/utils/storage.js'
   export default {
     data () {
@@ -159,6 +159,7 @@
         if (locaCart && locaCart.length) {
           locaCart.forEach(item => {
             cartArr.push({
+              'userId': getStore('userId'),
               'productId': item.productId,
               'productNum': item.productNum
             })
@@ -176,13 +177,17 @@
         userLogin(params).then(res => {
           if (res.result.state === 1) {
             setStore('token', res.result.token)
-            // this.$store.state.login = true
+            setStore('userId', res.result.id)
+            // 登录后添加当前缓存中的购物车
             if (this.cart.length) {
-              addCart1({productMsg: this.cart}).then(res => {
-                if (res.result.state === 1) {
-                  removeStore('buyCart')
-                }
-              }).then(this.$router.go(-1))
+              for (var i = 0; i < this.cart.length; i++) {
+                addCart(this.cart[i]).then(res => {
+                  if (res.success === true) {
+                  }
+                })
+              }
+              removeStore('buyCart')
+              this.$router.go(-1)
             } else {
               this.$router.go(-1)
             }
@@ -228,6 +233,7 @@
     },
     mounted () {
       this.login_addCart()
+      this.open('登录提示', '若不想注册账号可使用公用测试体验账号：test | test')
     },
     components: {
       YFooter,

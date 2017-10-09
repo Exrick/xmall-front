@@ -47,7 +47,7 @@
                       <!--商品数量-->
                       <div>
                         <!--总价格-->
-                        <div class="subtotal" style="font-size: 14px">¥ {{item.productPrice * item.productNum}}</div>
+                        <div class="subtotal" style="font-size: 14px">¥ {{item.salePrice * item.productNum}}</div>
                         <!--数量-->
                         <buy-num :num="item.productNum"
                                  :id="item.productId"
@@ -61,7 +61,7 @@
                         >
                         </buy-num>
                         <!--价格-->
-                        <div class="price1">¥ {{item.productPrice}}</div>
+                        <div class="price1">¥ {{item.salePrice}}</div>
                       </div>
                     </div>
                   </div>
@@ -122,9 +122,12 @@
   import YHeader from '/common/header'
   import YFooter from '/common/footer'
   import BuyNum from '/components/buynum'
+  import { getStore } from '/utils/storage'
   export default {
     data () {
-      return {}
+      return {
+        userId: 0
+      }
     },
     computed: {
       ...mapState(
@@ -155,7 +158,7 @@
         var totalPrice = 0
         this.cartList && this.cartList.forEach(item => {
           if (item.checked === '1') {
-            totalPrice += (item.productNum * item.productPrice)
+            totalPrice += (item.productNum * item.salePrice)
           }
         })
         return totalPrice
@@ -183,15 +186,16 @@
         })
       },
       // 修改购物车
-      _cartEdit (productId, productNum, checked) {
+      _cartEdit (userId, productId, productNum, checked) {
         cartEdit(
           {
+            userId,
             productId,
             productNum,
             checked
           }
         ).then(res => {
-          if (res.status === '0') {
+          if (res.success === true) {
             this.EDIT_CART(
               {
                 productId,
@@ -211,18 +215,18 @@
           // 勾选
           if (type === 'check') {
             let newChecked = checked === '1' ? '0' : '1'
-            this._cartEdit(productId, productNum, newChecked)
+            this._cartEdit(this.userId, productId, productNum, newChecked)
           }
         } else {
           console.log('缺少所需参数')
         }
       },
       EditNum (productNum, productId, checked) { // 数量
-        this._cartEdit(productId, productNum, checked)
+        this._cartEdit(this.userId, productId, productNum, checked)
       },
       // 删除整条购物车
       cartdel (productId) {
-        cartDel({productId}).then(res => {
+        cartDel({userId: this.userId, productId}).then(res => {
           this.EDIT_CART({productId})
         })
       },
@@ -231,6 +235,7 @@
       }
     },
     mounted () {
+      this.userId = getStore('userId')
       this.INIT_BUYCART()
     },
     components: {

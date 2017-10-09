@@ -18,12 +18,12 @@ export default {
     }
   },
   // 加入购物车
-  [ADD_CART] (state, {productId, productPrice, productName, productImg, productNum = 1}) {
+  [ADD_CART] (state, {productId, salePrice, productName, productImg, productNum = 1}) {
     let cart = state.cartList // 购物车
     let falg = true
     let goods = {
       productId,
-      productPrice,
+      salePrice,
       productName,
       productImg
     }

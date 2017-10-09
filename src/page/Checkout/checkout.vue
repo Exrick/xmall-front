@@ -123,7 +123,7 @@
             <input type="text" placeholder="收货地址" v-model="msg.streetName">
           </div>
           <div>
-            <span><input type="checkbox" v-model="msg.isDefault" style="margin-right: 5px;">设为默认</span>
+            <el-checkbox class="auto-login" v-model="msg.isDefault">设为默认</el-checkbox>
           </div>
           <y-button text='保存'
                     class="btn"
