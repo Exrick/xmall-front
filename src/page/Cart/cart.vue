@@ -13,7 +13,8 @@
               <!--标题-->
               <div class="cart-table-title">
                 <span class="name">商品信息</span> <span class="operation">操作</span> <span
-                class="subtotal">小计</span> <span class="num">数量</span> <span class="price1">单价</span></div>
+                class="subtotal">小计</span> <span class="num">数量</span> <span class="price1">单价</span>
+              </div>
               <!--列表-->
               <div class="cart-table" v-for="(item,i) in cartList" :key="i">
                 <div class="cart-group divide pr" :data-productid="item.productId">
@@ -74,7 +75,8 @@
               <div class="cart-bar-operation">
                 <div>
                   <div class="choose-all">
-                    <span :class="{'checkbox-on':checkAllFlag}" class="blue-checkbox-new" @click="editCheckAll"></span>全选
+                    <span :class="{'checkbox-on':checkAllFlag}" class="blue-checkbox-new" @click="editCheckAll"></span>
+                    <span @click="editCheckAll">全选</span>
                   </div>
                   <div class="delete-choose-goods">删除选中的商品
                   </div>
@@ -181,7 +183,7 @@
       // 全选
       editCheckAll () {
         let checkAll = !this.checkAllFlag
-        editCheckAll({checkAll: checkAll}).then(res => {
+        editCheckAll({userId: this.userId, checked: checkAll}).then(res => {
           this.EDIT_CART({checked: checkAll})
         })
       },

@@ -299,12 +299,7 @@
       },
       // 退出登陆
       _loginOut () {
-        let params = {
-          params: {
-            token: this.token
-          }
-        }
-        loginOut(params).then(res => {
+        loginOut({token: this.token}).then(res => {
           removeStore('buyCart')
           window.location.href = '/'
         })

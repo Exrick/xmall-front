@@ -26,7 +26,7 @@
           </ul>
           <!--登陆-->
           <div style="margin-top: 25px">
-            <y-button text="登陆"
+            <y-button :text="logintxt"
                       :classStyle="ruleForm.userPwd&& ruleForm.userName?'main-btn':'disabled-btn'"
                       @btnClick="login"
                       style="margin: 0;width: 100%;height: 48px;font-size: 18px;line-height: 48px"></y-button>
@@ -122,7 +122,8 @@
           errMsg: ''
         },
         autoLogin: false,
-        agreement: false
+        agreement: false,
+        logintxt: '登录'
       }
     },
     computed: {
@@ -168,6 +169,7 @@
         this.cart = cartArr
       },
       login () {
+        this.logintxt = '登录中...'
         if (!this.ruleForm.userName || !this.ruleForm.userPwd) {
           // this.ruleForm.errMsg = '账号或者密码不能为空!'
           this.message('账号或者密码不能为空!')
@@ -192,6 +194,7 @@
               this.$router.go(-1)
             }
           } else {
+            this.logintxt = '登录'
             this.message(res.result.message)
             return false
           }

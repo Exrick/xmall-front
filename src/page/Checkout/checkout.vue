@@ -25,8 +25,8 @@
               <p class="street-name ellipsis">收货地址: {{item.streetName}}</p>
               <p>手机号码: {{item.tel}}</p>
               <div class="operation-section">
-                <span class="update-btn" @click="update(item)">修改</span>
-                <span class="delete-btn" :data-id="item.addressId" @click="del(item.addressId)">删除</span>
+                <span class="update-btn" style="font-size:12px" @click="update(item)">修改</span>
+                <span class="delete-btn" style="font-size:12px" :data-id="item.addressId" @click="del(item.addressId)">删除</span>
               </div>
             </li>
 
@@ -65,23 +65,21 @@
                         <div class="name-table">
                           <a href="javascript:;" :title="item.productName" target="_blank"
                              v-text="item.productName"></a>
-                          <ul class="attribute">
+                          <!-- <ul class="attribute">
                             <li>白色</li>
-                          </ul>
+                          </ul> -->
                         </div>
                       </div>
                       <!--商品数量-->
                       <div>
                         <!--总价格-->
-                        <div class="subtotal" style="font-size: 14px">¥ {{item.productPrice * item.productNum}}</div>
+                        <div class="subtotal" style="font-size: 14px">¥ {{item.salePrice * item.productNum}}</div>
                         <!--数量-->
                         <div class="item-cols-num">
-                          <div class="select">
-                            <span v-text="item.productNum"></span>
-                          </div>
+                          <span v-text="item.productNum"></span>
                         </div>
                         <!--价格-->
-                        <div class="price">¥ {{item.productPrice}}</div>
+                        <div class="price">¥ {{item.salePrice}}</div>
                       </div>
                     </div>
                   </div>
@@ -102,7 +100,7 @@
                             classStyle="main-btn"
                             style="margin: 0;width: 130px;height: 50px;line-height: 50px;font-size: 16px"
                             text="提交订单"
-                            @btnClick="payment">
+                            @btnClick="submitOrder">
                   </y-button>
                 </div>
               </div>
@@ -128,7 +126,7 @@
           <y-button text='保存'
                     class="btn"
                     :classStyle="btnHighlight?'main-btn':'disabled-btn'"
-                    @btnClick="save({addressId:msg.addressId,userName:msg.userName,tel:msg.tel,streetName:msg.streetName,isDefault:msg.isDefault})">
+                    @btnClick="save({userId:userId,addressId:msg.addressId,userName:msg.userName,tel:msg.tel,streetName:msg.streetName,isDefault:msg.isDefault})">
           </y-button>
         </div>
       </y-popup>
@@ -143,12 +141,13 @@
   import YPopup from '/components/popup'
   import YHeader from '/common/header'
   import YFooter from '/common/footer'
+  import { getStore } from '/utils/storage'
   export default {
     data () {
       return {
         cartList: [],
         addList: [],
-        addressId: '1',
+        addressId: '0',
         popupOpen: false,
         popupTitle: '管理收货地址',
         num: '', // 立刻购买
@@ -159,7 +158,11 @@
           tel: '',
           streetName: '',
           isDefault: false
-        }
+        },
+        userName: '',
+        tel: '',
+        streetName: '',
+        userId: ''
       }
     },
     computed: {
@@ -172,7 +175,7 @@
         let totalPrice = 0
         this.cartList && this.cartList.forEach(item => {
           if (item.checked === '1') {
-            totalPrice += (item.productNum * item.productPrice)
+            totalPrice += (item.productNum * item.salePrice)
           }
         })
         return totalPrice
@@ -180,16 +183,19 @@
     },
     methods: {
       _getCartList () {
-        getCartList().then(res => {
+        getCartList({userId: this.userId}).then(res => {
           this.cartList = res.result
         })
       },
       _addressList () {
-        addressList().then(res => {
+        addressList({userId: this.userId}).then(res => {
           let data = res.result
           if (data.length) {
             this.addList = data
             this.addressId = data[0].addressId || '1'
+            this.userName = data[0].userName
+            this.tel = data[0].tel
+            this.streetName = data[0].streetName
           } else {
             this.addList = []
           }
@@ -210,12 +216,25 @@
           this._addressList()
         })
       },
+      // 提交订单后跳转付款页面
+      submitOrder () {
+        let params = {
+          userId: this.userId,
+          addressId: this.addressId,
+          tel: this.tel,
+          userName: this.userName,
+          streetName: this.streetName,
+          goodsList: this.cartList
+        }
+        console.log(params)
+      },
       // 付款
       payment () {
         // 需要拿到地址id
         this.$router.push({
           path: '/order/payment',
           query: {
+            'userId': this.userId,
             'addressId': this.addressId,
             'productId': this.productId,
             'num': this.num
@@ -271,6 +290,7 @@
       }
     },
     created () {
+      this.userId = getStore('userId')
       let query = this.$route.query
       if (query.productId && query.num) {
         this.productId = query.productId
@@ -462,6 +482,7 @@
         line-height: 140px;
       }
       /*数量*/
+      .subtotal,
       .item-cols-num {
         padding-top: 50px;
         line-height: 40px;

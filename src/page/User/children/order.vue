@@ -18,7 +18,7 @@
               </div>
               <div class="last">
                 <span class="sub-total">实付金额</span>
-                <span class="order-detail"> <a href="javascript:;">查看详情<em class="icon-font"></em></a> </span>
+                <span class="order-detail"> <a href="javascript:;">查看详情 ><em class="icon-font"></em></a> </span>
               </div>
             </div>
             <div class="pr">

@@ -11,10 +11,6 @@ export const getCartList = (params) => {
 export const addCart = (params) => {
   return http.fetchPost('/member/addCart', params)
 }
-// 加入购物车
-export const addCart1 = (params) => {
-  return http.fetchPost('/goods/addCart1', params)
-}
 // 删除购物车
 export const delCart = (params) => {
   return http.fetchPost('/member/delCart', params)
@@ -25,7 +21,7 @@ export const cartEdit = (params) => {
 }
 // 全选
 export const editCheckAll = (params) => {
-  return http.fetchPost('/users/editCheckAll', params)
+  return http.fetchPost('/member/editCheckAll', params)
 }
 // 删除整条购物车
 export const cartDel = (params) => {
@@ -33,19 +29,19 @@ export const cartDel = (params) => {
 }
 // 获取用户地址
 export const addressList = (params) => {
-  return http.fetchPost('/users/addressList', params)
+  return http.fetchPost('/member/addressList', params)
 }
 // 修改收货地址
 export const addressUpdate = (params) => {
-  return http.fetchPost('/users/addressUpdate', params)
+  return http.fetchPost('/member/updateAddress', params)
 }
 // 添加收货地址
 export const addressAdd = (params) => {
-  return http.fetchPost('/users/addressAdd', params)
+  return http.fetchPost('/member/addAddress', params)
 }
 // 删除收货地址
 export const addressDel = (params) => {
-  return http.fetchPost('/users/addressDel', params)
+  return http.fetchPost('/member/delAddress', params)
 }
 // 支付
 export const payMent = (params) => {
@@ -53,7 +49,7 @@ export const payMent = (params) => {
 }
 // 订单
 export const orderList = (params) => {
-  return http.fetchPost('/users/orderList', params)
+  return http.fetchPost('/member/orderList', params)
 }
 // 商品详情
 export const productDet = (params) => {
@@ -61,7 +57,7 @@ export const productDet = (params) => {
 }
 // 删除订单
 export const delOrder = (params) => {
-  return http.fetchPost('/users/delOrder', params)
+  return http.fetchPost('/member/delOrder', params)
 }
 // 商品列表
 export const getSearch = (params) => {

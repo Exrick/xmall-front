@@ -3,6 +3,10 @@
     <y-shelf title="收货地址">
       <span slot="right"><y-button text="添加收货地址" style="margin: 0" @btnClick="update()"></y-button></span>
       <div slot="content">
+        <!--标题-->
+        <div class="table-title">
+          <span class="name">姓名</span> <span class="address">详细地址</span> <span class="tel">电话</span>
+        </div>
         <div v-if="addList.length">
           <div class="address-item" v-for="(item,i) in addList" :key="i">
             <div class="name">{{item.userName}}</div>
@@ -15,8 +19,8 @@
                  :class="{'defalut-address':item.isDefault}"></a>
             </div>
             <div class="operation">
-              <a href="javascript:;" @click="update(item)">修改</a>
-              <a href="javascript:;" :data-id="item.addressId" @click="del(item.addressId,i)">删除</a>
+              <el-button type="primary" icon="edit" size="small"  @click="update(item)"></el-button>
+              <el-button type="danger" icon="delete" size="small" :data-id="item.addressId" @click="del(item.addressId,i)"></el-button>
             </div>
           </div>
         </div>
@@ -42,12 +46,12 @@
           <input type="text" placeholder="收货地址" v-model="msg.streetName">
         </div>
         <div>
-          <span><input type="checkbox" v-model="msg.isDefault" style="margin-right: 5px;">设为默认</span>
+          <el-checkbox class="auto-login" v-model="msg.isDefault">设为默认</el-checkbox>
         </div>
         <y-button text='保存'
                   class="btn"
                   :classStyle="btnHighlight?'main-btn':'disabled-btn'"
-                  @btnClick="save({addressId:msg.addressId,userName:msg.userName,tel:msg.tel,streetName:msg.streetName,isDefault:msg.isDefault})">
+                  @btnClick="save({userId:userId,addressId:msg.addressId,userName:msg.userName,tel:msg.tel,streetName:msg.streetName,isDefault:msg.isDefault})">
         </y-button>
       </div>
     </y-popup>
@@ -58,6 +62,7 @@
   import YButton from '/components/YButton'
   import YPopup from '/components/popup'
   import YShelf from '/components/shelf'
+  import { getStore } from '/utils/storage'
   export default {
     data () {
       return {
@@ -70,7 +75,8 @@
           tel: '',
           streetName: '',
           isDefault: false
-        }
+        },
+        userId: ''
       }
     },
     computed: {
@@ -80,8 +86,13 @@
       }
     },
     methods: {
+      message (m) {
+        this.$message.error({
+          message: m
+        })
+      },
       _addressList () {
-        addressList().then(res => {
+        addressList({userId: this.userId}).then(res => {
           let data = res.result
           if (data.length) {
             this.addList = res.result
@@ -120,11 +131,11 @@
       },
       // 删除
       del (addressId, i) {
-        addressDel({addressId}).then(res => {
-          if (res.status === '0') {
+        addressDel({addressId: addressId}).then(res => {
+          if (res.success === true) {
             this.addList.splice(i, 1)
           } else {
-            alert('删除失败')
+            this.message('删除失败')
           }
         })
       },
@@ -149,6 +160,7 @@
       }
     },
     created () {
+      this.userId = getStore('userId')
       this._addressList()
     },
     components: {
@@ -159,6 +171,34 @@
   }
 </script>
 <style scoped lang="scss">
+  .table-title {
+    position: relative;
+    z-index: 1;
+    line-height: 38px;
+    height: 38px;
+    padding: 0 0 0 38px;
+    font-size: 12px;
+    background: #eee;
+    border-bottom: 1px solid #dbdbdb;
+    border-bottom-color: rgba(0, 0, 0, .08);
+    .name {
+      float: left;
+      text-align: left;
+    }
+    span {
+      width: 137px;
+      float: left;
+      text-align: center;
+      color: #838383;
+    }
+    .address {
+      margin-left: 115px; 
+    }
+    .tel {
+      margin-left: 195px; 
+    }
+  }
+
   .address-item {
     display: flex;
     align-items: center;
