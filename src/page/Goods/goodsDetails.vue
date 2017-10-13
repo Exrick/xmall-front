@@ -66,6 +66,7 @@
   import YShelf from '/components/shelf'
   import BuyNum from '/components/buynum'
   import YButton from '/components/YButton'
+  import { getStore } from '/utils/storage'
   export default {
     data () {
       return {
@@ -73,7 +74,8 @@
         small: [],
         big: '',
         product: {},
-        productNum: 1
+        productNum: 1,
+        userId: ''
       }
     },
     computed: {
@@ -93,11 +95,11 @@
       addCart (id, price, name, img) {
         if (!this.showMoveImg) {     // 动画是否在运动
           if (this.login) { // 登录了 直接存在用户名下
-            addCart({productId: id, productNum: this.productNum}).then(res => {
+            addCart({userId: this.userId, productId: id, productNum: this.productNum}).then(res => {
               // 并不重新请求数据
               this.ADD_CART({
                 productId: id,
-                productPrice: price,
+                salePrice: price,
                 productName: name,
                 productImg: img,
                 productNum: this.productNum
@@ -106,7 +108,7 @@
           } else { // 未登录 vuex
             this.ADD_CART({
               productId: id,
-              productPrice: price,
+              salePrice: price,
               productName: name,
               productImg: img,
               productNum: this.productNum
@@ -137,6 +139,7 @@
     created () {
       let id = this.$route.query.productId
       this._productDet(id)
+      this.userId = getStore('userId')
     }
   }
 </script>

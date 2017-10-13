@@ -12,7 +12,7 @@
                 :key="i"
                 class="address pr"
                 :class="{checked:addressId === item.addressId}"
-                @click="defaultAddress(item.addressId)">
+                @click="chooseAddress(item.addressId, item.userName, item.tel, item.streetName)">
            <span v-if="addressId === item.addressId" class="pa">
              <svg viewBox="0 0 1473 1024" width="17.34375" height="12">
              <path
@@ -58,12 +58,12 @@
                       <div class="items-thumb fl">
                         <img :alt="item.productName"
                              :src="item.productImg">
-                        <a href="javascript:;" :title="item.productName" target="_blank"></a>
+                        <a @click="goodsDetails(item.productId)" :title="item.productName" target="_blank"></a>
                       </div>
                       <!--信息-->
                       <div class="name hide-row fl">
                         <div class="name-table">
-                          <a href="javascript:;" :title="item.productName" target="_blank"
+                          <a @click="goodsDetails(item.productId)" :title="item.productName" target="_blank"
                              v-text="item.productName"></a>
                           <!-- <ul class="attribute">
                             <li>白色</li>
@@ -100,7 +100,7 @@
                             classStyle="main-btn"
                             style="margin: 0;width: 130px;height: 50px;line-height: 50px;font-size: 16px"
                             text="提交订单"
-                            @btnClick="submitOrder">
+                            @btnClick="_submitOrder">
                   </y-button>
                 </div>
               </div>
@@ -135,7 +135,7 @@
   </div>
 </template>
 <script>
-  import { getCartList, addressList, addressUpdate, addressAdd, addressDel, productDet } from '/api/goods'
+  import { getCartList, addressList, addressUpdate, addressAdd, addressDel, productDet, submitOrder } from '/api/goods'
   import YShelf from '/components/shelf'
   import YButton from '/components/YButton'
   import YPopup from '/components/popup'
@@ -162,7 +162,8 @@
         userName: '',
         tel: '',
         streetName: '',
-        userId: ''
+        userId: '',
+        orderTotal: 0
       }
     },
     computed: {
@@ -178,10 +179,14 @@
             totalPrice += (item.productNum * item.salePrice)
           }
         })
+        this.orderTotal = totalPrice
         return totalPrice
       }
     },
     methods: {
+      goodsDetails (id) {
+        window.open(window.location.origin + '#/goodsDetails?productId=' + id)
+      },
       _getCartList () {
         getCartList({userId: this.userId}).then(res => {
           this.cartList = res.result
@@ -217,33 +222,43 @@
         })
       },
       // 提交订单后跳转付款页面
-      submitOrder () {
+      _submitOrder () {
+        var array = []
+        for (var i = 0; i < this.cartList.length; i++) {
+          if (this.cartList[i].checked === '1') {
+            array.push(this.cartList[i])
+          }
+        }
         let params = {
           userId: this.userId,
-          addressId: this.addressId,
           tel: this.tel,
           userName: this.userName,
           streetName: this.streetName,
-          goodsList: this.cartList
+          goodsList: array,
+          orderTotal: this.orderTotal
         }
-        console.log(params)
+        submitOrder(params).then(res => {
+          if (res.success === true) {
+            this.payment(res.result)
+          }
+        })
       },
       // 付款
-      payment () {
+      payment (orderId) {
         // 需要拿到地址id
         this.$router.push({
           path: '/order/payment',
           query: {
-            'userId': this.userId,
-            'addressId': this.addressId,
-            'productId': this.productId,
-            'num': this.num
+            'orderId': orderId
           }
         })
       },
       // 选择地址
-      defaultAddress (id) {
-        this.addressId = id
+      chooseAddress (addressId, userName, tel, streetName) {
+        this.addressId = addressId
+        this.userName = userName
+        this.tel = tel
+        this.streetName = streetName
       },
       // 修改
       update (item) {

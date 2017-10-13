@@ -3,10 +3,10 @@
     <y-shelf title="账户资料">
       <div slot="content">
         <div class="avatar-box">
-          <div class=img-box><img :src="userInfo.info.avatar" alt=""></div>
+          <div class=img-box><img :src="userInfo.info.file" alt=""></div>
           <div class="r-box">
-            <h3>修改头像</h3>
-            <y-button text="更换头像" classStyle="main-btn" style="margin: 0;" @btnClick="editAvatar()"></y-button>
+            <h3 style="margin-left: 13px;">修改头像</h3>
+            <y-button text="上传头像" classStyle="main-btn" style="margin: 0;" @btnClick="editAvatar()"></y-button>
           </div>
         </div>
         <div class="edit-avatar" v-if="editAvatarShow">
@@ -76,10 +76,11 @@
 </template>
 <script>
   import YButton from '/components/YButton'
-  import { upload, updateheadimage } from '/api/index'
+  import { upload } from '/api/index'
   import YShelf from '/components/shelf'
   import vueCropper from 'vue-cropper'
   import { mapState, mapMutations } from 'vuex'
+  import { getStore } from '/utils/storage'
   export default {
     data () {
       return {
@@ -103,7 +104,9 @@
           autoCropHeight: 250,
           // 开启宽度和高度比例
           fixed: true
-        }
+        },
+        userId: '',
+        token: ''
       }
     },
     computed: {
@@ -113,10 +116,24 @@
       ...mapMutations([
         'RECORD_USERINFO'
       ]),
+      message (m) {
+        this.$message(m)
+      },
+      messageSuccess (m) {
+        this.$message({
+          message: m,
+          type: 'success'
+        })
+      },
+      messageFail (m) {
+        this.$message.error({
+          message: m
+        })
+      },
       upimg (e) {
         var file = e.target.files[0]
         if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
-          alert('图片类型必须是.gif,jpeg,jpg,png,bmp中的一种')
+          this.messageFail('图片类型仅支持.gif,jpeg,jpg,png,bmp')
           return false
         }
         var reader = new FileReader()
@@ -126,26 +143,23 @@
         }
       },
       cropper () {
+        this.message('上传中...')
         if (this.option.img) {
           this.$refs.cropper.getCropData((data) => {
             this.imgSrc = data
-            upload({imgData: data}).then(res => {
-              if (res.status === '0') {
-                let path = res.result.path
-                updateheadimage({imageSrc: path}).then(res1 => {
-                  if (res1.status === '0') {
-                    let info = this.userInfo
-                    info.avatar = path
-                    this.RECORD_USERINFO({info: info})
-                    alert('更换成功')
-                    this.editAvatarShow = false
-                  }
-                })
+            upload({userId: this.userId, token: this.token, imgData: data}).then(res => {
+              if (res.success === true) {
+                let path = res.result
+                let info = this.userInfo
+                info.file = path
+                this.RECORD_USERINFO({info: info})
+                this.editAvatarShow = false
+                this.messageSuccess('上传成功')
               }
             })
           })
         } else {
-          alert('别玩我啊 先选照骗')
+          this.messageFail('别玩我啊 先选照骗')
         }
       },
       editAvatar () {
@@ -156,6 +170,10 @@
         let w = 100 / data.w
         this.option.zoom = w
       }
+    },
+    created () {
+      this.userId = getStore('userId')
+      this.token = getStore('token')
     },
     components: {
       YButton,

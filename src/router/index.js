@@ -20,6 +20,7 @@ const paysuccess = resolve => require(['/page/Order/paysuccess'], resolve)
 const Thanks = resolve => require(['/page/Thanks/thanks'], resolve)
 const Search = resolve => require(['/page/Search/search'], resolve)
 const RefreshSearch = resolve => require(['/page/Refresh/refreshsearch'], resolve)
+const orderDetail = resolve => require(['/page//User/children/orderDetail'], resolve)
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -55,6 +56,7 @@ export default new Router({
       redirect: '/user/orderList',
       children: [
         {path: 'orderList', name: '订单列表', component: orderList},
+        {path: 'orderDetail', name: '订单详情', component: orderDetail},
         {path: 'information', name: '账户资料', component: information},
         {path: 'addressList', name: '收货地址', component: addressList},
         {path: 'coupon', name: '我的优惠', component: coupon},

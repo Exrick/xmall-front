@@ -29,16 +29,16 @@
                       <div class="items-thumb fl">
                         <img :alt="item.productName"
                              :src="item.productImg">
-                        <a href="javascript:;" :title="item.productName" target="_blank"></a>
+                        <a @click="goodsDetails(item.productId)" :title="item.productName" target="_blank"></a>
                       </div>
                       <!--信息-->
                       <div class="name hide-row fl">
                         <div class="name-table">
-                          <a href="javascript:;" :title="item.productName" target="_blank"
+                          <a @click="goodsDetails(item.productId)" :title="item.productName" target="_blank"
                              v-text="item.productName"></a>
-                          <ul class="attribute">
+                          <!-- <ul class="attribute">
                             <li>白色</li>
-                          </ul>
+                          </ul> -->
                         </div>
                       </div>
                       <!--删除按钮-->
@@ -57,7 +57,7 @@
                                    display: flex;
                                    align-items: center;
                                    justify-content: center;"
-                                 :limit="5"
+                                 :limit="item.limitNum"
                                  @edit-num="EditNum"
                         >
                         </buy-num>
@@ -180,6 +180,9 @@
       ...mapMutations([
         'INIT_BUYCART', 'EDIT_CART'
       ]),
+      goodsDetails (id) {
+        window.open(window.location.origin + '#/goodsDetails?productId=' + id)
+      },
       // 全选
       editCheckAll () {
         let checkAll = !this.checkAllFlag

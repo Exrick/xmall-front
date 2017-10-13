@@ -1,11 +1,10 @@
 <template>
   <div class="goods">
-      
-    <div class="nav-sub">
-      <div class="nav-sub-bg"></div>
-      <div class="nav-sub-wrapper">
+    <div class="nav-subs">
+      <div class="nav-sub-bgs"></div>
+      <div class="nav-sub-wrappers">
         <div class="w">
-          <ul class="nav-list2">
+          <ul class="nav-lists">
             <li>
               <router-link to="/">
                 <a>首页</a>
@@ -80,7 +79,6 @@
         </y-shelf>
       </section>
     </div>
-
   </div>
 </template>
 <script>
@@ -89,6 +87,8 @@
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
   import YShelf from '/components/shelf'
+  import YHeader from '/common/header'
+  import YFooter from '/common/footer'
   export default {
     data () {
       return {
@@ -172,7 +172,9 @@
     components: {
       mallGoods,
       YButton,
-      YShelf
+      YShelf,
+      YHeader,
+      YFooter
     }
   }
 </script>
@@ -226,54 +228,23 @@
     }
   }
 
-  .nav-sub {
+  .nav-subs {
     position: relative;
     margin-top: -40px;
     z-index: 20;
     height: 90px;
     background: #f7f7f7;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .04);
-    &.fixed {
-      position: fixed;
-      z-index: 21;
-      height: 60px;
-      top: 0;
-      left: 0;
-      right: 0;
-      border-bottom: 1px solid #dadada;
-      background-image: -webkit-linear-gradient(#fff, #f1f1f1);
-      background-image: linear-gradient(#fff, #f1f1f1);
-    }
-    .nav-sub-wrapper {
+    .nav-sub-wrappers {
       padding: 31px 0;
       height: 90px;
       position: relative;
-      &.fixed {
-        padding: 0;
-        height: 100%;
-        display: flex;
-        align-items: center;
-      }
-      &:after {
-        content: " ";
-        position: absolute;
-        top: 89px;
-        left: 50%;
-        margin-left: -610px;
-        width: 1220px;
-        background: #000;
-        height: 1px;
-        display: none;
-        opacity: 0;
-        -webkit-transition: opacity .3s ease-in;
-        transition: opacity .3s ease-in;
-      }
     }
     .w {
       display: flex;
       justify-content: space-between;
     }
-    .nav-list2 {
+    .nav-lists {
       height: 28px;
       line-height: 28px;
       display: flex;
@@ -333,7 +304,7 @@
   }
 
   @media (min-width: 1px) {
-    .nav-sub .nav-sub-wrapper:after {
+    .nav-subs .nav-sub-wrappers:after {
       display: block;
     }
   }

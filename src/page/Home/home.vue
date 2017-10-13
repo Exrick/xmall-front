@@ -1,14 +1,16 @@
 <template>
   <div class="home">
     <div class="banner">
-      <div class="bg" ref="bg"
-           @mouseover="bgOver($refs.bg)"
-           @mousemove="bgMove($refs.bg,$event)"
-           @mouseout="bgOut($refs.bg)">
-        <span class="img a"></span>
-        <span class="text b">以傲慢与偏执<br/>回敬傲慢与偏见</span>
-        <span class="copyright c">code by qingjin.me | picture from t.tt</span>
-      </div>
+      <a href="http://localhost:9999/#/goodsDetails?productId=150642571432835">
+        <div class="bg" ref="bg"
+            @mouseover="bgOver($refs.bg)"
+            @mousemove="bgMove($refs.bg,$event)"
+            @mouseout="bgOut($refs.bg)">
+          <span class="img a"></span>
+          <span class="text b">以傲慢与偏执<br/>回敬傲慢与偏见</span>
+          <span class="copyright c">code by qingjin.me | picture from t.tt</span>
+        </div>
+      </a>
     </div>
 
     <div v-loading="loading" element-loading-text="加载中...">
@@ -23,7 +25,7 @@
         <y-shelf :title="item.title">
           <div slot="content" class="floors">
             <div class="imgbanner">
-              <img v-lazy="floors[i].image.image" :alt="item.title">
+              <a v-bind:href="floors[i].image.link"><img v-lazy="floors[i].image.image" :alt="item.title"></a>
             </div>
             <mall-goods :msg="tab" v-for="(tab,i) in item.tabs" :key="i"></mall-goods>
           </div>

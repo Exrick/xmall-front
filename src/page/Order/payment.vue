@@ -5,7 +5,7 @@
         <div class="box-inner order-info">
           <h3>提交订单成功</h3>
           <p class="payment-detail">请在 <span>24 小时内</span>完成支付，超时订单将自动取消。</p>
-          <p class="payment-detail">我们将在您完成支付后的 72 小时内发货</p></div>
+          <p class="payment-detail">我们不会在您完成支付后的 72 小时内发货，您的支付将用作捐赠</p></div>
         <!--支付方式-->
         <div class="pay-type">
           <div class="p-title">支付方式</div>
@@ -20,9 +20,9 @@
           <div class="box-inner">
             <div>
               <span>
-                应付金额:
+                应付金额：
               </span>
-              <em><span>¥</span>{{checkPrice}}</em>
+              <em><span>¥</span>{{orderTotal}}</em>
               <y-button text="立刻支付"
                         classStyle="main-btn"
                         style="width: 120px;height: 40px;font-size: 16px;line-height: 38px"
@@ -38,44 +38,48 @@
     <div class="p-msg w">
       <div class="confirm-detail">
         <div class="info-title">收货信息</div>
-        <p class="info-detail">姓名：{{addList.userName}}</p>
-        <p class="info-detail">联系电话：{{addList.tel}}</p>
-        <p class="info-detail">详细地址：{{addList.streetName}}</p></div>
+        <p class="info-detail">姓名：{{userName}}</p>
+        <p class="info-detail">联系电话：{{tel}}</p>
+        <p class="info-detail">详细地址：{{streetName}}</p></div>
     </div>
     <div class="confirm-table-title">
       <span class="name">商品信息</span>
       <div>
-        <span class="subtotal">小计</span>
-        <span class="num">数量</span>
         <span class="price">单价</span>
+        <span class="num">数量</span>
+        <span class="subtotal">小计</span>
       </div>
     </div>
     <!--商品-->
     <div class="confirm-goods-table">
-      <div class="cart-items" v-for="(item,i) in cartList" :key="i" v-if="item.checked === '1'">
+      <div class="cart-items" v-for="(item,i) in cartList" :key="i">
         <div class="name">
           <div class="name-cell ellipsis">
-            <a href="javascript:;" title=""
-               target="_blank">{{item.productName}}</a></div>
+            <a @click="goodsDetails(item.productId)" title="" target="_blank">{{item.productName}}</a>
+          </div>
         </div>
         <div class="n-b">
-          <div class="subtotal ">
-            <div class="subtotal-cell"> ¥ {{item.productPrice * item.productNum}}<br></div>
+          <div class="price">¥ {{item.salePrice}}</div>
+          <div class="goods-num">{{item.productNum}}</div>
+          <div class="subtotal">
+            <div class="subtotal-cell"> ¥ {{item.salePrice * item.productNum}}<br></div>
           </div>
-          <div class="goods-num ">{{item.productNum}}</div>
-          <div class="price ">¥ {{item.productPrice}}</div>
         </div>
       </div>
     </div>
     <!--合计-->
-    <div class="order-discount-line"><p> 商品总计： <span>¥ {{checkPrice}}</span></p>
-      <p> 运费： <span>+ ¥ 0.00</span></p></div>
+    <div class="order-discount-line">
+      <p style="font-size: 14px;font-weight: bolder;"> <span style="padding-right:47px">商品总计：</span>
+        <span style="font-size: 16px;font-weight: 500;line-height: 32px;">¥ {{orderTotal}}</span>
+      </p>
+      <p><span style="padding-right:30px">运费：</span><span style="font-weight: 700;">+ ¥ 0.00</span></p>
+    </div>
   </div>
 </template>
 <script>
   import YShelf from '/components/shelf'
   import YButton from '/components/YButton'
-  import { addressList, getCartList, payMent, productDet } from '/api/goods'
+  import { getOrderDet, payMent } from '/api/goods'
   export default {
     data () {
       return {
@@ -84,7 +88,12 @@
         cartList: [],
         addressId: 0,
         productId: '',
-        num: ''
+        num: '',
+        userId: '',
+        orderTotal: '',
+        userName: '',
+        tel: '',
+        streetName: ''
       }
     },
     computed: {
@@ -93,21 +102,28 @@
         let totalPrice = 0
         this.cartList && this.cartList.forEach(item => {
           if (item.checked === '1') {
-            totalPrice += (item.productNum * item.productPrice)
+            totalPrice += (item.productNum * item.salePrice)
           }
         })
         return totalPrice
       }
     },
     methods: {
-      _getCartList () {
-        getCartList().then(res => {
-          this.cartList = res.result
-        })
+      goodsDetails (id) {
+        window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
-      _addressList (params) {
-        addressList(params).then(res => {
-          this.addList = res.result
+      _getOrderDet (orderId) {
+        let params = {
+          params: {
+            orderId: this.orderId
+          }
+        }
+        getOrderDet(params).then(res => {
+          this.cartList = res.result.goodsList
+          this.userName = res.result.addressInfo.userName
+          this.tel = res.result.addressInfo.tel
+          this.streetName = res.result.addressInfo.streetName
+          this.orderTotal = res.result.orderTotal
         })
       },
       paySuc () {
@@ -123,29 +139,12 @@
             alert('支付失败')
           }
         })
-      },
-      _productDet (productId) {
-        productDet({params: {productId}}).then(res => {
-          let item = res.result
-          item.checked = '1'
-          item.productNum = this.num
-          item.productPrice = item.salePrice
-          this.cartList.push(item)
-        })
       }
     },
     created () {
-      let query = this.$route.query
-      this.addressId = query.addressId
-      if (this.addressId) {
-        this._addressList({addressId: this.addressId})
-        if (query.productId && query.num) {
-          this.productId = query.productId
-          this.num = query.num
-          this._productDet(this.productId)
-        } else {
-          this._getCartList()
-        }
+      this.orderId = this.$route.query.orderId
+      if (this.orderId) {
+        this._getOrderDet(this.orderId)
       } else {
         this.$router.push({path: '/'})
       }
@@ -247,7 +246,7 @@
       font-size: 24px;
       color: #d44d44;
       font-weight: 700;
-      margin-right: 10px;
+      margin-right: 20px;
       span {
         margin-right: 4px;
         font-size: 16px;
@@ -273,7 +272,7 @@
   }
 
   .confirm-table-title {
-    padding: 3px 0 0 30px;
+    padding: 3px 0 0 33px;
     border-top: 1px solid #D5D5D5;
     line-height: 54px;
     font-weight: bolder;
@@ -283,7 +282,16 @@
     span {
       display: inline-block;
       width: 175px;
-      text-align: center;
+      text-align: left;
+    }
+    .price {
+      padding-left: 80px;
+    }
+    .num {
+      padding-left: 75px;
+    }
+    .subtotal {
+      padding-left: 72px;
     }
   }
 
@@ -330,6 +338,6 @@
   }
 
   .name-cell {
-
+    padding-left: 33px;
   }
 </style>

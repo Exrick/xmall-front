@@ -20,8 +20,8 @@
                 @select="handleSelect"
                 :on-icon-click="handleIconClick">
               </el-autocomplete>
-              <router-link to="goods"><a @click="changePage(2)">全部商品</a></router-link>
-              <router-link to="thanks"><a @click="changePage(3)">捐赠</a></router-link>
+              <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
+              <router-link to="/thanks"><a @click="changePage(3)">捐赠</a></router-link>
               <!-- <router-link to="/">Smartisan M1 / M1L</router-link>
               <router-link to="/">Smartisan OS</router-link>
               <router-link to="/">欢喜云</router-link>
@@ -30,7 +30,7 @@
             </div>
             <div class="nav-aside" ref="aside" :class="{fixed:st}">
               <div class="user pr">
-                <router-link to="user">个人中心</router-link>
+                <router-link to="/user">个人中心</router-link>
                 <!--用户信息显示-->
                 <div class="nav-user-wrapper pa" v-if="login">
                   <div class="nav-user-list">
@@ -88,7 +88,7 @@
                                     <div class="cart-cell"><h4>
                                       <a href="" v-text="item.productName"></a>
                                     </h4>
-                                      <p class="attrs"><span>白色</span>
+                                      <!-- <p class="attrs"><span>白色</span> -->
                                       </p> <h6><span class="price-icon">¥</span><span
                                         class="price-num">{{item.salePrice}}</span><span
                                         class="item-num">x {{item.productNum}}</span>
@@ -299,19 +299,26 @@
       },
       // 退出登陆
       _loginOut () {
-        loginOut({token: this.token}).then(res => {
+        let params = {
+          params: {
+            token: this.token
+          }
+        }
+        loginOut(params).then(res => {
           removeStore('buyCart')
           window.location.href = '/'
         })
       },
       // 通过路由改变导航文字样式
       getPage () {
-        if (this.$route.path === '/') {
+        if (this.$route.path === '/' || this.$route.path === '/home') {
           this.changePage(1)
         } else if (this.$route.path === '/goods') {
           this.changePage(2)
         } else if (this.$route.path === '/thanks') {
           this.changePage(3)
+        } else {
+          this.changePage(4)
         }
       }
     },
@@ -434,7 +441,7 @@
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    position: relative;
+    // position: relative;
     h1 {
       height: 100%;
       display: flex;

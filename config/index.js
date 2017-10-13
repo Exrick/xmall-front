@@ -35,9 +35,6 @@ module.exports = {
       '/goods/*': {
         target: 'http://127.0.0.1:6666'
         //target: 'http://mall.yucccc.com:3333'
-      },
-      '/item/*':{
-        target: 'http://123.207.121.135:9200' //Elasticsearch搜索引擎
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

@@ -20,8 +20,6 @@ Vue.use(VueLazyload, {
 Vue.config.productionTip = false
 const whiteList = ['/home', '/goods', '/login', '/goodsDetails', '/thanks', '/search', '/cart', '/refreshsearch'] // 不需要登陆的页面
 router.beforeEach(function (to, from, next) {
-  console.log(getStore('token'))
-  console.log(getStore('userId'))
   let params = {
     params: {
       token: getStore('token')

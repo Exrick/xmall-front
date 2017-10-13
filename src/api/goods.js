@@ -31,6 +31,10 @@ export const cartDel = (params) => {
 export const addressList = (params) => {
   return http.fetchPost('/member/addressList', params)
 }
+// 通过id获取地址
+export const getAddress = (params) => {
+  return http.fetchPost('/member/address', params)
+}
 // 修改收货地址
 export const addressUpdate = (params) => {
   return http.fetchPost('/member/updateAddress', params)
@@ -43,13 +47,25 @@ export const addressAdd = (params) => {
 export const addressDel = (params) => {
   return http.fetchPost('/member/delAddress', params)
 }
+// 生成订单
+export const submitOrder = (params) => {
+  return http.fetchPost('/member/addOrder', params)
+}
 // 支付
 export const payMent = (params) => {
   return http.fetchPost('/users/payMent', params)
 }
-// 订单
+// 获取用户订单
 export const orderList = (params) => {
-  return http.fetchPost('/member/orderList', params)
+  return http.fetchGet('/member/orderList', params)
+}
+// 获取单个订单详情
+export const getOrderDet = (params) => {
+  return http.fetchGet('/member/orderDetail', params)
+}
+// 取消订单
+export const cancelOrder = (params) => {
+  return http.fetchPost('/member/cancelOrder', params)
 }
 // 商品详情
 export const productDet = (params) => {
@@ -57,7 +73,7 @@ export const productDet = (params) => {
 }
 // 删除订单
 export const delOrder = (params) => {
-  return http.fetchPost('/member/delOrder', params)
+  return http.fetchGet('/member/delOrder', params)
 }
 // 商品列表
 export const getSearch = (params) => {
@@ -65,5 +81,5 @@ export const getSearch = (params) => {
 }
 // 快速搜索
 export const getQuickSearch = (key) => {
-  return http.fetchQuickSearch(`/item/itemList/_search?q=productName: ${key} `)
+  return http.fetchQuickSearch(`http://123.207.121.135:9200/item/itemList/_search?q=productName: ${key}`)
 }
