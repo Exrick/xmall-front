@@ -23,6 +23,10 @@ export const upload = (params) => {
 export const updateheadimage = (params) => {
   return http.fetchPost('/member/updateheadimage', params)
 }
+// 捐赠列表
+export const thanksList = (params) => {
+  return http.fetchGet('/member/thanks', params)
+}
 // 首页接口
 export const productHome = (params) => {
   return http.fetchGet('/goods/productHome', params)

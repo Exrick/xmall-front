@@ -53,7 +53,7 @@
 
         <ul class="c4">
           <li class="tel"><a class="c5" href="http://wpa.qq.com/msgrd?v=3&uin=1012139570&site=qq&menu=yes" target="_blank">1012139570</a></li>
-          <li class="time">周一至周日 10:00-23:00（限捐赠人联系）</li>
+          <li class="time">周一至周日 10:00-23:00（限Starrer或捐赠人联系）</li>
           <li class="online">
             <y-button text="在线帮助" class="button" @btnClick="open3"></y-button>
           </li>

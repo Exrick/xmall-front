@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="banner">
-      <a href="http://localhost:9999/#/goodsDetails?productId=150642571432835">
+      <a href="https://github.com/Exrick/xmall">
         <div class="bg" ref="bg"
             @mouseover="bgOver($refs.bg)"
             @mousemove="bgMove($refs.bg,$event)"

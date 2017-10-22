@@ -93,7 +93,8 @@
         orderTotal: '',
         userName: '',
         tel: '',
-        streetName: ''
+        streetName: '',
+        checkPrice: ''
       }
     },
     computed: {
@@ -127,6 +128,8 @@
         })
       },
       paySuc () {
+        this.checkPrice = this.orderTotal
+        this.$router.push({path: '/order/paysuccess', query: {price: this.checkPrice}})
         payMent({
           addressId: this.addressId,
           orderTotal: this.checkPrice,

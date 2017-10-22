@@ -85,7 +85,7 @@
             </div>
             <div class="border" style="margin-bottom: 10px;"></div>
             <ul class="common-form pr">
-              <li class="pa" style="left: 0;top: 0;margin: 0;color: #d44d44">{{registered.errMsg}}</li>
+              <!-- <li class="pa" style="left: 0;top: 0;margin: 0;color: #d44d44">{{registered.errMsg}}</li> -->
               <li style="text-align: center;line-height: 48px;margin-bottom: 0;font-size: 12px;color: #999;">
                 <span>如果您已拥有 XMall 账号，则可在此</span>
                 <a href="javascript:;"
@@ -217,18 +217,15 @@
           return false
         }
         register({userName, userPwd}).then(res => {
-          if (res.result === 1) {
+          if (res.success === true) {
             this.messageSuccess()
             setTimeout(() => {
               this.ruleForm.errMsg = ''
               this.registered.errMsg = ''
               this.loginPage = true
             }, 500)
-          } else if (res.result === 0) {
-            this.message('该用户名已被注册')
-            return false
-          } else if (res.result === -1) {
-            this.message('用户名密码不能为空')
+          } else {
+            this.message(res.message)
             return false
           }
         })
@@ -236,7 +233,7 @@
     },
     mounted () {
       this.login_addCart()
-      this.open('登录提示', '若不想注册账号可使用公用测试体验账号：test | test')
+      this.open('登录提示', '测试体验账号密码：test | test')
     },
     components: {
       YFooter,

@@ -5,11 +5,11 @@
         <div slot="content" class="table">
           <p>佛祖保佑这些好心人写程序永无BUG，工资翻倍，长命百岁，迎娶白富美，走上人生巅峰！</p>
           <el-table border :data="tableData" :default-sort = "{prop: 'date', order: 'descending'}" stripe style="width: 90%">
-            <el-table-column sortable prop="name" label="昵称" align="center"></el-table-column>
-            <el-table-column sortable prop="name" label="登录账号" align="center"> </el-table-column>
-            <el-table-column sortable prop="address" label="捐赠金额" align="center"></el-table-column>
-            <el-table-column sortable prop="address" label="捐赠人信息" align="center"></el-table-column>
-            <el-table-column sortable prop="date" label="时间" align="center"></el-table-column>
+            <el-table-column sortable prop="nickName" label="昵称" align="center"></el-table-column>
+            <el-table-column sortable prop="username" label="登录账号" align="center"> </el-table-column>
+            <el-table-column sortable prop="money" label="捐赠金额" align="center"></el-table-column>
+            <el-table-column sortable prop="info" label="捐赠人信息" align="center"></el-table-column>
+            <el-table-column sortable prop="time" label="时间" align="center"></el-table-column>
           </el-table>
 
           <el-pagination
@@ -17,9 +17,9 @@
             @current-change="handleCurrentChange"
             :current-page="currentPage"
             :page-sizes="[5, 10, 20, 50]"
-            :page-size="10"
+            :page-size="pageSize"
             layout="total, sizes, prev, pager, next"
-            :total="123">
+            :total="total">
           </el-pagination>
         </div>
       </y-shelf>
@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-  import {productHome} from '/api/index.js'
+  import { productHome, thanksList } from '/api/index.js'
   import YShelf from '/components/shelf'
   import product from '/components/product'
   import mallGoods from '/components/mallGoods'
@@ -64,56 +64,32 @@
         banner: {},
         floors: [],
         hot: [],
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '3'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '3'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '3'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '3'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '3'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '3'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '3'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '3'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '3'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '3'
-        }],
-        currentPage: 1
+        tableData: [],
+        currentPage: 1,
+        pageSize: 10,
+        total: 0
       }
     },
     methods: {
       handleSizeChange (val) {
-        console.log(`每页 ${val} 条`)
+        this.pageSize = val
+        this._thanksList()
       },
       handleCurrentChange (val) {
-        console.log(`当前页: ${val}`)
+        this.currentPage = val
+        this._thanksList()
+      },
+      _thanksList () {
+        let params = {
+          params: {
+            size: this.pageSize,
+            page: this.currentPage
+          }
+        }
+        thanksList(params).then(res => {
+          this.tableData = res.result.data
+          this.total = res.result.recordsTotal
+        })
       }
     },
     mounted () {
@@ -122,6 +98,7 @@
         this.floors = data.home_floors
         this.hot = data.home_hot
       })
+      this._thanksList()
       window.changyan.api.config({
         appid: 'cyrV7vlR4',
         conf: 'prod_3163726f95fdac5ad0531c2344fc86ea'
