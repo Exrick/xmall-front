@@ -209,13 +209,14 @@
               key: this.input
             }
           })
+        } else {
+          this.$router.push({
+            path: '/search',
+            query: {
+              key: this.input
+            }
+          })
         }
-        this.$router.push({
-          path: '/search',
-          query: {
-            key: this.input
-          }
-        })
       },
       // 导航栏文字样式改变
       changePage (v) {

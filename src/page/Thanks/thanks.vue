@@ -7,7 +7,7 @@
           <el-table border :data="tableData" :default-sort = "{prop: 'date', order: 'descending'}" stripe style="width: 90%">
             <el-table-column sortable prop="nickName" label="昵称" align="center"></el-table-column>
             <el-table-column sortable prop="username" label="登录账号" align="center"> </el-table-column>
-            <el-table-column sortable prop="money" label="捐赠金额" align="center"></el-table-column>
+            <el-table-column sortable prop="money" label="捐赠金额(￥)" align="center"></el-table-column>
             <el-table-column sortable prop="info" label="捐赠人信息" align="center"></el-table-column>
             <el-table-column sortable prop="time" label="时间" align="center"></el-table-column>
           </el-table>

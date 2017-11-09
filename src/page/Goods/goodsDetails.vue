@@ -248,7 +248,7 @@
     .img-item {
       width: 1220px;
       // padding: 1vw;
-      // text-align: center;
+      text-align: center;
       img {
         width: 100%;
         height: auto;
