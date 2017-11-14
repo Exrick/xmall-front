@@ -18,7 +18,7 @@ Vue.use(VueLazyload, {
   // attempt: 1
 })
 Vue.config.productionTip = false
-const whiteList = ['/home', '/goods', '/login', '/goodsDetails', '/thanks', '/search', '/cart', '/refreshsearch'] // 不需要登陆的页面
+const whiteList = ['/home', '/goods', '/login', '/register', '/goodsDetails', '/thanks', '/search', '/cart', '/refreshsearch'] // 不需要登陆的页面
 router.beforeEach(function (to, from, next) {
   let params = {
     params: {

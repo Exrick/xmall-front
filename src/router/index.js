@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 const Index = resolve => require(['/page/index'], resolve)
 const Login = resolve => require(['/page/login/login'], resolve)
+const Register = resolve => require(['/page/login/register'], resolve)
 const Home = resolve => require(['/page/Home/home'], resolve)
 const GoodS = resolve => require(['/page/Goods/goods'], resolve)
 const goodsDetails = resolve => require(['/page/Goods/goodsDetails'], resolve)
@@ -37,6 +38,7 @@ export default new Router({
       ]
     },
     {path: '/login', name: 'login', component: Login},
+    {path: '/register', name: 'register', component: Register},
     {path: '/cart', name: 'cart', component: Cart},
     {path: '/refreshsearch', name: 'refreshsearch', component: RefreshSearch},
     {

@@ -17,7 +17,7 @@
 
     ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022223650.jpg "搜索框组件")
 
-    ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022202710.jpg "搜索结果")
+    ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171109215656.jpg "搜索结果")
 
     ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022202842.jpg "无搜索结果")
 
@@ -27,7 +27,7 @@
 
     ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022190107.jpg "订单进度")
 
-    ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022202926.jpg "登录界面")
+    ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171114233321.jpg "登录界面")
 
 ### 后端接口项目请跳转至 [xmall](https://github.com/Exrick/xmall) 项目仓库查看
     
@@ -45,5 +45,6 @@
     - [搜狐畅言评论插件](http://changyan.kuaizhan.com/)
 
 ### 本地开发运行部署
-- 在 `config/index.js` 中修改你的后端接口地址配置，默认前端端口9999
+- 在 `config/index.js` 中修改你的后端接口地址配置
 - 在项目根文件夹下先后执行命令 `npm install` 、 `npm run dev`
+- 商城前台端口默认9999 http://localhost:9999

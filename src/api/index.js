@@ -31,4 +31,8 @@ export const thanksList = (params) => {
 export const productHome = (params) => {
   return http.fetchGet('/goods/productHome', params)
 }
+// 极验验证码
+export const geetest = (params) => {
+  return http.fetchGet('/member/geetestInit?t=' + (new Date()).getTime(), params)
+}
 

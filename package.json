@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "element-ui": "^1.4.6",
+    "geetest3": "^1.0.0",
     "vue": "^2.3.3",
     "vue-cookie": "^1.1.4",
     "vue-cropper": "^0.1.7",
