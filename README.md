@@ -1,7 +1,8 @@
 ## XMall-Front
 ### 基于Vue开发的XMall商城前台页面
+### 后端接口项目请跳转至 [xmall](https://github.com/Exrick/xmall) 项目仓库查看
 - 感谢 [yucccc](https://github.com/yucccc) 的开源 [vue-mall](https://github.com/yucccc/vue-mall) 项目提供前端页面及框架支持
-- 重新开发后端接口，实现后台系统管理，后端接口项目请跳转至 [xmall](https://github.com/Exrick/xmall) 项目仓库查看
+- 后端全部重新开发接口，实现后台系统管理，后端接口项目请跳转至 [xmall](https://github.com/Exrick/xmall) 项目仓库查看
 - 新增与优化
     - 优化页脚、增加商品搜索框组件
     - 优化登录注册界面
@@ -28,8 +29,6 @@
     ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022190107.jpg "订单进度")
 
     ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171114233321.jpg "登录界面")
-
-### 后端接口项目请跳转至 [xmall](https://github.com/Exrick/xmall) 项目仓库查看
     
 ### 所用技术
 
@@ -45,6 +44,12 @@
     - [搜狐畅言评论插件](http://changyan.kuaizhan.com/)
 
 ### 本地开发运行部署
-- 在 `config/index.js` 中修改你的后端接口地址配置
+- 启动后端 [xmall](https://github.com/Exrick/xmall) 项目后，在 `config/index.js` 中修改你的后端接口地址配置
+- 所不想启动后端只想浏览前端页面可注释掉 `src/main.js` 中第 `8、10、21-43` 行代码即可
 - 在项目根文件夹下先后执行命令 `npm install` 、 `npm run dev`
 - 商城前台端口默认9999 http://localhost:9999
+### 技术疑问交流
+- 给作者项目Star或捐赠后可加入交流群 `475743731`，还可免费获取最新源码和 [UI框架](https://github.com/Exrick/xmall/blob/master/study/FlatLab.md) [![](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=7b60cec12ba93ebed7568b0a63f22e6e034c0d1df33125ac43ed753342ec6ce7)
+- 个人博客：[http://blog.exrick.cn](http://blog.exrick.cn)
+### 捐赠
+![](http://oweupqzdv.bkt.clouddn.com/FgwHSk1Rnd-8FKqNJhFSSdcq2QVB.png)
