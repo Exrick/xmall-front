@@ -47,6 +47,7 @@
 
 ### 本地开发运行部署
 - 启动后端 [xmall](https://github.com/Exrick/xmall) 项目后，在 `config/index.js` 中修改你的后端接口地址配置
+- 在 `src/api/goods.js` 中的 `getQuickSearch` 方法里修改你的Elasticseach服务器IP以及RESTful快速查询提示接口配置
 - 若不启动后端项目，预览运行此前端项目可注释掉 `src/main.js` 中第 `8、10、21-43` 行代码即可
 - 在项目根文件夹下先后执行命令 `npm install` 、 `npm run dev`
 - 商城前台端口默认9999 http://localhost:9999
