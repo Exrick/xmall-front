@@ -40,6 +40,8 @@
 - webpack
 - axios
 - Node.js
+- 第三方SDK
+    - [极验Test-button人机验证码](http://www.geetest.com/Test-button.html)
 - 第三方插件
     - [搜狐畅言评论插件](http://changyan.kuaizhan.com/)
 
