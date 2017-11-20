@@ -1,5 +1,9 @@
 ## XMall-Front
 ### 基于Vue开发的XMall商城前台页面
+### 项目已部署，在线Demo
+- 前台商城：http://xmall.exrick.cn/
+- 后台管理系统：http://xmadmin.exrick.cn/
+- 第一次打开可能较慢，请耐心等待
 ### 后端接口项目请跳转至 [xmall](https://github.com/Exrick/xmall) 项目仓库查看
 - 感谢 [yucccc](https://github.com/yucccc) 的开源 [vue-mall](https://github.com/yucccc/vue-mall) 项目提供前端页面及框架支持
 - 后端全部重新开发接口，实现后台系统管理，后端接口项目请跳转至 [xmall](https://github.com/Exrick/xmall) 项目仓库查看
@@ -43,11 +47,13 @@
 - 第三方SDK
     - [极验Test-button人机验证码](http://www.geetest.com/Test-button.html)
 - 第三方插件
+    - [hotjar](https://github.com/Exrick/xmall/blob/master/study/hotjar.md)：一体化分析和反馈
     - [搜狐畅言评论插件](http://changyan.kuaizhan.com/)
 
 ### 本地开发运行部署
 - 启动后端 [xmall](https://github.com/Exrick/xmall) 项目后，在 `config/index.js` 中修改你的后端接口地址配置
 - 在 `src/api/goods.js` 中的 `getQuickSearch` 方法里修改你的Elasticseach服务器IP以及RESTful快速查询提示接口配置
+- `index.html` 中复制粘贴替换你的 [hotjar](https://github.com/Exrick/xmall/blob/master/study/hotjar.md) 代码
 - 若不启动后端项目，预览运行此前端项目可注释掉 `src/main.js` 中第 `8、10、21-43` 行代码即可
 - 在项目根文件夹下先后执行命令 `npm install` 、 `npm run dev`
 - 商城前台端口默认9999 http://localhost:9999
