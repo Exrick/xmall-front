@@ -6,9 +6,19 @@ import VueLazyload from 'vue-lazyload'
 import infiniteScroll from 'vue-infinite-scroll'
 import VueCookie from 'vue-cookie'
 import { userInfo } from './api'
-import ElementUI from 'element-ui'
+import { Button, Pagination, Checkbox, Icon, Autocomplete, Loading, Message, Notification, Steps, Step } from 'element-ui'
 import { getStore } from '/utils/storage'
-Vue.use(ElementUI)
+Vue.use(Button)
+Vue.use(Pagination)
+Vue.use(Checkbox)
+Vue.use(Icon)
+Vue.use(Autocomplete)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(Loading.directive)
+Vue.prototype.$loading = Loading.service
+Vue.prototype.$notify = Notification
+Vue.prototype.$message = Message
 Vue.use(infiniteScroll)
 Vue.use(VueCookie)
 Vue.use(VueLazyload, {
