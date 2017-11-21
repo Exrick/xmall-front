@@ -40,8 +40,8 @@
             </el-checkbox>
             <div style="margin-bottom: 30px;">
               <y-button
-                :classStyle="registered.userPwd&&registered.userPwd2&&registered.userName?'main-btn':'disabled-btn'"
-                text="注册"
+                :classStyle="registered.userPwd&&registered.userPwd2&&registered.userName&&registxt==='注册'?'main-btn':'disabled-btn'"
+                :text="registxt"
                 style="margin: 0;width: 100%;height: 48px;font-size: 18px;line-height: 48px"
                 @btnClick="regist"
               >
@@ -87,7 +87,7 @@ export default {
         errMsg: ''
       },
       agreement: false,
-      logintxt: '登录'
+      registxt: '注册'
     }
   },
   computed: {
@@ -119,24 +119,29 @@ export default {
       })
     },
     regist () {
+      this.registxt = '注册中...'
       let userName = this.registered.userName
       let userPwd = this.registered.userPwd
       let userPwd2 = this.registered.userPwd2
       if (!userName || !userPwd || !userPwd2) {
         this.message('账号密码不能为空!')
+        this.registxt = '注册'
         return false
       }
       if (userPwd2 !== userPwd) {
         this.message('两次输入的密码不相同!')
+        this.registxt = '注册'
         return false
       }
       if (!this.agreement) {
         this.message('您未勾选同意我们的相关注册协议!')
+        this.registxt = '注册'
         return false
       }
       var result = captcha.getValidate()
       if (!result) {
         this.message('请完成验证')
+        this.registxt = '注册'
         return false
       }
       register({
@@ -151,6 +156,7 @@ export default {
           } else {
             this.message(res.message)
             captcha.reset()
+            this.regist = '注册'
             return false
           }
         })

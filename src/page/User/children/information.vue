@@ -132,6 +132,10 @@
       },
       upimg (e) {
         var file = e.target.files[0]
+        if (file.size > 1048576) {
+          this.messageFail('图片大小不得超过1Mb')
+          return false
+        }
         if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
           this.messageFail('图片类型仅支持.gif,jpeg,jpg,png,bmp')
           return false

@@ -121,13 +121,13 @@
       },
       // 保存
       save (p) {
+        this.popupOpen = false
         if (p.addressId) {
           this._addressUpdate(p)
         } else {
           delete p.addressId
           this._addressAdd(p)
         }
-        this.popupOpen = false
       },
       // 删除
       del (addressId, i) {

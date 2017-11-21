@@ -23,8 +23,8 @@
                 应付金额：
               </span>
               <em><span>¥</span>{{orderTotal}}</em>
-              <y-button text="立刻支付"
-                        classStyle="main-btn"
+              <y-button :text="payNow"
+                        :classStyle="submit?'main-btn':'disabled-btn'"
                         style="width: 120px;height: 40px;font-size: 16px;line-height: 38px"
                         @btnClick="paySuc()"
               ></y-button>
@@ -94,7 +94,9 @@
         userName: '',
         tel: '',
         streetName: '',
-        checkPrice: ''
+        checkPrice: '',
+        payNow: '立刻支付',
+        submit: true
       }
     },
     computed: {
@@ -128,6 +130,8 @@
         })
       },
       paySuc () {
+        this.payNow = '支付中...'
+        this.submit = false
         this.checkPrice = this.orderTotal
         this.$router.push({path: '/order/paysuccess', query: {price: this.checkPrice}})
         payMent({

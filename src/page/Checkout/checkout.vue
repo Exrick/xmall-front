@@ -97,9 +97,9 @@
                     </div>
                   </div>
                   <y-button class="big-main-btn"
-                            classStyle="main-btn"
+                            :classStyle="submit?'disabled-btn':'main-btn'"
                             style="margin: 0;width: 130px;height: 50px;line-height: 50px;font-size: 16px"
-                            text="提交订单"
+                            :text="submitOrder"
                             @btnClick="_submitOrder">
                   </y-button>
                 </div>
@@ -163,7 +163,9 @@
         tel: '',
         streetName: '',
         userId: '',
-        orderTotal: 0
+        orderTotal: 0,
+        submit: false,
+        submitOrder: '提交订单'
       }
     },
     computed: {
@@ -184,6 +186,11 @@
       }
     },
     methods: {
+      message (m) {
+        this.$message.error({
+          message: m
+        })
+      },
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
@@ -223,7 +230,15 @@
       },
       // 提交订单后跳转付款页面
       _submitOrder () {
+        this.submitOrder = '提交订单中...'
+        this.submit = true
         var array = []
+        if (this.cartList.length === 0) {
+          this.message('非法操作')
+          this.submitOrder = '提交订单'
+          this.submit = false
+          return
+        }
         for (var i = 0; i < this.cartList.length; i++) {
           if (this.cartList[i].checked === '1') {
             array.push(this.cartList[i])
@@ -240,6 +255,9 @@
         submitOrder(params).then(res => {
           if (res.success === true) {
             this.payment(res.result)
+          } else {
+            this.submitOrder = '提交订单'
+            this.submit = false
           }
         })
       },
@@ -281,13 +299,13 @@
       },
       // 保存
       save (p) {
+        this.popupOpen = false
         if (p.addressId) {
           this._addressUpdate(p)
         } else {
           delete p.addressId
           this._addressAdd(p)
         }
-        this.popupOpen = false
       },
       // 删除
       del (addressId) {

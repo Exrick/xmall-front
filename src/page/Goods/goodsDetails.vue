@@ -39,7 +39,7 @@
                     style="width: 145px;height: 50px;line-height: 48px"></y-button>
           <y-button text="现在购买"
                     @btnClick="checkout(product.productId)"
-                    style="width: 145px;height: 50px;line-height: 48px"></y-button>
+                    style="width: 145px;height: 50px;line-height: 48px;margin-left: 10px"></y-button>
         </div>
       </div>
     </div>

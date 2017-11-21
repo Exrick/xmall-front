@@ -93,10 +93,10 @@
                     <h5 class="shipping-tips ng-scope">应付总额不含运费</h5>
                   </div>
                 </div>
-                <y-button :classStyle="checkNum > 0?'main-btn':'disabled-btn'"
+                <y-button :classStyle="checkNum > 0 && submit?'main-btn':'disabled-btn'"
                           class="big-main-btn"
                           style="margin: 0;width: 130px;height: 50px;line-height: 50px;font-size: 16px"
-                          text="现在结算" @btnClick="checkout"></y-button>
+                          :text="checkoutNow" @btnClick="checkout"></y-button>
               </div>
             </div>
           </div>
@@ -128,7 +128,9 @@
   export default {
     data () {
       return {
-        userId: 0
+        userId: 0,
+        checkoutNow: '现在结算',
+        submit: true
       }
     },
     computed: {
@@ -236,6 +238,8 @@
         })
       },
       checkout () {
+        this.checkoutNow = '结算中...'
+        this.submit = false
         this.$router.push({path: 'checkout'})
       }
     },
