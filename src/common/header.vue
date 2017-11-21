@@ -138,10 +138,10 @@
                   <router-link to="/thanks"><a @click="changePage(3)" :class="{active:choosePage===3}">捐赠名单</a></router-link>
                 </li>
                 <li>
-                  <a href="http://xmall.exrick.cn" target="_blank">后台管理系统</a>
+                  <a href="http://xmadmin.exrick.cn" target="_blank">后台管理系统</a>
                 </li>
                 <li>
-                  <a href="https://github.com/Exrick/xmall-front" target="_blank">Github</a>
+                  <a href="https://github.com/Exrick/xmall" target="_blank">Github</a>
                 </li>
               </ul>
               <div></div>
