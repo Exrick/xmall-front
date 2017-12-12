@@ -32,6 +32,17 @@
         </y-shelf>
       </section>
     </div>
+
+    <el-dialog
+      title="通知"
+      :visible.sync="dialogVisible"
+      width="30%"
+      style="width:70%;margin:0 auto">
+      <span>XPay个人支付收款系统已上线，赶快去支付体验吧！</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">知道了</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -39,6 +50,7 @@
   import YShelf from '/components/shelf'
   import product from '/components/product'
   import mallGoods from '/components/mallGoods'
+  import { setStore, getStore } from '/utils/storage.js'
   export default {
     data () {
       return {
@@ -51,7 +63,9 @@
         },
         floors: [],
         hot: [],
-        loading: true
+        loading: true,
+        notify: '1',
+        dialogVisible: false
       }
     },
     methods: {
@@ -82,6 +96,13 @@
       bgOut (dom) {
         dom.style['-webkit-transform'] = 'rotateY(0deg) rotateX(0deg)'
         dom.style.transform = 'rotateY(0deg) rotateX(0deg)'
+      },
+      showNotify () {
+        var value = getStore('notify')
+        if (this.notify !== value) {
+          this.dialogVisible = true
+          setStore('notify', this.notify)
+        } 
       }
     },
     mounted () {
@@ -91,6 +112,7 @@
         this.hot = data.home_hot
         this.loading = false
       })
+      this.showNotify()
     },
     components: {
       YShelf,

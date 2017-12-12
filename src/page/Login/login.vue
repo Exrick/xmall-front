@@ -23,7 +23,7 @@
               </div>
             </li>
             <li style="text-align: right" class="pr">
-              <el-checkbox class="auto-login" v-model="autoLogin">自动登录</el-checkbox>
+              <el-checkbox class="auto-login" v-model="autoLogin">记住密码</el-checkbox>
               <!-- <span class="pa" style="top: 0;left: 0;color: #d44d44">{{ruleForm.errMsg}}</span> -->
               <a href="javascript:;" class="register" @click="toRegister">注册 XMall 账号</a>
               <a style="padding: 1px 0 0 10px" @click="open('找回密码','请联系作者邮箱找回密码或使用测试账号登录：test | test')">忘记密码 ?</a>
@@ -104,6 +104,25 @@ export default {
         message: m
       })
     },
+    getRemembered () {
+      var judge = getStore('remember')
+      if (judge === 'true') {
+        this.autoLogin = true
+        this.ruleForm.userName = getStore('rusername')
+        this.ruleForm.userPwd = getStore('rpassword')
+      }
+    },
+    rememberPass () {
+      if (this.autoLogin === true) {
+        setStore('remember', 'true')
+        setStore('rusername', this.ruleForm.userName)
+        setStore('rpassword', this.ruleForm.userPwd)
+      } else {
+        setStore('remember', 'false')
+        removeStore('rusername')
+        removeStore('rpassword')
+      }
+    },
     toRegister () {
       this.$router.push({
         path: '/register'
@@ -130,6 +149,7 @@ export default {
     },
     login () {
       this.logintxt = '登录中...'
+      this.rememberPass()
       if (!this.ruleForm.userName || !this.ruleForm.userPwd) {
         // this.ruleForm.errMsg = '账号或者密码不能为空!'
         this.message('账号或者密码不能为空!')
@@ -198,6 +218,7 @@ export default {
     }
   },
   mounted () {
+    this.getRemembered()
     this.login_addCart()
     this.init_geetest()
     this.open('登录提示', '测试体验账号密码：test | test')

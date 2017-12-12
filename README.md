@@ -53,7 +53,7 @@
 - 启动后端 [xmall](https://github.com/Exrick/xmall) 项目后，在 `config/index.js` 中修改你的后端接口地址配置
 - 在 `src/api/goods.js` 中的 `getQuickSearch` 方法里修改你的Elasticseach服务器IP以及RESTful快速查询提示接口配置
 - `index.html` 中复制粘贴替换你的 [hotjar](https://github.com/Exrick/xmall/blob/master/study/hotjar.md) 代码
-- 若不启动后端项目，预览运行此前端项目可注释掉 `src/main.js` 中第 `8、10、21-43` 行代码即可
+- 若不启动后端项目，预览运行此前端项目可注释掉 `src/main.js` 中第 `8、10、35-57` 行代码即可
 - 在项目根文件夹下先后执行命令 `npm install` 、 `npm run dev`
 - 商城前台端口默认9999 http://localhost:9999
 ### 技术疑问交流
