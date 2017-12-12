@@ -3,16 +3,24 @@
     <y-shelf title="支付订单">
       <div slot="content">
         <div class="box-inner order-info">
-          <h3>提交订单成功</h3>
+          <h3>提交订单成功，请填写捐赠信息</h3>
           <p class="payment-detail">请在 <span>24 小时内</span>完成支付，超时订单将自动取消。</p>
-          <p class="payment-detail">我们不会在您完成支付后的 72 小时内发货，您的支付将用作捐赠</p></div>
+          <p class="payment-detail">我们不会在您完成支付后的 72 小时内发货，您的支付将用作捐赠</p>
+          <p class="payment-detail" style="color:red">请仔细填写捐赠信息，避免系统审核失败无法在捐赠名单中显示您的数据</p>
+        </div>
+        <div class="pay-info">
+          昵称：<el-input v-model="nickName" placeholder="请输入您的昵称" @change="checkValid" maxlength=20 class="input"></el-input><br>
+          捐赠金额：<el-input v-model="money" placeholder="请输入确认您的捐赠金额(最多2位小数)" @change="checkValid" maxlength=10 class="input" style="margin-left:10px"></el-input><br>
+          留言：<el-input v-model="info" placeholder="请输入您的留言内容"maxlength=30 class="input"></el-input><br>
+          通知邮箱：<el-input v-model="email" placeholder="支付审核结果将以邮件方式发送至您的邮箱" maxlength=30 class="input" style="margin-left:10px"></el-input>
+        </div>
         <!--支付方式-->
         <div class="pay-type">
           <div class="p-title">支付方式</div>
           <div class="pay-item">
             <div :class="{active:payType==1}" @click="payType=1"><img src="/static/images/alipay@2x.png" alt=""></div>
-            <div :class="{active:payType==2}" @click="payType=2"><img src="/static/images/weixinpay@2x.png" alt="">
-            </div>
+            <div :class="{active:payType==2}" @click="payType=2"><img src="/static/images/weixinpay@2x.png" alt=""></div>
+            <div :class="{active:payType==3}" @click="payType=3"><img src="/static/images/qqpay.png" alt=""></div>
           </div>
         </div>
 
@@ -80,6 +88,7 @@
   import YShelf from '/components/shelf'
   import YButton from '/components/YButton'
   import { getOrderDet, payMent } from '/api/goods'
+  import { getStore } from '/utils/storage'
   export default {
     data () {
       return {
@@ -96,7 +105,13 @@
         streetName: '',
         checkPrice: '',
         payNow: '立刻支付',
-        submit: true
+        submit: false,
+        nickName: '',
+        money: '',
+        info: '',
+        email: '',
+        orderId: '',
+        type: ''
       }
     },
     computed: {
@@ -112,6 +127,18 @@
       }
     },
     methods: {
+      checkValid () {
+        if (this.nickName !== '' && this.money !== '' && this.isMoney(this.money)) {
+          this.submit = true
+        } else {
+          this.submit = false
+        }
+      },
+      messageFail (m) {
+        this.$message.error({
+          message: m
+        })
+      },
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
@@ -133,22 +160,53 @@
         this.payNow = '支付中...'
         this.submit = false
         this.checkPrice = this.orderTotal
-        this.$router.push({path: '/order/paysuccess', query: {price: this.checkPrice}})
+        if (this.payType === 1) {
+          this.type = 'Alipay'
+        } else if (this.payType === 2) {
+          this.type = 'Wechat'
+        } else if (this.payType === 3) {
+          this.type = 'QQ'
+        } else {
+          this.type = '其它'
+        }
         payMent({
-          addressId: this.addressId,
-          orderTotal: this.checkPrice,
-          productId: this.productId,
-          productNum: this.num
+          nickName: this.nickName,
+          money: this.money,
+          info: this.info,
+          email: this.email,
+          orderId: this.orderId,
+          userId: this.userId,
+          payType: this.type
         }).then(res => {
-          if (res.status === '0') {
-            this.$router.push({path: '/order/paysuccess', query: {price: this.checkPrice}})
+          if (res.success === true) {
+            if (this.payType === 1) {
+              this.$router.push({path: '/order/alipay', query: {price: this.money}})
+            } else if (this.payType === 2) {
+              this.$router.push({path: '/order/wechat', query: {price: this.money}})
+            } else if (this.payType === 3) {
+              this.$router.push({path: '/order/qqpay', query: {price: this.money}})
+            } else {
+              this.$router.push({path: '/order/alipay', query: {price: this.money}})
+            }
           } else {
-            alert('支付失败')
+            this.payNow = '立刻支付'
+            this.submit = true
+            this.messageFail('保存数据失败')
           }
         })
+      },
+      isMoney (v) {
+        var regu = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/
+        var re = new RegExp(regu)
+        if (re.test(v)) {
+          return true
+        } else {
+          return false
+        }
       }
     },
     created () {
+      this.userId = getStore('userId')
       this.orderId = this.$route.query.orderId
       if (this.orderId) {
         this._getOrderDet(this.orderId)
@@ -346,5 +404,15 @@
 
   .name-cell {
     padding-left: 33px;
+  }
+
+  .input {
+    width:30%;
+    margin:0 0 1vw 38px;
+  }
+
+  .pay-info {
+    margin-top: -2vw;
+    text-align: center;
   }
 </style>

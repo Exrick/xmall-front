@@ -2,7 +2,7 @@
   <div>
     <y-shelf title="我的订单">
       <div slot="content">
-        <div v-if="orderList.length">
+        <div v-loading="loading" element-loading-text="加载中..." v-if="orderList.length" style="min-height: 10vw;">
           <div v-for="(item,i) in orderList" :key="i">
             <div class="gray-sub-title cart-title">
               <div class="first">
@@ -52,14 +52,24 @@
             </div>
           </div>
         </div>
-        <div v-else>
+        <div v-loading="loading" element-loading-text="加载中..." class="no-info" v-else>
           <div style="padding: 100px 0;text-align: center">
             你还未创建过订单
           </div>
         </div>
       </div>
     </y-shelf>
-
+    <div style="float:right">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[5, 10, 20, 50]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next"
+        :total="total">
+      </el-pagination>
+    </div>
   </div>
 </template>
 <script>
@@ -69,9 +79,13 @@
   export default {
     data () {
       return {
-        orderList: [],
+        orderList: [0],
         userId: '',
-        orderStatus: ''
+        orderStatus: '',
+        loading: true,
+        currentPage: 1,
+        pageSize: 5,
+        total: 0
       }
     },
     methods: {
@@ -79,6 +93,14 @@
         this.$message.error({
           message: m
         })
+      },
+      handleSizeChange (val) {
+        this.pageSize = val
+        this._orderList()
+      },
+      handleCurrentChange (val) {
+        this.currentPage = val
+        this._orderList()
       },
       orderPayment (orderId) {
         window.open(window.location.origin + '#/order/payment?orderId=' + orderId)
@@ -95,7 +117,9 @@
         })
       },
       getOrderStatus (status) {
-        if (status === '2') {
+        if (status === '1') {
+          return '支付审核中'
+        } else if (status === '2') {
           return '待发货'
         } else if (status === '3') {
           return '待收货'
@@ -103,16 +127,22 @@
           return '交易成功'
         } else if (status === '5') {
           return '交易关闭'
+        } else if (status === '6') {
+          return '支付失败'
         }
       },
       _orderList () {
         let params = {
           params: {
-            userId: this.userId
+            userId: this.userId,
+            size: this.pageSize,
+            page: this.currentPage
           }
         }
         orderList(params).then(res => {
-          this.orderList = res.result
+          this.orderList = res.result.data
+          this.total = res.result.total
+          this.loading = false
         })
       },
       _delOrder (orderId, i) {

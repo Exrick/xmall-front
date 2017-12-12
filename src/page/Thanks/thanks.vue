@@ -6,7 +6,7 @@
           <p>佛祖保佑这些好心人写程序永无BUG，工资翻倍，长命百岁，迎娶白富美，走上人生巅峰！</p>
           <el-table border :data="tableData" :default-sort = "{prop: 'time', order: 'descending'}" stripe style="width: 90%">
             <el-table-column sortable prop="nickName" label="昵称" align="center"></el-table-column>
-            <el-table-column sortable prop="username" label="捐赠方式" align="center"> </el-table-column>
+            <el-table-column sortable prop="payType" label="捐赠方式" align="center"> </el-table-column>
             <el-table-column sortable prop="money" label="捐赠金额(￥)" align="center"></el-table-column>
             <el-table-column sortable prop="info" label="捐赠人留言信息" align="center"></el-table-column>
             <el-table-column sortable prop="time" label="捐赠时间" align="center"></el-table-column>

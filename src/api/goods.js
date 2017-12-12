@@ -53,7 +53,7 @@ export const submitOrder = (params) => {
 }
 // 支付
 export const payMent = (params) => {
-  return http.fetchPost('/users/payMent', params)
+  return http.fetchPost('/member/payOrder', params)
 }
 // 获取用户订单
 export const orderList = (params) => {

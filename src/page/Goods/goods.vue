@@ -94,6 +94,12 @@
         this.loading = true
       },
       _getAllGoods () {
+        if (this.min !== '') {
+          this.min = Math.floor(this.min)
+        }
+        if (this.max !== '') {
+          this.max = Math.floor(this.max)
+        }
         let params = {
           params: {
             page: this.currentPage,

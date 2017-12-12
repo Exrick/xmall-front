@@ -2,17 +2,23 @@
   <div>
     <y-shelf v-bind:title="orderTitle">
       <div slot="content">
-        <div class="detail" v-if="orderList.length">
-          <div class="orderStatus" v-if="orderStatus !== -1">
+        <div v-loading="loading" element-loading-text="加载中..." style="min-height: 10vw;" v-if="orderList.length">
+          <div class="orderStatus" v-if="orderStatus !== -1 && orderStatus !== 6">
             <el-steps :space="200" :active="orderStatus">
               <el-step title="下单" v-bind:description="createTime"></el-step>
-              <el-step title="付款" description=""></el-step>
+              <el-step title="付款" v-bind:description="payTime"></el-step>
               <el-step title="配货" description=""></el-step>
               <el-step title="出库" description=""></el-step>
-              <el-step title="交易成功" description=""></el-step>
+              <el-step title="交易成功" v-bind:description="finishTime"></el-step>
             </el-steps>
           </div>
           <div class="orderStatus-close" v-if="orderStatus === -1">
+            <el-steps :space="780" :active="2">
+              <el-step title="下单" v-bind:description="createTime"></el-step>
+              <el-step title="交易关闭" v-bind:description="closeTime"></el-step>
+            </el-steps>
+          </div>
+          <div class="orderStatus-close" v-if="orderStatus === 6">
             <el-steps :space="780" :active="2">
               <el-step title="下单" v-bind:description="createTime"></el-step>
               <el-step title="交易关闭" v-bind:description="closeTime"></el-step>
@@ -32,7 +38,15 @@
               <span>，超时后订单将自动取消。</span>
             </p>
           </div>
-          <div class="status-now" v-if="orderStatus === -1">
+          <div class="status-now" v-if="orderStatus === 2">
+            <ul>
+              <li class="status-title"><h3>订单状态：已支付，待系统审核确认</h3></li>
+            </ul>
+            <p class="realtime">
+              <span>请耐心等待审核，审核结果将发送到您的邮箱，并且您所填写的捐赠数据将显示在捐赠表中。</span>
+            </p>
+          </div>
+          <div class="status-now" v-if="orderStatus === -1 || orderStatus === 6">
             <ul>
               <li class="status-title"><h3>订单状态：已关闭</h3></li>
             </ul>
@@ -97,7 +111,7 @@
             <p class="address">详细地址：{{ streetName }}</p>
           </div>
         </div>
-        <div v-else>
+        <div v-loading="loading" element-loading-text="加载中..." v-else>
           <div style="padding: 100px 0;text-align: center">
             获取该订单信息失败
           </div>
@@ -115,7 +129,7 @@
   export default {
     data () {
       return {
-        orderList: [],
+        orderList: [0],
         userId: '',
         orderStatus: 0,
         orderId: '',
@@ -124,9 +138,11 @@
         streetName: '',
         orderTitle: '',
         createTime: '',
+        payTime: '',
         closeTime: '',
         finishTime: '',
-        orderTotal: ''
+        orderTotal: '',
+        loading: true
       }
     },
     methods: {
@@ -148,13 +164,16 @@
           }
         }
         getOrderDet(params).then(res => {
-          this.finishTime = res.result.finishDate
           if (res.result.orderStatus === '0') {
             this.orderStatus = 1
+          } else if (res.result.orderStatus === '1') {
+            this.orderStatus = 2
           } else if (res.result.orderStatus === '4') {
             this.orderStatus = 5
           } else if (res.result.orderStatus === '5') {
             this.orderStatus = -1
+          } else if (res.result.orderStatus === '6') {
+            this.orderStatus = 6
           }
           this.orderList = res.result.goodsList
           this.orderTotal = res.result.orderTotal
@@ -163,6 +182,9 @@
           this.streetName = res.result.addressInfo.streetName
           this.createTime = res.result.createDate
           this.closeTime = res.result.closeDate
+          this.payTime = res.result.payDate
+          this.finishTime = res.result.finishDate
+          this.loading = false
         })
       },
       _cancelOrder () {
