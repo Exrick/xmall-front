@@ -245,6 +245,8 @@
     font-size: 12px;
     color: #a6a6a6;
     text-decoration: underline;
+    width: 25%;
+    margin: 0 auto;
   }
 
   .qrguide-area {

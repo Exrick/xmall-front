@@ -109,7 +109,11 @@
       },
       _addressAdd (params) {
         addressAdd(params).then(res => {
-          this._addressList()
+          if (res.success === true) {
+            this._addressList()
+          } else {
+            this.message(res.message)
+          }
         })
       },
       changeDef (item) {

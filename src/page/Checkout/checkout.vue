@@ -220,7 +220,11 @@
       },
       _addressAdd (params) {
         addressAdd(params).then(res => {
-          this._addressList()
+          if (res.success === true) {
+            this._addressList()
+          } else {
+            this.message(res.message)
+          }
         })
       },
       _addressDel (params) {
@@ -256,6 +260,7 @@
           if (res.success === true) {
             this.payment(res.result)
           } else {
+            this.message(res.message)
             this.submitOrder = '提交订单'
             this.submit = false
           }

@@ -9,10 +9,10 @@
           <p class="payment-detail" style="color:red">请仔细填写捐赠信息，避免系统审核失败无法在捐赠名单中显示您的数据</p>
         </div>
         <div class="pay-info">
-          昵称：<el-input v-model="nickName" placeholder="请输入您的昵称" @change="checkValid" maxlength=20 class="input"></el-input><br>
-          捐赠金额：<el-input v-model="money" placeholder="请输入确认您的捐赠金额(最多2位小数)" @change="checkValid" maxlength=10 class="input" style="margin-left:10px"></el-input><br>
-          留言：<el-input v-model="info" placeholder="请输入您的留言内容"maxlength=30 class="input"></el-input><br>
-          通知邮箱：<el-input v-model="email" placeholder="支付审核结果将以邮件方式发送至您的邮箱" maxlength=30 class="input" style="margin-left:10px"></el-input>
+          <span style="color:red">*</span> 昵称：<el-input v-model="nickName" placeholder="请输入您的昵称" @change="checkValid" maxlength=20 class="input"></el-input><br>
+          <span style="color:red">*</span> 捐赠金额：<el-input v-model="money" placeholder="请输入确认您的捐赠金额(最多2位小数)" @change="checkValid" maxlength=10 class="input" style="margin-left:10px"></el-input><br>
+          <span style="color:red">*</span> 通知邮箱：<el-input v-model="email" placeholder="支付审核结果将以邮件方式发送至您的邮箱" @change="checkValid" maxlength=30 class="input" style="margin-left:10px"></el-input><br>
+          &nbsp;&nbsp; 留言：<el-input v-model="info" placeholder="请输入您的留言内容" maxlength=30 class="input"></el-input>
         </div>
         <!--支付方式-->
         <div class="pay-type">
@@ -128,7 +128,7 @@
     },
     methods: {
       checkValid () {
-        if (this.nickName !== '' && this.money !== '' && this.isMoney(this.money)) {
+        if (this.nickName !== '' && this.money !== '' && this.isMoney(this.money) && this.email !== '' && this.isEmail(this.email)) {
           this.submit = true
         } else {
           this.submit = false
@@ -191,12 +191,24 @@
           } else {
             this.payNow = '立刻支付'
             this.submit = true
-            this.messageFail('保存数据失败')
+            this.messageFail(res.message)
           }
         })
       },
       isMoney (v) {
+        if (v <= 0) {
+          return false
+        }
         var regu = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/
+        var re = new RegExp(regu)
+        if (re.test(v)) {
+          return true
+        } else {
+          return false
+        }
+      },
+      isEmail (v) {
+        var regu = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
         var re = new RegExp(regu)
         if (re.test(v)) {
           return true

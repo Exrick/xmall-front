@@ -29,12 +29,12 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/member/*': {
-        //target: 'http://112.74.63.151'  // 请求远程服务器
-         target: 'http://127.0.0.1:8888'  // 请求本地 需要xmall后台项目
+        target: 'http://112.74.63.151:8088'  // 请求远程服务器
+        //target: 'http://127.0.0.1:7777'  // 请求本地 需要xmall后台项目
       },
       '/goods/*': {
-        //target: 'http://112.74.63.151'   // 请求远程服务器
-         target: 'http://127.0.0.1:8888'  // 请求本地 需要xmall后台项目
+        target: 'http://112.74.63.151:8088'   // 请求远程服务器
+        //target: 'http://127.0.0.1:7777'  // 请求本地 需要xmall后台项目
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
