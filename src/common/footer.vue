@@ -23,13 +23,13 @@
           <ul>
             <li class="c2"><a class="c3" target="_blank" href="http://blog.exrick.cn">个人博客</a></li>
             <li class="c2"><a class="c3" target="_blank" href="http://blog.exrick.cn/intro/">个人简介</a></li>
-            <li class="c2"><a class="c3" target="_blank" href="http://www.exrick.cn">个人官网</a></li>
+            <li class="c2"><a class="c3" target="_blank" href="https://www.bilibili.com/video/av15860053/">个人视频</a></li>
           </ul>
         </ul>
         <ul class="c0">
           <h3 class="c1">其他项目</h3>
           <ul>
-            <li class="c2"><a class="c3" target="_blank" href="http://findu.exrick.cn">失物招领</a></li>
+            <li class="c2"><a class="c3" target="_blank" href="http://xpay.exrick.cn">XPay支付系统</a></li>
             <li class="c2"><a class="c3" target="_blank" href="http://shouji.baidu.com/software/11783429.html">数据共享</a></li>
             <li class="c2"><a class="c3" target="_blank" href="https://github.com/Exrick">待开发...</a></li>
           </ul>

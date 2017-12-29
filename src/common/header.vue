@@ -141,6 +141,9 @@
                   <a href="http://xmadmin.exrick.cn" target="_blank">后台管理系统</a>
                 </li>
                 <li>
+                  <a href="http://xpay.exrick.cn" target="_blank">XPay支付系统</a>
+                </li>
+                <li>
                   <a href="https://github.com/Exrick/xmall" target="_blank">Github</a>
                 </li>
               </ul>
