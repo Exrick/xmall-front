@@ -13,7 +13,7 @@
                @blur="blur()"
                maxlength="2">
                   <ul ref="ul">
-                    <li v-for="i in numList">{{i}}</li>
+                    <li v-for="i in numList" :key="i">{{i}}</li>
                   </ul>
       </span>
       <span class="up" :class="{'up-disabled':Num>=limit}"

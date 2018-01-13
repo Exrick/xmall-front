@@ -168,7 +168,7 @@
       return {
         user: {},
         // 查询数据库的商品
-        st: false,
+        st: true,
         // 头部购物车显示
         cartShow: false,
         positionL: 0,
@@ -293,7 +293,8 @@
       // 控制顶部
       navFixed () {
         if (this.$route.path === '/goods' || this.$route.path === '/home' || this.$route.path === '/goodsDetails' || this.$route.path === '/thanks') {
-          var st = document.body.scrollTop
+          // var st = document.body.scrollTop
+          var st = document.documentElement.scrollTop || document.body.scrollTop
           st >= 100 ? this.st = true : this.st = false
           // 计算小圆当前位置
           let num = document.querySelector('.num')
