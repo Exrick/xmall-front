@@ -7,10 +7,12 @@
           <p class="payment-detail">扫一扫付款（元）</p>
           <p class="payment-money">{{orderTotal}}</p>
           <div class="img-box">
-            <img class="pic" src="http://oweupqzdv.bkt.clouddn.com/%E4%BA%8C%E7%BB%B4%E7%A0%81201712111325.png" alt="加载失败" width="168px" height="168px"/>
+            <img class="pic" v-bind:src="imgPath" alt="加载失败" width="168px" height="168px"/>
+            <div class="timeout" v-if="timeout">二维码已过期</div>
           </div>
         </div>
         <img class="explain" src="static/images/wechat-explain.png" alt="扫一扫标识">
+        <div class="count">{{timecount}}</div>
 
         <div>
           <div class="box-btn">
@@ -36,6 +38,7 @@
 <script>
   import YShelf from '/components/shelf'
   import YButton from '/components/YButton'
+  import { getStore, setStore } from '/utils/storage'
   export default {
     data () {
       return {
@@ -44,7 +47,7 @@
         userId: '',
         orderTotal: '',
         userName: '',
-        count: 20,
+        count: 30,
         streetName: '',
         checkPrice: '',
         payNow: '等待支付...',
@@ -52,7 +55,12 @@
         nickName: '',
         money: '',
         info: '',
-        email: ''
+        email: '',
+        isCustom: 0,
+        imgPath: 'static/qr/wechat/custom.png',
+        picName: '',
+        timeout: false,
+        timecount: ''
       }
     },
     computed: {
@@ -69,7 +77,6 @@
         if (this.count === 0) {
           this.payNow = '确认已支付'
           this.submit = true
-          this.count = 10
           return
         } else {
           this.count--
@@ -78,16 +85,59 @@
           me.countDown()
         }, 1000)
       },
+      countTime () {
+        let me = this
+        let time = getStore('setTime')
+        if (time <= 0) {
+          this.timeout = true
+          this.timecount = ''
+          this.count = 10000
+          return
+        } else {
+          time--
+          this.showTime(time)
+          setStore('setTime', time)
+        }
+        setTimeout(function () {
+          me.countTime()
+        }, 1000)
+      },
+      showTime (v) {
+        let m = 0
+        let s = 0
+        if (v === null || v === '') {
+          return ''
+        }
+        if (v >= 60) {
+          m = Math.floor(v / 60)
+          s = v % 60
+        } else {
+          s = v
+        }
+        if (m >= 0 && m <= 9) {
+          m = '0' + m
+        }
+        if (s >= 0 && s <= 9) {
+          s = '0' + s
+        }
+        this.timecount = '请于 ' + m + ' 分 ' + s + ' 秒 内支付'
+      },
       paySuc () {
         this.$router.push({path: '/order/paysuccess', query: {price: this.orderTotal}})
       }
     },
     created () {
       this.orderTotal = this.toMoney(this.$route.query.price)
+      this.isCustom = this.toMoney(this.$route.query.isCustom)
       if (this.orderTotal === 'NaN') {
         this.$router.push({path: '/'})
       }
+      if (this.isCustom !== 1) {
+        this.picName = this.orderTotal
+        this.imgPath = 'static/qr/wechat/' + this.picName + '.png'
+      }
       this.countDown()
+      this.countTime()
     },
     components: {
       YShelf,
@@ -192,7 +242,7 @@
     display: flex;
     width: 180px;
     margin-top: -42px;
-    margin-bottom: 30px;
+    margin-bottom: 70px;
   }
 
   .pic{
@@ -206,4 +256,29 @@
     width: 220px;
   }
 
+  .count {
+    display: flex;
+    position: absolute;
+    text-align: center;
+    width: 230px;
+    flex-direction: column;
+    align-items: center;
+    margin-left: calc(50% - 115px);
+    margin-top: 0px;
+    color: #222;
+    margin-top: -45px;
+  }
+  
+  .timeout{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(255,255,255,.95);
+    color: #222;
+    line-height: 200px;
+    text-align: center;
+    z-index: 1;
+  }
 </style>

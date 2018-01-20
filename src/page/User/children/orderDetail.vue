@@ -34,7 +34,7 @@
             </ul>
             <p class="realtime">
               <span>您的付款时间还有 </span>
-              <span class="red"><countDown v-bind:endTime="finishTime" endText="已结束"></countDown></span>
+              <span class="red"><countDown v-bind:endTime="countTime" endText="已结束"></countDown></span>
               <span>，超时后订单将自动取消。</span>
             </p>
           </div>
@@ -142,7 +142,8 @@
         closeTime: '',
         finishTime: '',
         orderTotal: '',
-        loading: true
+        loading: true,
+        countTime: 0
       }
     },
     methods: {
@@ -183,7 +184,11 @@
           this.createTime = res.result.createDate
           this.closeTime = res.result.closeDate
           this.payTime = res.result.payDate
-          this.finishTime = res.result.finishDate
+          if (this.orderStatus === 5) {
+            this.finishTime = res.result.finishDate
+          } else {
+            this.countTime = res.result.finishDate
+          }
           this.loading = false
         })
       },
@@ -297,7 +302,7 @@
       }
     }
     .price {
-      padding-left: 130px;
+      padding-left: 107px;
     }
     .goods-num {
       padding-left: 60px;

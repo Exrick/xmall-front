@@ -88,8 +88,8 @@
                                     <div class="cart-cell"><h4>
                                       <a href="" v-text="item.productName"></a>
                                     </h4>
-                                      <!-- <p class="attrs"><span>白色</span> -->
-                                      </p> <h6><span class="price-icon">¥</span><span
+                                      <!-- <p class="attrs"><span>白色</span></p> -->
+                                      <h6><span class="price-icon">¥</span><span
                                         class="price-num">{{item.salePrice}}</span><span
                                         class="item-num">x {{item.productNum}}</span>
                                       </h6></div>
@@ -140,7 +140,7 @@
                 <li>
                   <a href="http://xmadmin.exrick.cn" target="_blank">后台管理系统</a>
                 </li>
-                <li>
+		<li>
                   <a href="http://xpay.exrick.cn" target="_blank">XPay支付系统</a>
                 </li>
                 <li>
@@ -168,7 +168,7 @@
       return {
         user: {},
         // 查询数据库的商品
-        st: true,
+        st: false,
         // 头部购物车显示
         cartShow: false,
         positionL: 0,
@@ -293,7 +293,6 @@
       // 控制顶部
       navFixed () {
         if (this.$route.path === '/goods' || this.$route.path === '/home' || this.$route.path === '/goodsDetails' || this.$route.path === '/thanks') {
-          // var st = document.body.scrollTop
           var st = document.documentElement.scrollTop || document.body.scrollTop
           st >= 100 ? this.st = true : this.st = false
           // 计算小圆当前位置

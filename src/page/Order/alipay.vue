@@ -6,13 +6,15 @@
           <p class="payment-detail">扫一扫付款（元）</p>
           <p class="payment-money">{{orderTotal}}</p>
           <div class="img-box">
-            <img class="pic" src="http://oweupqzdv.bkt.clouddn.com/%E4%BA%8C%E7%BB%B4%E7%A0%81201712111212.png" alt="加载失败" width="168px" height="168px"/>
+            <img id="qr" class="pic" v-bind:src="imgPath" alt="加载失败" width="168px" height="168px"/>
             <div class="explain">
               <img class="fn-left" src="https://t.alipayobjects.com/images/T1bdtfXfdiXXXXXXXX.png" alt="扫一扫标识">
               <div class="fn-right">打开手机支付宝<br>扫一扫继续付款</div>
+              <div class="timeout" v-if="timeout">二维码已过期</div>
             </div>
           </div>
           <a class="download-alipay" href="https://mobile.alipay.com/index.htm" target="_blank">首次使用请下载手机支付宝</a>
+          <div class="count">{{timecount}}</div>
 
           <div class="qrguide-area">
             <img src="https://t.alipayobjects.com/images/rmsweb/T13CpgXf8mXXXXXXXX.png" :class="show?'show-img':'close-img'" @click="changePic()">
@@ -57,11 +59,12 @@
 <script>
   import YShelf from '/components/shelf'
   import YButton from '/components/YButton'
+  import { getStore, setStore } from '/utils/storage'
   export default {
     data () {
       return {
         show: true,
-        count: 10,
+        count: 25,
         userId: '',
         orderTotal: '',
         userName: '',
@@ -74,7 +77,12 @@
         money: '',
         info: '',
         email: '',
-        dialogVisible: true
+        dialogVisible: true,
+        isCustom: 0,
+        imgPath: 'static/qr/alipay/custom.png',
+        picName: '',
+        timeout: false,
+        timecount: ''
       }
     },
     computed: {
@@ -91,6 +99,7 @@
       },
       handleClose () {
         this.countDown()
+        this.countTime()
       },
       showRed () {
         this.dialogVisible = true
@@ -100,7 +109,6 @@
         if (this.count === 0) {
           this.payNow = '确认已支付'
           this.submit = true
-          this.count = 10
           return
         } else {
           this.count--
@@ -109,14 +117,57 @@
           me.countDown()
         }, 1000)
       },
+      countTime () {
+        let me = this
+        let time = getStore('setTime')
+        if (time <= 0) {
+          this.timeout = true
+          this.timecount = ''
+          this.count = 10000
+          return
+        } else {
+          time--
+          this.showTime(time)
+          setStore('setTime', time)
+        }
+        setTimeout(function () {
+          me.countTime()
+        }, 1000)
+      },
+      showTime (v) {
+        let m = 0
+        let s = 0
+        if (v === null || v === '') {
+          return ''
+        }
+        if (v >= 60) {
+          m = Math.floor(v / 60)
+          s = v % 60
+        } else {
+          s = v
+        }
+        if (m >= 0 && m <= 9) {
+          m = '0' + m
+        }
+        if (s >= 0 && s <= 9) {
+          s = '0' + s
+        }
+        this.timecount = '请于 ' + m + ' 分 ' + s + ' 秒 内支付'
+      },
       paySuc () {
         this.$router.push({path: '/order/paysuccess', query: {price: this.orderTotal}})
       }
     },
     created () {
       this.orderTotal = this.toMoney(this.$route.query.price)
+      this.isCustom = this.toMoney(this.$route.query.isCustom)
       if (this.orderTotal === 'NaN') {
         this.$router.push({path: '/'})
+        return
+      }
+      if (this.isCustom !== 1) {
+        this.picName = this.orderTotal
+        this.imgPath = 'static/qr/alipay/' + this.picName + '.png'
       }
     },
     components: {
@@ -283,5 +334,31 @@
     display: block;
     margin: 0 auto;
     width: 70%;
+  }
+
+  .count {
+    display: flex;
+    position: absolute;
+    text-align: center;
+    width: 230px;
+    flex-direction: column;
+    align-items: center;
+    margin-left: calc(50% - 115px);
+    margin-top: 0px;
+    color: #222;
+    margin-top: -18px;
+  }
+  
+  .timeout{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(255,255,255,.95);
+    color: #222;
+    line-height: 200px;
+    text-align: center;
+    z-index: 1;
   }
 </style>
