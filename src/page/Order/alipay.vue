@@ -165,7 +165,7 @@
         this.$router.push({path: '/'})
         return
       }
-      if (this.isCustom !== 1) {
+      if (this.isCustom !== '1') {
         this.picName = this.orderTotal
         this.imgPath = 'static/qr/alipay/' + this.picName + '.png'
       }
