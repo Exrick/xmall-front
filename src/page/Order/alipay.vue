@@ -160,7 +160,7 @@
     },
     created () {
       this.orderTotal = this.toMoney(this.$route.query.price)
-      this.isCustom = this.toMoney(this.$route.query.isCustom)
+      this.isCustom = this.$route.query.isCustom
       if (this.orderTotal === 'NaN') {
         this.$router.push({path: '/'})
         return
