@@ -166,7 +166,7 @@
       this._getSearch()
       productHome().then(res => {
         let data = res.result
-        this.recommend = data.home_hot
+        this.recommend = data.homeHot
       })
     },
     components: {

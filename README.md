@@ -51,13 +51,15 @@
     - [hotjar](https://github.com/Exrick/xmall/blob/master/study/hotjar.md)：一体化分析和反馈
     - [搜狐畅言评论插件](http://changyan.kuaizhan.com/)
 
-### 本地开发运行部署
+### 本地开发运行
 - 启动后端 [xmall](https://github.com/Exrick/xmall) 项目后，在 `config/index.js` 中修改你的后端接口地址配置
 - 在 `src/api/goods.js` 中的 `getQuickSearch` 方法里修改你的Elasticseach服务器IP以及RESTful快速搜索提示接口配置
 - `index.html` 中复制粘贴替换你的 [hotjar](https://github.com/Exrick/xmall/blob/master/study/hotjar.md) 代码
 - 若不启动后端项目，预览运行此前端项目可注释掉 `src/main.js` 中第 `8、10、37-59` 行代码即可
 - 在项目根文件夹下先后执行命令 `npm install` 、 `npm run dev`
 - 商城前台端口默认9999 http://localhost:9999
+## 部署
+- 先后执行命令 `npm install` 、 `npm run build` 将打包生成的 `dist` 静态文件放置服务器中，并配置路由代理
 ### 技术疑问交流
 - 给作者项目Star或捐赠后可加入交流群 `475743731`，还可免费获取最新源码和 [UI框架](https://github.com/Exrick/xmall/blob/master/study/FlatLab.md) [![](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=7b60cec12ba93ebed7568b0a63f22e6e034c0d1df33125ac43ed753342ec6ce7)
 - 个人博客：[http://blog.exrick.cn](http://blog.exrick.cn)

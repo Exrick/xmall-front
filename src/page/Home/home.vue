@@ -102,14 +102,14 @@
         if (this.notify !== value) {
           this.dialogVisible = true
           setStore('notify', this.notify)
-        } 
+        }
       }
     },
     mounted () {
       productHome().then(res => {
         let data = res.result
-        this.floors = data.home_floors
-        this.hot = data.home_hot
+        this.floors = data.homeFloors
+        this.hot = data.homeHot
         this.loading = false
       })
       this.showNotify()

@@ -95,8 +95,8 @@
     mounted () {
       productHome().then(res => {
         let data = res.result
-        this.floors = data.home_floors
-        this.hot = data.home_hot
+        this.floors = data.homeFloors
+        this.hot = data.homeHot
       })
       this._thanksList()
       window.changyan.api.config({

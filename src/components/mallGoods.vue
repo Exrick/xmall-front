@@ -7,7 +7,7 @@
         </router-link>
       </div>
       <h6 class="good-title" v-html="msg.productName">{{msg.productName}}</h6>
-      <h3 class="sub-title ellipsis">{{msg.sub_title}}</h3>
+      <h3 class="sub-title ellipsis">{{msg.subTitle}}</h3>
       <div class="good-price pr">
         <div class="ds pa">
           <router-link :to="'goodsDetails?productId='+msg.productId">

@@ -237,6 +237,12 @@
         this.submitOrder = '提交订单中...'
         this.submit = true
         var array = []
+        if (this.addressId === '0') {
+          this.message('请选择收货地址')
+          this.submitOrder = '提交订单'
+          this.submit = false
+          return
+        }
         if (this.cartList.length === 0) {
           this.message('非法操作')
           this.submitOrder = '提交订单'
