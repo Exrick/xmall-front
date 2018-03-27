@@ -2,7 +2,7 @@
   <div>
     <section class="w mt30 clearfix">
       <y-shelf title="捐赠名单">
-        <div slot="content" class="table">
+        <div slot="content" class="table" v-loading="loading" element-loading-text="加载中...">
           <p>佛祖保佑这些好心人写程序永无BUG，工资翻倍，长命百岁，迎娶白富美，走上人生巅峰！</p>
           <el-table border :data="tableData" :default-sort = "{prop: 'time', order: 'descending'}" stripe style="width: 90%">
             <el-table-column sortable prop="nickName" label="昵称" align="center"></el-table-column>
@@ -67,17 +67,20 @@
         tableData: [],
         currentPage: 1,
         pageSize: 10,
-        total: 0
+        total: 0,
+        loading: true
       }
     },
     methods: {
       handleSizeChange (val) {
         this.pageSize = val
         this._thanksList()
+        this.loading = true
       },
       handleCurrentChange (val) {
         this.currentPage = val
         this._thanksList()
+        this.loading = true
       },
       _thanksList () {
         let params = {
@@ -87,6 +90,7 @@
           }
         }
         thanksList(params).then(res => {
+          this.loading = false
           this.tableData = res.result.data
           this.total = res.result.recordsTotal
         })
