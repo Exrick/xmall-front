@@ -8,12 +8,13 @@ function resolve (dir) {
 }
 
 module.exports = {
-  externals: {
-    'vue': 'Vue',
-    'vue-router': 'VueRouter',
-    'vuex': 'Vuex',
-    'axios': 'axios'
-  },
+  // webpack打包时排除以下js依赖 需手动加入js
+  // externals: {
+  //   'vue': 'Vue',
+  //   'vue-router': 'VueRouter',
+  //   'vuex': 'Vuex',
+  //   'axios': 'axios'
+  // },
   entry: {
     app: './src/main.js'
   },
