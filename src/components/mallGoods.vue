@@ -19,8 +19,7 @@
                     classStyle="main-btn"
           ></y-button>
         </div>
-        <p><span style="font-size: 16px">￥</span>
-          {{msg.salePrice}}</p>
+        <p><span style="font-size:14px">￥</span>{{msg.salePrice.toFixed(2)}}</p>
       </div>
     </div>
   </div>
@@ -112,8 +111,10 @@
       height: 30px;
       text-align: center;
       line-height: 30px;
-      color: #e4393c;
-      font-size: 20px;
+      color: #d44d44;
+      font-family: Arial;
+      font-size: 18px;
+      font-weight: 700;
     }
     .good-title {
       line-height: 1.2;

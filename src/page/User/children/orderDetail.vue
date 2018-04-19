@@ -83,9 +83,9 @@
                 <a @click="goodsDetails(item.productId)" title="" target="_blank">{{item.productName}}</a>
               </div>
               <div class="n-b">
-                <div class="price">¥ {{item.salePrice}}</div>
+                <div class="price">¥ {{item.salePrice.toFixed(2)}}</div>
                 <div class="goods-num">{{item.productNum}}</div>
-                <div class="subtotal"> ¥ {{item.salePrice * item.productNum}}</div>
+                <div class="subtotal"> ¥ {{(item.salePrice * item.productNum).toFixed(2)}}</div>
               </div>
             </div>
           </div>

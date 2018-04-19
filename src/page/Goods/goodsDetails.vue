@@ -6,7 +6,7 @@
         <div class="gallery">
           <div class="thumbnail">
             <ul>
-              <li v-for="item in small" :class="{on:big===item}" @click="big=item">
+              <li v-for="(item,i) in small" :key="i" :class="{on:big===item}" @click="big=item">
                 <img v-lazy="item" :alt="product.productName">
               </li>
             </ul>
@@ -23,14 +23,14 @@
         <div class="sku-custom-title">
           <h4>{{product.productName}}</h4>
           <h6>
-            <span>{{product.sub_title}}</span>
+            <span>{{product.subTitle}}</span>
             <span class="price">
-              <em>¥</em><i>{{product.salePrice}}</i></span>
+              <em>¥</em><i>{{product.salePrice.toFixed(2)}}</i></span>
           </h6>
         </div>
         <div class="num">
           <span class="params-name">数量</span>
-          <buy-num @edit-num="editNum" :limit="Number(product.limit_num)"></buy-num>
+          <buy-num @edit-num="editNum" :limit="Number(product.limitNum)"></buy-num>
         </div>
         <div class="buy">
           <y-button text="加入购物车"

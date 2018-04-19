@@ -14,60 +14,65 @@
       </div>
     </div>
 
-    <div v-loading="loading" element-loading-text="加载中..." class="img-item" v-if="goods != ''">
-      <!--商品-->
-      <div class="goods-box w">
-        <mall-goods v-for="(item,i) in goods" :key="i" :msg="item"></mall-goods>
-      </div>
+    <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;">
+      <div class="img-item" v-if="!noResult">
+        <!--商品-->
+        <div class="goods-box w">
+          <mall-goods v-for="(item,i) in goods" :key="i" :msg="item"></mall-goods>
+        </div>
 
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[8, 20, 40, 80]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-      </el-pagination>
-    </div>
-    <div v-loading="loading" element-loading-text="加载中..." class="no-info" v-else-if="goods == ''">
-      <div class="no-data">
-        <img src="/static/images/no-search.png">
-        <br> 抱歉！没有为您找到相关的商品
+        <el-pagination
+          v-if="!noResult&&!error"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[8, 20, 40, 80]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
       </div>
-      <section class="section">
-        <y-shelf title="为您推荐">
-          <div slot="content" class="recommend">
-            <mall-goods :msg="item" v-for="(item,i) in recommend" :key="i"></mall-goods>
-          </div>
-        </y-shelf>
-      </section>
-    </div>
-    <div v-else>
-      <div class="no-data">
-        <img src="/static/images/error.png">
-        <br> 抱歉！出错了...
+      <div class="no-info" v-if="noResult">
+        <div class="no-data">
+          <img src="/static/images/no-search.png">
+          <br> 抱歉！暂时还没有商品
+        </div>
+        <section class="section">
+          <y-shelf :title="recommendPanel.name">
+            <div slot="content" class="recommend">
+              <mall-goods :msg="item" v-for="(item,i) in recommendPanel.panelContents" :key="i"></mall-goods>
+            </div>
+          </y-shelf>
+        </section>
       </div>
-      <section class="section">
-        <y-shelf title="为您推荐">
-          <div slot="content" class="recommend">
-            <mall-goods :msg="item" v-for="(item,i) in recommend" :key="i"></mall-goods>
-          </div>
-        </y-shelf>
-      </section>
+      <div class="no-info" v-if="error">
+        <div class="no-data">
+          <img src="/static/images/error.png">
+          <br> 抱歉！出错了...
+        </div>
+        <section class="section">
+          <y-shelf :title="recommendPanel.name">
+            <div slot="content" class="recommend">
+              <mall-goods :msg="item" v-for="(item,i) in recommendPanel.panelContents" :key="i"></mall-goods>
+            </div>
+          </y-shelf>
+        </section>
+      </div>
     </div>
   </div>
 </template>
 <script>
-  import {getAllGoods} from '/api/goods.js'
-  import {productHome} from '/api/index.js'
+  import { getAllGoods } from '/api/goods.js'
+  import { recommend } from '/api/index.js'
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
   import YShelf from '/components/shelf'
   export default {
     data () {
       return {
-        goods: [0],
+        goods: [],
+        noResult: false,
+        error: false,
         min: '',
         max: '',
         loading: true,
@@ -75,7 +80,7 @@
         sortType: 1,
         windowHeight: null,
         windowWidth: null,
-        recommend: [],
+        recommendPanel: [],
         sort: '',
         currentPage: 1,
         total: 0,
@@ -94,6 +99,7 @@
         this.loading = true
       },
       _getAllGoods () {
+        let cid = this.$route.query.cid
         if (this.min !== '') {
           this.min = Math.floor(this.min)
         }
@@ -106,13 +112,21 @@
             size: this.pageSize,
             sort: this.sort,
             priceGt: this.min,
-            priceLte: this.max
+            priceLte: this.max,
+            cid: cid
           }
         }
         getAllGoods(params).then(res => {
           if (res.success === true) {
             this.total = res.result.total
             this.goods = res.result.data
+            this.noResult = false
+            if (this.total === 0) {
+              this.noResult = true
+            }
+            this.error = false
+          } else {
+            this.error = true
           }
           this.loading = false
         })
@@ -140,9 +154,9 @@
       this.windowHeight = window.innerHeight
       this.windowWidth = window.innerWidth
       this._getAllGoods()
-      productHome().then(res => {
+      recommend().then(res => {
         let data = res.result
-        this.recommend = data.home_hot
+        this.recommendPanel = data[0]
       })
     },
     components: {

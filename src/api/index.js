@@ -29,7 +29,15 @@ export const thanksList = (params) => {
 }
 // 首页接口
 export const productHome = (params) => {
-  return http.fetchGet('/goods/productHome', params)
+  return http.fetchGet('/goods/home', params)
+}
+// 推荐板块
+export const recommend = (params) => {
+  return http.fetchGet('/goods/recommend', params)
+}
+// 捐赠板块
+export const thank = (params) => {
+  return http.fetchGet('/goods/thank', params)
 }
 // 极验验证码
 export const geetest = (params) => {

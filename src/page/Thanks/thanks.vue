@@ -42,9 +42,9 @@
     </section>
     
     <section class="w mt30 clearfix">
-      <y-shelf title="我要捐赠">
+      <y-shelf :title="thankPanel.name">
         <div slot="content" class="hot">
-          <mall-goods :msg="item" v-for="(item,i) in hot" :key="i"></mall-goods>
+          <mall-goods :msg="item" v-for="(item,i) in thankPanel.panelContents" :key="i"></mall-goods>
         </div>
       </y-shelf>
     </section>
@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-  import { productHome, thanksList } from '/api/index.js'
+  import { thank, thanksList } from '/api/index.js'
   import YShelf from '/components/shelf'
   import product from '/components/product'
   import mallGoods from '/components/mallGoods'
@@ -61,9 +61,7 @@
   export default {
     data () {
       return {
-        banner: {},
-        floors: [],
-        hot: [],
+        thankPanel: [],
         tableData: [],
         currentPage: 1,
         pageSize: 10,
@@ -97,10 +95,9 @@
       }
     },
     mounted () {
-      productHome().then(res => {
+      thank().then(res => {
         let data = res.result
-        this.floors = data.homeFloors
-        this.hot = data.homeHot
+        this.thankPanel = data[0]
       })
       this._thanksList()
       window.changyan.api.config({

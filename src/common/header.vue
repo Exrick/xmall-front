@@ -132,15 +132,18 @@
                   <router-link to="/"><a @click="changePage(1)" :class="{active:choosePage===1}">首页</a></router-link>
                 </li>
                 <li>
-                  <router-link to="/goods"><a @click="changePage(2)" :class="{active:choosePage===2}">全部商品</a></router-link>
+                  <a @click="changGoods(2)" :class="{active:choosePage===2}">全部商品</a>
                 </li>
                 <li>
-                  <router-link to="/thanks"><a @click="changePage(3)" :class="{active:choosePage===3}">捐赠名单</a></router-link>
+                  <a @click="changGoods(3)" :class="{active:choosePage===3}">品牌周边</a>
+                </li>
+                <li>
+                  <router-link to="/thanks"><a @click="changePage(4)" :class="{active:choosePage===4}">捐赠名单</a></router-link>
                 </li>
                 <li>
                   <a href="http://xmadmin.exrick.cn" target="_blank">后台管理系统</a>
                 </li>
-		<li>
+		            <li>
                   <a href="http://xpay.exrick.cn" target="_blank">XPay支付系统</a>
                 </li>
                 <li>
@@ -224,6 +227,21 @@
       // 导航栏文字样式改变
       changePage (v) {
         this.choosePage = v
+      },
+      changGoods (v) {
+        this.changePage(v)
+        if (v === 2) {
+          this.$router.push({
+            path: '/refreshgoods'
+          })
+        } else if (v === 3) {
+          this.$router.push({
+            path: '/refreshgoods',
+            query: {
+              cid: 1184
+            }
+          })
+        }
       },
       // 搜索框提示
       loadAll () {

@@ -1,36 +1,58 @@
 <template>
   <div class="home">
-    <div class="banner">
-      <a href="https://github.com/Exrick/xmall">
-        <div class="bg" ref="bg"
-            @mouseover="bgOver($refs.bg)"
-            @mousemove="bgMove($refs.bg,$event)"
-            @mouseout="bgOut($refs.bg)">
-          <span class="img a"></span>
-          <span class="text b">以傲慢与偏执<br/>回敬傲慢与偏见</span>
-          <span class="copyright c">code by qingjin.me | picture from t.tt</span>
-        </div>
-      </a>
+
+    <div class="banner" >
+      <div class="bg" ref="bg"
+        @mouseover="bgOver($refs.bg)" @mousemove="bgMove($refs.bg,$event)" @mouseout="bgOut($refs.bg)">
+        <transition name="fade">
+          <div v-for="(item, i) in banner" v-if="i===mark" :key="i" style="position:absolute" @click="linkTo(item)" @mouseover="stopTimer" @mouseout="startTimer">
+            <img v-if="item.picUrl" class="img1" :src="item.picUrl"/>
+            <img v-if="item.picUrl2"  class="img2 a" :src="item.picUrl2"/>
+            <img v-if="item.picUrl3"  class="img3 b" :src="item.picUrl3"/>
+          </div>
+        </transition>
+      </div>
+      <div class="page">
+        <ul class="dots">
+          <li class="dot-active" v-for="(item, i) in banner" :class="{ 'dot':i!=mark }" :key="i" @click="change(i)"></li>
+        </ul>
+      </div>
     </div>
 
-    <div v-loading="loading" element-loading-text="加载中...">
-      <section class="w mt30 clearfix">
-        <y-shelf title="热门商品">
-          <div slot="content" class="hot">
-            <mall-goods :msg="item" v-for="(item,i) in hot" :key="i"></mall-goods>
-          </div>
-        </y-shelf>
-      </section>
-      <section class="w mt30 clearfix" v-for="(item,i) in floors" :key="i">
-        <y-shelf :title="item.title">
-          <div slot="content" class="floors">
-            <div class="imgbanner">
-              <a v-bind:href="floors[i].image.link"><img v-lazy="floors[i].image.image" :alt="item.title"></a>
+    <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;">
+
+      <div v-for="(item,i) in home" :key="i">
+
+        <div class="activity-panel" v-if="item.type === 1">
+          <ul class="box">
+            <li class="content" v-for="(iitem,j) in item.panelContents" :key="j" @click="linkTo(iitem)">
+              <img class="i" :src="iitem.picUrl">
+              <a class="cover-link"></a>
+            </li>
+          </ul>
+        </div>
+
+        <section class="w mt30 clearfix" v-if="item.type === 2">
+          <y-shelf :title="item.name">
+            <div slot="content" class="hot">
+              <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j"></mall-goods>
             </div>
-            <mall-goods :msg="tab" v-for="(tab,i) in item.tabs" :key="i"></mall-goods>
-          </div>
-        </y-shelf>
-      </section>
+          </y-shelf>
+        </section>
+
+        <section class="w mt30 clearfix" v-if="item.type === 3">
+          <y-shelf :title="item.name">
+            <div slot="content" class="floors" >
+              <div class="imgbanner" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type === 2" @click="linkTo(iitem)">
+                <img v-lazy="iitem.picUrl">
+                <a class="cover-link"></a>
+              </div>
+              <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type != 2"></mall-goods>
+            </div>
+          </y-shelf>
+        </section>
+
+      </div>
     </div>
 
     <el-dialog
@@ -38,7 +60,7 @@
       :visible.sync="dialogVisible"
       width="30%"
       style="width:70%;margin:0 auto">
-      <span>XPay个人支付收款系统已上线，赶快去支付体验吧！</span>
+      <span>首页已升级！XPay个人支付收款系统已上线，赶快去支付体验吧！</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">知道了</el-button>
       </span>
@@ -54,21 +76,56 @@
   export default {
     data () {
       return {
-        banner: {},
+        banner: [],
+        mark: 0,
         bgOpt: {
           px: 0,
           py: 0,
           w: 0,
           h: 0
         },
-        floors: [],
-        hot: [],
-        loading: true,
+        home: [],
+        loading: false,
         notify: '1',
-        dialogVisible: false
+        dialogVisible: false,
+        timer: ''
       }
     },
     methods: {
+      autoPlay () {
+        this.mark++
+        if (this.mark > this.banner.length - 1) {
+          // 当遍历到最后一张图片置零
+          this.mark = 0
+        }
+      },
+      play () {
+        // 每2.5s自动切换
+        this.timer = setInterval(this.autoPlay, 2500)
+      },
+      change (i) {
+        this.mark = i
+      },
+      startTimer () {
+        this.timer = setInterval(this.autoPlay, 2500)
+      },
+      stopTimer () {
+        clearInterval(this.timer)
+      },
+      linkTo (item) {
+        if (item.type === 0) {
+          // 关联商品
+          this.$router.push({
+            path: '/goodsDetails',
+            query: {
+              productId: item.productId
+            }
+          })
+        } else {
+          // 完整链接
+          window.location.href = item.fullUrl
+        }
+      },
       bgOver (e) {
         this.bgOpt.px = e.offsetLeft
         this.bgOpt.py = e.offsetTop
@@ -90,11 +147,11 @@
         } else {
           Y = bgOpt.h / 2 - mouseY
         }
-        dom.style['-webkit-transform'] = `rotateY(${X / 50}deg) rotateX(${Y / 50}deg)`
+        dom.style['transform'] = `rotateY(${X / 50}deg) rotateX(${Y / 50}deg)`
         dom.style.transform = `rotateY(${X / 50}deg) rotateX(${Y / 50}deg)`
       },
       bgOut (dom) {
-        dom.style['-webkit-transform'] = 'rotateY(0deg) rotateX(0deg)'
+        dom.style['transform'] = 'rotateY(0deg) rotateX(0deg)'
         dom.style.transform = 'rotateY(0deg) rotateX(0deg)'
       },
       showNotify () {
@@ -108,11 +165,18 @@
     mounted () {
       productHome().then(res => {
         let data = res.result
-        this.floors = data.homeFloors
-        this.hot = data.homeHot
+        this.home = data
         this.loading = false
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].type === 0) {
+            this.banner = data[i].panelContents
+          }
+        }
       })
       this.showNotify()
+    },
+    created () {
+      this.play()
     },
     components: {
       YShelf,
@@ -127,18 +191,113 @@
     flex-direction: column;
   }
 
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
+
+  .page { 
+    position: absolute; 
+    width: 100%;
+    top: 470px;
+    z-index: 30; 
+    .dots {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      .dot-active { 
+        display: inline-block; 
+        width: 15px; 
+        height: 15px; 
+        background-color: whitesmoke; 
+        border-radius: 8px; 
+        margin-right: 10px; 
+        cursor: pointer; 
+      }
+      .dot { 
+        opacity: 0.2; 
+      }
+    }
+  }
+
+  .activity-panel {
+    width: 1220px;
+    margin: 0 auto;
+    .box {
+      overflow: hidden;
+      position: relative;
+      z-index: 0;
+      margin-top: 25px;
+      box-sizing: border-box;
+      border: 1px solid rgba(0,0,0,.14);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 3px 8px -6px rgba(0,0,0,.1);
+    }
+    .content {
+      float: left;
+      position: relative;
+      box-sizing: border-box;
+      width: 25%;
+      height: 200px;
+      text-align: center;
+    }
+    .content ::before{
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      box-sizing: border-box;
+      border-left: 1px solid #f2f2f2;
+      border-left: 1px solid rgba(0,0,0,.1);
+      width: 100%;
+      height: 100%;
+      content: "";
+      pointer-events: none;
+    }
+    .i {
+      width: 305px;
+      height: 200px;
+    }
+    .cover-link {
+      cursor: pointer;
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 4;
+      background: url(data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEHAAEALAAAAAABAAEAAAICTAEAOw==) repeat;
+    }
+    a {
+      color: #5079d9;
+      cursor: pointer;
+      transition: all .15s ease-out;
+      text-decoration: none;
+    }
+    a:hover {
+      box-shadow: inset 0 0 38px rgba(0,0,0,.08);
+      transition: all .15s ease;
+    }
+  }
+
   .banner, .banner span, .banner div {
     font-family: "Microsoft YaHei";
     transition: all .3s;
-    -webkit-transition: all .3s;
     transition-timing-function: linear;
-    -webkit-transition-timing-function: linear;
   }
 
   .banner {
+    cursor: pointer;
     perspective: 3000px;
     position: relative;
     z-index: 19;
+    margin: 0 auto;
+    width: 1220px;
   }
 
   .bg {
@@ -146,55 +305,59 @@
     width: 1220px;
     height: 500px;
     margin: 20px auto;
-    background: url("http://static.smartisanos.cn/index/img/store/home/banner-3d-item-1-box-1_61bdc2f4f9.png") center no-repeat;
     background-size: 100% 100%;
     border-radius: 10px;
     transform-style: preserve-3d;
-    -webkit-transform-origin: 50% 50%;
-    -webkit-transform: rotateY(0deg) rotateX(0deg);
+    transform-origin: 50% 50%;
+    transform: rotateY(0deg) rotateX(0deg);
+    & div{
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
   }
 
-  .img {
+  .img1 {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    border-radius: 10px;
+  }
+
+  .img2 {
     display: block;
     position: absolute;
     width: 100%;
     height: 100%;
     bottom: 5px;
     left: 0;
-    background: url("http://static.smartisanos.cn/index/img/store/home/banner-3d-item-1-box-3_8fa7866d59.png") center no-repeat;
     background-size: 95% 100%;
+    border-radius: 10px;
   }
 
-  .text {
+  .img3 {
+    display: block;
     position: absolute;
-    top: 20%;
-    right: 10%;
-    font-size: 30px;
-    color: #fff;
-    text-align: right;
-    font-weight: lighter;
-  }
-
-  .copyright {
-    position: absolute;
-    bottom: 10%;
-    right: 10%;
-    font-size: 10px;
-    color: #fff;
-    text-align: right;
-    font-weight: lighter;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    border-radius: 10px;
   }
 
   .a {
-    -webkit-transform: translateZ(40px);
+    z-index: 20;
+    transform: translateZ(40px);
   }
 
   .b {
-    -webkit-transform: translateZ(20px);
+    z-index: 20;
+    transform: translateZ(30px);
   }
 
   .c {
-    -webkit-transform: translateZ(0px);
+    transform: translateZ(0px);
   }
 
   .sk_item {
@@ -292,7 +455,22 @@
     align-items: center;
     .imgbanner {
       width: 50%;
-      height: 430px;
+      height: 430px; 
+      .cover-link {
+        cursor: pointer;
+        display: block;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 50%;
+        height: 430px; 
+        z-index: 4;
+        background: url(data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEHAAEALAAAAAABAAEAAAICTAEAOw==) repeat;
+      }
+      .cover-link:hover {
+        box-shadow: inset 0 0 38px rgba(0,0,0,.08);
+        transition: all .15s ease;
+      }
     }
     img {
       display: block;
@@ -300,6 +478,5 @@
       height: 100%;
     }
   }
-
 
 </style>
