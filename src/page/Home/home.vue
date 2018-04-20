@@ -1,6 +1,7 @@
 <template>
   <div class="home">
 
+  <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;" v-if="!error">
     <div class="banner" >
       <div class="bg" ref="bg"
         @mouseover="bgOver($refs.bg)" @mousemove="bgMove($refs.bg,$event)" @mouseout="bgOut($refs.bg)">
@@ -19,39 +20,44 @@
       </div>
     </div>
 
-    <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;">
+    <div v-for="(item,i) in home" :key="i">
 
-      <div v-for="(item,i) in home" :key="i">
+      <div class="activity-panel" v-if="item.type === 1">
+        <ul class="box">
+          <li class="content" v-for="(iitem,j) in item.panelContents" :key="j" @click="linkTo(iitem)">
+            <img class="i" :src="iitem.picUrl">
+            <a class="cover-link"></a>
+          </li>
+        </ul>
+      </div>
 
-        <div class="activity-panel" v-if="item.type === 1">
-          <ul class="box">
-            <li class="content" v-for="(iitem,j) in item.panelContents" :key="j" @click="linkTo(iitem)">
-              <img class="i" :src="iitem.picUrl">
+      <section class="w mt30 clearfix" v-if="item.type === 2">
+        <y-shelf :title="item.name">
+          <div slot="content" class="hot">
+            <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j"></mall-goods>
+          </div>
+        </y-shelf>
+      </section>
+
+      <section class="w mt30 clearfix" v-if="item.type === 3">
+        <y-shelf :title="item.name">
+          <div slot="content" class="floors" >
+            <div class="imgbanner" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type === 2 || iitem.type === 3" @click="linkTo(iitem)">
+              <img v-lazy="iitem.picUrl">
               <a class="cover-link"></a>
-            </li>
-          </ul>
-        </div>
-
-        <section class="w mt30 clearfix" v-if="item.type === 2">
-          <y-shelf :title="item.name">
-            <div slot="content" class="hot">
-              <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j"></mall-goods>
             </div>
-          </y-shelf>
-        </section>
+            <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type != 2"></mall-goods>
+          </div>
+        </y-shelf>
+      </section>
 
-        <section class="w mt30 clearfix" v-if="item.type === 3">
-          <y-shelf :title="item.name">
-            <div slot="content" class="floors" >
-              <div class="imgbanner" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type === 2" @click="linkTo(iitem)">
-                <img v-lazy="iitem.picUrl">
-                <a class="cover-link"></a>
-              </div>
-              <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type != 2"></mall-goods>
-            </div>
-          </y-shelf>
-        </section>
+      </div>
+    </div>
 
+    <div class="no-info" v-if="error">
+      <div class="no-data">
+        <img src="/static/images/error.png">
+        <br> 抱歉！出错了...
       </div>
     </div>
 
@@ -76,6 +82,7 @@
   export default {
     data () {
       return {
+        error: false,
         banner: [],
         mark: 0,
         bgOpt: {
@@ -113,7 +120,7 @@
         clearInterval(this.timer)
       },
       linkTo (item) {
-        if (item.type === 0) {
+        if (item.type === 0 || item.type === 2) {
           // 关联商品
           this.$router.push({
             path: '/goodsDetails',
@@ -164,6 +171,10 @@
     },
     mounted () {
       productHome().then(res => {
+        if (res.success === false) {
+          this.error = true
+          return
+        }
         let data = res.result
         this.home = data
         this.loading = false
@@ -189,6 +200,17 @@
   .home {
     display: flex;
     flex-direction: column;
+  }
+
+  .no-info {
+    padding: 100px 0;
+    text-align: center;
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    .no-data{
+      align-self: center;
+    }
   }
 
   .fade-enter-active, .fade-leave-active {
