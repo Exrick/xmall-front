@@ -2,17 +2,17 @@
   <div class="good-item">
     <div style="">
       <div class="good-img">
-        <router-link :to="'goodsDetails?productId='+msg.productId">
+        <a target="_blank" :href="'http://xmall.exrick.cn/#/goodsDetails?productId='+msg.productId">
           <img v-lazy="msg.productImageBig" :alt="msg.productName">
-        </router-link>
+        </a>
       </div>
       <h6 class="good-title" v-html="msg.productName">{{msg.productName}}</h6>
       <h3 class="sub-title ellipsis">{{msg.subTitle}}</h3>
       <div class="good-price pr">
         <div class="ds pa">
-          <router-link :to="'goodsDetails?productId='+msg.productId">
+          <a target="_blank" :href="'http://xmall.exrick.cn/#/goodsDetails?productId='+msg.productId">
             <y-button text="查看详情" style="margin: 0 5px"></y-button>
-          </router-link>
+          </a>
           <y-button text="加入购物车"
                     style="margin: 0 5px"
                     @btnClick="addCart(msg.productId,msg.salePrice,msg.productName,msg.productImageBig)"
