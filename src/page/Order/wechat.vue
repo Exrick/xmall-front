@@ -129,12 +129,10 @@
     mounted () {
       this.orderTotal = this.toMoney(this.$route.query.price)
       this.isCustom = this.$route.query.isCustom
-      console.log(this.isCustom)
       if (this.orderTotal === 'NaN') {
         this.$router.push({path: '/'})
       }
-      if (this.isCustom !== 1) {
-        alert(1)
+      if (this.isCustom !== '1') {
         this.picName = this.orderTotal
         this.imgPath = 'static/qr/wechat/' + this.picName + '.png'
       }

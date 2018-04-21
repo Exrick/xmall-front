@@ -136,7 +136,7 @@
       if (this.orderTotal === 'NaN') {
         this.$router.push({path: '/'})
       }
-      if (this.isCustom !== 1) {
+      if (this.isCustom !== '1') {
         this.picName = this.orderTotal
         this.imgPath = 'static/qr/qqpay/' + this.picName + '.png'
       }
