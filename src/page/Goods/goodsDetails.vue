@@ -73,7 +73,9 @@
         productMsg: {},
         small: [],
         big: '',
-        product: {},
+        product: {
+          salePrice: 0
+        },
         productNum: 1,
         userId: ''
       }

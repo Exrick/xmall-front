@@ -9,7 +9,7 @@
           <p class="payment-detail" style="color:red">请仔细填写捐赠信息，避免系统审核失败无法在捐赠名单中显示您的数据</p>
         </div>
         <div class="pay-info">
-          <span style="color:red">*</span> 昵称：<el-input v-model="nickName" placeholder="请输入您的昵称" @change="checkValid" maxlength=20 class="input"></el-input><br>
+          <span style="color:red">*</span> 昵称：<el-input v-model="nickName" placeholder="请输入您的昵称" @change="checkValid" :maxlength="maxLength" class="input"></el-input><br>
           <span style="color:red">*</span> 捐赠金额：<el-select class="money-select" v-model="moneySelect" placeholder="请选择支付金额" @change="changeSelect">
             <el-option label="￥0.10 我是穷逼" value="0.10"></el-option>
             <el-option label="￥1.00 支付测试" value="1.00"></el-option>
@@ -17,9 +17,9 @@
             <el-option label="￥10.00 感谢大佬" value="10.00"></el-option>
             <el-option label="自定义 随意撒币" value="custom"></el-option>
           </el-select><br>
-          <div v-if="moneySelect === 'custom'"><span style="color:red">*</span> 输入金额：<el-input v-model="money" placeholder="请输入捐赠金额(最多2位小数，不得低于0.1元)" @change="checkValid" maxlength=10 class="input" style="margin-left:10px"></el-input><br></div>
-          <span style="color:red">*</span> 通知邮箱：<el-input v-model="email" placeholder="支付审核结果将以邮件方式发送至您的邮箱" @change="checkValid" maxlength=30 class="input" style="margin-left:10px"></el-input><br>
-          &nbsp;&nbsp; 留言：<el-input v-model="info" placeholder="请输入您的留言内容" maxlength=30 class="input"></el-input>
+          <div v-if="moneySelect === 'custom'"><span style="color:red">*</span> 输入金额：<el-input v-model="money" placeholder="请输入捐赠金额(最多2位小数，不得低于0.1元)" @change="checkValid" :maxlength="maxLength" class="input" style="margin-left:10px"></el-input><br></div>
+          <span style="color:red">*</span> 通知邮箱：<el-input v-model="email" placeholder="支付审核结果将以邮件方式发送至您的邮箱" @change="checkValid" :maxlength="maxLength" class="input" style="margin-left:10px"></el-input><br>
+          &nbsp;&nbsp; 留言：<el-input v-model="info" placeholder="请输入您的留言内容" :maxlength="maxLength" class="input"></el-input>
         </div>
         <!--支付方式-->
         <div class="pay-type">
@@ -35,9 +35,13 @@
           <div class="box-inner">
             <div>
               <span>
-                应付金额：
+                订单金额：
               </span>
-              <em><span>¥</span>{{orderTotal}}</em>
+              <em><span>¥</span>{{orderTotal.toFixed(2)}}</em>
+              <span>
+                实际应付金额：
+              </span>
+              <em><span>¥</span>{{money}}</em>
               <y-button :text="payNow"
                         :classStyle="submit?'main-btn':'disabled-btn'"
                         style="width: 120px;height: 40px;font-size: 16px;line-height: 38px"
@@ -106,11 +110,10 @@
         productId: '',
         num: '',
         userId: '',
-        orderTotal: '',
+        orderTotal: 0,
         userName: '',
         tel: '',
         streetName: '',
-        checkPrice: '',
         payNow: '立刻支付',
         submit: false,
         nickName: '',
@@ -120,7 +123,8 @@
         orderId: '',
         type: '',
         moneySelect: '1.00',
-        isCustom: 0
+        isCustom: 0,
+        maxLength: 30
       }
     },
     computed: {
@@ -177,7 +181,6 @@
       paySuc () {
         this.payNow = '支付中...'
         this.submit = false
-        this.checkPrice = this.orderTotal
         if (this.payType === 1) {
           this.type = 'Alipay'
         } else if (this.payType === 2) {

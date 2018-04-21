@@ -31,7 +31,9 @@
   import { getStore } from '/utils/storage'
   export default {
     props: {
-      msg: {}
+      msg: {
+        salePrice: 0
+      }
     },
     data () {
       return {}

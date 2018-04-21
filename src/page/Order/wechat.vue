@@ -126,13 +126,15 @@
         this.$router.push({path: '/order/paysuccess', query: {price: this.orderTotal}})
       }
     },
-    created () {
+    mounted () {
       this.orderTotal = this.toMoney(this.$route.query.price)
       this.isCustom = this.$route.query.isCustom
+      console.log(this.isCustom)
       if (this.orderTotal === 'NaN') {
         this.$router.push({path: '/'})
       }
-      if (this.isCustom !== '1') {
+      if (this.isCustom !== 1) {
+        alert(1)
         this.picName = this.orderTotal
         this.imgPath = 'static/qr/wechat/' + this.picName + '.png'
       }

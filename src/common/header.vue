@@ -21,7 +21,7 @@
                 :on-icon-click="handleIconClick">
               </el-autocomplete>
               <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
-              <router-link to="/thanks"><a @click="changePage(3)">捐赠</a></router-link>
+              <router-link to="/thanks"><a @click="changePage(4)">捐赠</a></router-link>
               <!-- <router-link to="/">Smartisan M1 / M1L</router-link>
               <router-link to="/">Smartisan OS</router-link>
               <router-link to="/">欢喜云</router-link>
@@ -336,14 +336,18 @@
       },
       // 通过路由改变导航文字样式
       getPage () {
-        if (this.$route.path === '/' || this.$route.path === '/home') {
+        let path = this.$route.path
+        let fullPath = this.$route.fullPath
+        if (path === '/' || path === '/home') {
           this.changePage(1)
-        } else if (this.$route.path === '/goods') {
-          this.changePage(2)
-        } else if (this.$route.path === '/thanks') {
+        } else if (fullPath.indexOf('/goods?cid=1184') >= 0) {
           this.changePage(3)
-        } else {
+        } else if (path === '/goods') {
+          this.changePage(2)
+        } else if (path === '/thanks') {
           this.changePage(4)
+        } else {
+          this.changePage(0)
         }
       }
     },
