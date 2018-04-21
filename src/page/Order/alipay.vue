@@ -159,13 +159,13 @@
       }
     },
     mounted () {
-      this.orderTotal = this.toMoney(this.$route.query.price)
-      this.isCustom = this.$route.query.isCustom
+      let price = getStore('price')
+      let isCustom = getStore('isCustom')
+      this.orderTotal = this.toMoney(price)
       if (this.orderTotal === 'NaN') {
         this.$router.push({path: '/'})
-        return
       }
-      if (this.isCustom !== '1') {
+      if (!isCustom) {
         this.picName = this.orderTotal
         this.imgPath = 'static/qr/alipay/' + this.picName + '.png'
       }

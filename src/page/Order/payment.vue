@@ -123,7 +123,7 @@
         orderId: '',
         type: '',
         moneySelect: '1.00',
-        isCustom: 0,
+        isCustom: false,
         maxLength: 30
       }
     },
@@ -156,7 +156,7 @@
         if (v !== 'custom') {
           this.money = v
         } else {
-          this.isCustom = 1
+          this.isCustom = true
           this.money = ''
         }
         this.checkValid()
@@ -201,14 +201,16 @@
         }).then(res => {
           if (res.success === true) {
             setStore('setTime', 90)
+            setStore('price', this.money)
+            setStore('isCustom', this.isCustom)
             if (this.payType === 1) {
-              this.$router.push({path: '/order/alipay', query: {price: this.money, isCustom: this.isCustom}})
+              this.$router.push({path: '/order/alipay'})
             } else if (this.payType === 2) {
-              this.$router.push({path: '/order/wechat', query: {price: this.money, isCustom: this.isCustom}})
+              this.$router.push({path: '/order/wechat'})
             } else if (this.payType === 3) {
-              this.$router.push({path: '/order/qqpay', query: {price: this.money, isCustom: this.isCustom}})
+              this.$router.push({path: '/order/qqpay'})
             } else {
-              this.$router.push({path: '/order/alipay', query: {price: this.money, isCustom: this.isCustom}})
+              this.$router.push({path: '/order/alipay'})
             }
           } else {
             this.payNow = '立刻支付'
