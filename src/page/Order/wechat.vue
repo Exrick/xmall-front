@@ -133,7 +133,7 @@
       if (this.orderTotal === 'NaN') {
         this.$router.push({path: '/'})
       }
-      if (!isCustom) {
+      if (isCustom !== 'true') {
         this.picName = this.orderTotal
         this.imgPath = 'static/qr/wechat/' + this.picName + '.png'
       }
