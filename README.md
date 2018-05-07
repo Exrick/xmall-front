@@ -1,5 +1,7 @@
 ## XMall-Front
 ### 基于Vue开发的XMall商城前台页面
+### [宣传视频](https://www.bilibili.com/video/av23121122/)
+- 作者亲自制作 可接单做视频... 视频已上传至[B站](https://www.bilibili.com/video/av23121122/)
 ### 项目已部署，在线Demo
 - 前台商城：http://xmall.exrick.cn/
 - 后台管理系统：http://xmadmin.exrick.cn/
