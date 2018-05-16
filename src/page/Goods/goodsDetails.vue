@@ -85,8 +85,8 @@
     },
     methods: {
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
-      _productDet (productId) {
-        productDet({params: {productId}}).then(res => {
+      _productDet () {
+        productDet({params: {productId: this.$route.query.productId}}).then(res => {
           let result = res.result
           this.product = result
           this.productMsg = result.detail || ''
@@ -138,9 +138,11 @@
     components: {
       YShelf, BuyNum, YButton
     },
+    watch: {
+      '$route': '_productDet'
+    },
     created () {
-      let id = this.$route.query.productId
-      this._productDet(id)
+      this._productDet()
       this.userId = getStore('userId')
     }
   }
