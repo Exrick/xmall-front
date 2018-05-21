@@ -83,9 +83,9 @@
                 <a @click="goodsDetails(item.productId)" title="" target="_blank">{{item.productName}}</a>
               </div>
               <div class="n-b">
-                <div class="price">¥ {{item.salePrice.toFixed(2)}}</div>
+                <div class="price">¥ {{Number(item.salePrice).toFixed(2)}}</div>
                 <div class="goods-num">{{item.productNum}}</div>
-                <div class="subtotal"> ¥ {{(item.salePrice * item.productNum).toFixed(2)}}</div>
+                <div class="subtotal"> ¥ {{Number(item.salePrice * item.productNum).toFixed(2)}}</div>
               </div>
             </div>
           </div>
@@ -286,7 +286,7 @@
       > div {
         color: #626262;
         font-weight: 700;
-        width: 150px;
+        width: 165px;
         text-align: center;
       }
     }
@@ -342,7 +342,7 @@
       flex: 1;
       .f-bc {
         > span {
-          width: 112px;
+          width: 130px;
           text-align: center;
         }
       }

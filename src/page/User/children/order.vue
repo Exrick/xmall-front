@@ -29,7 +29,7 @@
                     <div class="ellipsis"><a style="color: #626262;" @click="goodsDetails(good.productId)">{{good.productName}}</a></div>
                   </div>
                   <div class="cart-l-r">
-                    <div>¥ {{good.salePrice.toFixed(2)}}</div>
+                    <div>¥ {{Number(good.salePrice).toFixed(2)}}</div>
                     <div class="num">{{good.productNum}}</div>
                     <div class="type">
                       <el-button style="margin-left:20px" @click="_delOrder(item.orderId,i)" type="danger" size="small" v-if="j<1" class="del-order">删除此订单</el-button>

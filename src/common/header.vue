@@ -147,6 +147,12 @@
                   <a href="http://xpay.exrick.cn" target="_blank">XPay支付系统</a>
                 </li>
                 <li>
+                  <a href="https://github.com/Exrick/x-boot" target="_blank">XBoot框架</a>
+                </li>
+                <li>
+                  <a href="https://www.bilibili.com/video/av23121122/" target="_blank">宣传视频</a>
+                </li>
+                <li>
                   <a href="https://github.com/Exrick/xmall" target="_blank">Github</a>
                 </li>
               </ul>

@@ -159,6 +159,8 @@
                 this.RECORD_USERINFO({info: info})
                 this.editAvatarShow = false
                 this.messageSuccess('上传成功')
+              } else {
+                this.messageFail(res.message)
               }
             })
           })

@@ -19,7 +19,7 @@
                     classStyle="main-btn"
           ></y-button>
         </div>
-        <p><span style="font-size:14px">￥</span>{{msg.salePrice.toFixed(2)}}</p>
+        <p><span style="font-size:14px">￥</span>{{Number(msg.salePrice).toFixed(2)}}</p>
       </div>
     </div>
   </div>
