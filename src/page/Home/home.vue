@@ -46,7 +46,7 @@
               <img v-lazy="iitem.picUrl">
               <a class="cover-link"></a>
             </div>
-            <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j+'key'" v-if="iitem.type != 2"></mall-goods>
+            <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j+'key'" v-if="iitem.type != 2 && iitem.type != 3"></mall-goods>
           </div>
         </y-shelf>
       </section>
