@@ -18,7 +18,8 @@
                 maxlength=100
                 :fetch-suggestions="querySearchAsync"
                 @select="handleSelect"
-                :on-icon-click="handleIconClick">
+                :on-icon-click="handleIconClick"
+                @keydown.enter.native="handleIconClick">
               </el-autocomplete>
               <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
               <router-link to="/thanks"><a @click="changePage(4)">捐赠</a></router-link>
