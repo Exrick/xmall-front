@@ -87,7 +87,8 @@ export default {
         errMsg: ''
       },
       agreement: false,
-      registxt: '注册'
+      registxt: '注册',
+      statusKey: ''
     }
   },
   computed: {
@@ -149,7 +150,8 @@ export default {
         userPwd,
         challenge: result.geetest_challenge,
         validate: result.geetest_validate,
-        seccode: result.geetest_seccode }).then(res => {
+        seccode: result.geetest_seccode,
+        statusKey: this.statusKey }).then(res => {
           if (res.success === true) {
             this.messageSuccess()
             this.toLogin()
@@ -163,6 +165,7 @@ export default {
     },
     init_geetest () {
       geetest().then(res => {
+        this.statusKey = res.statusKey
         window.initGeetest({
           gt: res.gt,
           challenge: res.challenge,
@@ -176,7 +179,6 @@ export default {
           captchaObj.onReady(function () {
             document.getElementById('wait').style.display = 'none'
           })
-          this.regist()
         })
       })
     }

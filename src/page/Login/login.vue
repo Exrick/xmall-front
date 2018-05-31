@@ -78,7 +78,8 @@ export default {
         errMsg: ''
       },
       autoLogin: false,
-      logintxt: '登录'
+      logintxt: '登录',
+      statusKey: ''
     }
   },
   computed: {
@@ -166,7 +167,8 @@ export default {
         userPwd: this.ruleForm.userPwd,
         challenge: result.geetest_challenge,
         validate: result.geetest_validate,
-        seccode: result.geetest_seccode
+        seccode: result.geetest_seccode,
+        statusKey: this.statusKey
       }
       userLogin(params).then(res => {
         if (res.result.state === 1) {
@@ -199,6 +201,7 @@ export default {
     },
     init_geetest () {
       geetest().then(res => {
+        this.statusKey = res.statusKey
         window.initGeetest({
           gt: res.gt,
           challenge: res.challenge,
@@ -212,7 +215,6 @@ export default {
           captchaObj.onReady(function () {
             document.getElementById('wait').style.display = 'none'
           })
-          this.login()
         })
       })
     }

@@ -15,6 +15,10 @@ export const addCart = (params) => {
 export const delCart = (params) => {
   return http.fetchPost('/member/delCart', params)
 }
+// 删除购物车勾选商品
+export const delCartChecked = (params) => {
+  return http.fetchPost('/member/delCartChecked', params)
+}
 // 编辑购物车
 export const cartEdit = (params) => {
   return http.fetchPost('/member/cartEdit', params)

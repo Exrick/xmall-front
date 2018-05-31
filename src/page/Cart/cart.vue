@@ -78,8 +78,7 @@
                     <span :class="{'checkbox-on':checkAllFlag}" class="blue-checkbox-new" @click="editCheckAll"></span>
                     <span @click="editCheckAll">全选</span>
                   </div>
-                  <div class="delete-choose-goods">删除选中的商品
-                  </div>
+                  <div class="delete-choose-goods" @click="delChecked">删除选中的商品</div>
                 </div>
               </div>
               <div class="shipping">
@@ -118,7 +117,7 @@
   </div>
 </template>
 <script>
-  import { cartEdit, editCheckAll, cartDel } from '/api/goods'
+  import { getCartList, cartEdit, editCheckAll, cartDel, delCartChecked } from '/api/goods'
   import { mapMutations, mapState } from 'vuex'
   import YButton from '/components/YButton'
   import YHeader from '/common/header'
@@ -182,6 +181,11 @@
       ...mapMutations([
         'INIT_BUYCART', 'EDIT_CART'
       ]),
+      message (m) {
+        this.$message.error({
+          message: m
+        })
+      },
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
@@ -241,6 +245,23 @@
         this.checkoutNow = '结算中...'
         this.submit = false
         this.$router.push({path: 'checkout'})
+      },
+      delChecked () {
+        getCartList({userId: getStore('userId')}).then(res => {
+          if (res.success === true) {
+            res.result.forEach(item => {
+              if (item.checked === '1') {
+                let productId = item.productId
+                this.EDIT_CART({productId})
+              }
+            })
+          }
+        })
+        delCartChecked({userId: this.userId}).then(res => {
+          if (res.success !== true) {
+            this.message('删除失败')
+          }
+        })
       }
     },
     mounted () {
