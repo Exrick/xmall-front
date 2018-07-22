@@ -69,7 +69,7 @@
 
     ![](https://i.loli.net/2018/07/21/5b52e274d2085.png)
 
-- [XPay个人免签收款支付系统v1.2](https://github.com/Exrick/x-boot)
+- [XPay个人免签收款支付系统v1.2](https://github.com/Exrick/xpay)
 
     - 现已支持移动端支付 手机扫码体验
 
