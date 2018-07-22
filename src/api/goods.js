@@ -84,6 +84,6 @@ export const getSearch = (params) => {
   return http.fetchGet('/goods/search', params)
 }
 // 快速搜索
-export const getQuickSearch = (key) => {
-  return http.fetchQuickSearch(`http://123.207.97.17:9201/item/itemList/_search?q=productName: ${key}`)
+export const getQuickSearch = (params) => {
+  return http.fetchGet('/goods/quickSearch', params)
 }

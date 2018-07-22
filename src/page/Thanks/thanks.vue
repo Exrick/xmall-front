@@ -49,7 +49,7 @@
       </y-shelf>
     </section>
 
-    <div id="SOHUCS" sid="123456" style="width:1218px;"></div>
+    <div id="comment" style="width: 1220px;margin: 0 auto;"></div>
   </div>
 </template>
 <script>
@@ -57,7 +57,8 @@
   import YShelf from '/components/shelf'
   import product from '/components/product'
   import mallGoods from '/components/mallGoods'
-  require('../../../static/changyan/changyan.js')
+  import 'gitment/style/default.css'
+  import Gitment from 'gitment'
   export default {
     data () {
       return {
@@ -92,6 +93,18 @@
           this.tableData = res.result.data
           this.total = res.result.recordsTotal
         })
+      },
+      initGitment () {
+        const gitment = new Gitment({
+          id: '1',
+          owner: 'Exrick',
+          repo: 'xmall-comments',
+          oauth: {
+            client_id: 'd52e48ce99ee4e8fb412',
+            client_secret: 'f4154230d52f3a7d6b7695cb0ae89fe76b76121d'
+          }
+        })
+        gitment.render('comment')
       }
     },
     mounted () {
@@ -100,10 +113,7 @@
         this.thankPanel = data[0]
       })
       this._thanksList()
-      window.changyan.api.config({
-        appid: 'cyrV7vlR4',
-        conf: 'prod_3163726f95fdac5ad0531c2344fc86ea'
-      })
+      this.initGitment()
     },
     components: {
       YShelf,

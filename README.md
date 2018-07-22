@@ -16,27 +16,25 @@
 - [x] 优化订单详情，实现查看订单进度，可对订单进行处理
 - [x] 实现生成订单接口、优化地址管理编辑选择
 - [x] 实现查看个人订单分页
-- [x] 接入[XPay个人收款支付系统](https://github.com/Exrick/xpay)
+- [x] 接入[XPay个人免签收款支付系统](https://github.com/Exrick/xpay)
 - [x] 首页升级！重构首页，后台可配置，包括3D轮播图
 - [x] 新增分类查看品牌周边等
     
-![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022183906.jpg "首页")
+![](https://i.loli.net/2018/07/21/5b52e192366a0.jpg "首页")
 
-![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022222841.jpg "页脚")
+![](https://i.loli.net/2018/07/22/5b5447c0f2b69.jpg "页脚")
 
-![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022223650.jpg "搜索框组件")
+![](https://i.loli.net/2018/07/22/5b5447e84edd9.jpg "搜索框组件")
 
-![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171109215656.jpg "搜索结果")
+![](https://i.loli.net/2018/07/22/5b5448040ff95.jpg "搜索结果")
 
-![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022202842.jpg "无搜索结果")
+![](https://i.loli.net/2018/07/22/5b54489e41551.jpg "分页")
 
-![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022223142.jpg "分页")
+![](https://i.loli.net/2018/07/22/5b54482cca360.jpg "订单详情")
 
-![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022190036.jpg "订单详情")
+![](https://i.loli.net/2018/07/22/5b5448494d6b6.jpg "订单进度")
 
-![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022190107.jpg "订单进度")
-
-![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171114233321.jpg "登录界面")
+![](https://i.loli.net/2018/07/22/5b54486109ade.jpg "登录界面")
     
 ### 所用技术
 
@@ -52,29 +50,37 @@
     - [极验Test-button人机验证码](http://www.geetest.com/Test-button.html)
 - 第三方插件
     - [hotjar](https://github.com/Exrick/xmall/blob/master/study/hotjar.md)：一体化分析和反馈
-    - [搜狐畅言评论插件](http://changyan.kuaizhan.com/)
+    - ~~[搜狐畅言评论插件](http://changyan.kuaizhan.com/)~~ 垃圾广告评论插件 现已更换 [Gitment](https://github.com/imsun/gitment)
 
 ### 本地开发运行
 - 启动后端 [xmall](https://github.com/Exrick/xmall) 项目后，在 `config/index.js` 中修改你的后端接口地址配置
-- 在 `src/api/goods.js` 中的 `getQuickSearch` 方法里修改你的Elasticseach服务器IP以及RESTful快速搜索提示接口配置
+- Gitment评论配置见 [Gitment](https://github.com/imsun/gitment) 使用到的页面为 `thanks.vue`
 - `index.html` 中复制粘贴替换你的 [hotjar](https://github.com/Exrick/xmall/blob/master/study/hotjar.md) 代码
 - 若不启动后端项目，勉强预览运行此前端项目可尝试注释掉 `src/main.js` 中第 `8、10、39-61` 行代码
 - 在项目根文件夹下先后执行命令 `npm install` 、 `npm run dev`
 - 商城前台端口默认9999 http://localhost:9999
 ## 部署
-- 先后执行命令 `npm install` 、 `npm run build` 将打包生成的 `dist` 静态文件放置服务器中，并配置路由代理
+- 先后执行命令 `npm install` 、 `npm run build` 将打包生成的 `dist` 静态文件放置服务器中，若使用Nginx等跨域请配置路由代理
 ### 技术疑问交流
-- 给作者项目Star(限Github)或捐赠后可加入交流群 `475743731`，还可免费获取 [慕课网学习资源](https://coding.imooc.com/class/203.html) 和 [UI框架](https://github.com/Exrick/xmall/blob/master/study/FlatLab.md) [![](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=7b60cec12ba93ebed7568b0a63f22e6e034c0d1df33125ac43ed753342ec6ce7)
+- 给作者项目Star(限Github)或捐赠后可加入交流群 `475743731`，还可共享学习资源 和 [UI框架](https://github.com/Exrick/xmall/blob/master/study/FlatLab.md) [![](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=7b60cec12ba93ebed7568b0a63f22e6e034c0d1df33125ac43ed753342ec6ce7)
 - 个人博客：[http://blog.exrick.cn](http://blog.exrick.cn)
 ### 作者其他项目推荐
-- 微信小程序APP 
-    - 捐赠≥19.9可加群私聊群主提前下载前台源码 [预览视频](https://v.qq.com/x/page/f0627kf4x1e.html) 赠送[慕课网SpringCloud学习资源](https://coding.imooc.com/class/187.html)
-
-    ![](http://oweupqzdv.bkt.clouddn.com/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A2%84%E8%A7%881.png)
 - [X-Boot前后端分离开发平台](https://github.com/Exrick/x-boot)
 
-    ![](http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20180504215601.png)
+    ![](https://i.loli.net/2018/07/21/5b52e274d2085.png)
+
+- [XPay个人免签收款支付系统v1.2](https://github.com/Exrick/x-boot)
+
+    - 现已支持移动端支付 手机扫码体验
+
+    ![](http://p77xsahe9.bkt.clouddn.com/18-7-21/16350122.jpg)
+
+- 微信小程序APP 
+    - [前台源码点我提前获取](http://xpay.exrick.cn/pay) [预览视频](https://v.qq.com/x/page/f0627kf4x1e.html)
+
+    ![](https://i.loli.net/2018/07/21/5b52e1de385e7.png)
+
 ### 捐赠
-![](http://oweupqzdv.bkt.clouddn.com/FgwHSk1Rnd-8FKqNJhFSSdcq2QVB.png)
+![](http://p77xsahe9.bkt.clouddn.com/18-7-20/54731550.jpg)
 
 ![](http://p77xsahe9.bkt.clouddn.com/18-6-28/32845239.jpg)
