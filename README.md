@@ -62,8 +62,12 @@
 ## 部署
 - 先后执行命令 `npm install` 、 `npm run build` 将打包生成的 `dist` 静态文件放置服务器中，若使用Nginx等跨域请配置路由代理
 ### 技术疑问交流
-- 给作者项目Star(限Github)或捐赠后可加入交流群 `475743731`，还可共享学习资源 和 [UI框架](https://github.com/Exrick/xmall/blob/master/study/FlatLab.md) [![](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=7b60cec12ba93ebed7568b0a63f22e6e034c0d1df33125ac43ed753342ec6ce7)
+- QQ交流群 `475743731`，还可获取详细文档、共享学习资源 和 [UI框架](https://github.com/Exrick/xmall/blob/master/study/FlatLab.md) [![](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=7b60cec12ba93ebed7568b0a63f22e6e034c0d1df33125ac43ed753342ec6ce7)
 - 个人博客：[http://blog.exrick.cn](http://blog.exrick.cn)
+
+### 开源协议
+- 请遵循原作者MIT开源协议
+
 ### 作者其他项目推荐
 - [X-Boot前后端分离开发平台](https://github.com/Exrick/x-boot)
 
@@ -79,6 +83,9 @@
     - [前台源码点我提前获取](http://xpay.exrick.cn/pay) [预览视频](https://v.qq.com/x/page/f0627kf4x1e.html)
 
     ![](https://i.loli.net/2018/07/21/5b52e1de385e7.png)
+
+- 机器学习笔记
+    - [Machine-Learning](https://github.com/Exrick/Machine-Learning)
 
 ### 捐赠
 ![](http://p77xsahe9.bkt.clouddn.com/18-7-20/54731550.jpg)

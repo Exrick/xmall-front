@@ -4,7 +4,7 @@
       <header class="w">
         <div class="w-box">
           <div class="nav-logo">
-            <h1 @click="changePage(1)">
+            <h1 @click="changePage(-1)">
               <router-link to="/" title="XMall商城官网">XMall商城</router-link>
             </h1>
           </div>
@@ -130,31 +130,13 @@
             <div class="w">
               <ul class="nav-list2">
                 <li>
-                  <router-link to="/"><a @click="changePage(1)" :class="{active:choosePage===1}">首页</a></router-link>
+                  <router-link to="/"><a @click="changGoods(-1)" :class="{active:choosePage===-1}">首页</a></router-link>
                 </li>
                 <li>
-                  <a @click="changGoods(2)" :class="{active:choosePage===2}">全部商品</a>
+                  <a @click="changGoods(-2)" :class="{active:choosePage===-2}">全部</a>
                 </li>
-                <li>
-                  <a @click="changGoods(3)" :class="{active:choosePage===3}">品牌周边</a>
-                </li>
-                <li>
-                  <router-link to="/thanks"><a @click="changePage(4)" :class="{active:choosePage===4}">捐赠名单</a></router-link>
-                </li>
-                <li>
-                  <a href="http://xmadmin.exrick.cn" target="_blank">后台管理系统</a>
-                </li>
-		            <li>
-                  <a href="http://xpay.exrick.cn" target="_blank">XPay支付系统</a>
-                </li>
-                <li>
-                  <a href="https://github.com/Exrick/x-boot" target="_blank">XBoot框架</a>
-                </li>
-                <li>
-                  <a href="https://www.bilibili.com/video/av23121122/" target="_blank">宣传视频</a>
-                </li>
-                <li>
-                  <a href="https://github.com/Exrick/xmall" target="_blank">Github</a>
+                <li v-for="(item,i) in navList" :key="i">
+                  <a @click="changGoods(i, item)" :class="{active:i===choosePage}">{{item.picUrl}}</a>
                 </li>
               </ul>
               <div></div>
@@ -169,7 +151,7 @@
   import YButton from '/components/YButton'
   import { mapMutations, mapState } from 'vuex'
   import { getCartList, cartDel, getQuickSearch } from '/api/goods'
-  import { loginOut } from '/api/index'
+  import { loginOut, navList } from '/api/index'
   import { setStore, getStore, removeStore } from '/utils/storage'
   // import store from '../store/'
   import 'element-ui/lib/theme-default/index.css'
@@ -185,10 +167,11 @@
         positionT: 0,
         timerCartShow: null, // 定时隐藏购物车
         input: '',
-        choosePage: 1,
+        choosePage: -1,
         searchResults: [],
         timeout: null,
-        token: ''
+        token: '',
+        navList: []
       }
     },
     computed: {
@@ -240,19 +223,24 @@
       changePage (v) {
         this.choosePage = v
       },
-      changGoods (v) {
+      changGoods (v, item) {
         this.changePage(v)
-        if (v === 2) {
+        if (v === -1) {
+          this.$router.push({
+            path: '/'
+          })
+        } else if (v === -2) {
           this.$router.push({
             path: '/refreshgoods'
           })
-        } else if (v === 3) {
-          this.$router.push({
-            path: '/refreshgoods',
-            query: {
-              cid: 1184
-            }
-          })
+        } else {
+          // 站内跳转
+          if (item.type === 1) {
+            window.location.href = item.fullUrl
+          } else {
+            // 站外跳转
+            window.open(item.fullUrl)
+          }
         }
       },
       // 搜索框提示
@@ -361,24 +349,26 @@
       // 通过路由改变导航文字样式
       getPage () {
         let path = this.$route.path
-        let fullPath = this.$route.fullPath
+        // let fullPath = this.$route.fullPath
         if (path === '/' || path === '/home') {
-          this.changePage(1)
-        } else if (fullPath.indexOf('/goods?cid=1184') >= 0) {
-          this.changePage(3)
+          this.changePage(-1)
         } else if (path === '/goods') {
-          this.changePage(2)
-        } else if (path === '/thanks') {
-          this.changePage(4)
+          this.changePage(-2)
         } else {
           this.changePage(0)
         }
       },
       openProduct (productId) {
         window.open('//' + window.location.host + '/#/goodsDetails?productId=' + productId)
+      },
+      _getNavList () {
+        navList().then(res => {
+          this.navList = res.result
+        })
       }
     },
     mounted () {
+      this._getNavList()
       this.token = getStore('token')
       if (this.login) {
         this._getCartList()

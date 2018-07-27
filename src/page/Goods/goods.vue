@@ -148,6 +148,14 @@
         this._getAllGoods()
       }
     },
+    watch: {
+      $route (to, from) {
+        if (to.fullPath.indexOf('/goods?cid=') >= 0) {
+          this.cId = to.query.cid
+          this._getAllGoods()
+        }
+      }
+    },
     created () {
     },
     mounted () {
