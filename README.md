@@ -19,6 +19,7 @@
 - [x] 接入[XPay个人免签收款支付系统](https://github.com/Exrick/xpay)
 - [x] 首页升级！重构首页，后台可配置，包括3D轮播图
 - [x] 新增分类查看品牌周边等
+- [极验验证码移除文档](https://github.com/Exrick/xmall/wiki/%E6%9E%81%E9%AA%8C%E7%A7%BB%E9%99%A4%E6%96%87%E6%A1%A3)
     
 ![](https://i.loli.net/2018/07/21/5b52e192366a0.jpg "首页")
 
@@ -47,7 +48,7 @@
 - axios
 - Node.js
 - 第三方SDK
-    - [极验Test-button人机验证码](http://www.geetest.com/Test-button.html)
+    - ~~[极验Test-button人机验证码](http://www.geetest.com/Test-button.html)~~ 因其收费详见[极验验证码移除文档](https://github.com/Exrick/xmall/wiki/%E6%9E%81%E9%AA%8C%E7%A7%BB%E9%99%A4%E6%96%87%E6%A1%A3)
 - 第三方插件
     - [hotjar](https://github.com/Exrick/xmall/blob/master/study/hotjar.md)：一体化分析和反馈
     - ~~[搜狐畅言评论插件](http://changyan.kuaizhan.com/)~~ 垃圾广告评论插件 现已更换 [Gitment](https://github.com/imsun/gitment)
