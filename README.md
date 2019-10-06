@@ -72,15 +72,15 @@
 - 请遵循原作者MIT开源协议
 
 ### 作者其他项目推荐
+- [XMall微信小程序APP前端 现已开源！](https://github.com/Exrick/xmall-weapp)
+    
+    [![WX20190924-234416@2x.png](https://s2.ax1x.com/2019/10/06/ucEsBD.md.png)](https://www.bilibili.com/video/av70226175)
+
 - [X-Boot前后端分离开发平台](https://github.com/Exrick/x-boot)
 
     ![](https://i.loli.net/2018/07/21/5b52e274d2085.png)
 
 - [XPay个人免签收款支付系统](https://github.com/Exrick/xpay) 无需挂机App 自动回调
-
-- [XMall微信小程序APP前端 现已开源！](https://github.com/Exrick/xmall-weapp)
-    
-    [![WX20190924-234416@2x.png](https://s2.ax1x.com/2019/10/06/ucEsBD.md.png)](https://www.bilibili.com/video/av70226175)
 
 - 个人机器学习笔记
     - [Machine-Learning](https://github.com/Exrick/Machine-Learning)
