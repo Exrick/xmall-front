@@ -158,7 +158,7 @@ export default {
           } else {
             this.message(res.message)
             captcha.reset()
-            this.regist = '注册'
+            this.registxt = '注册'
             return false
           }
         })

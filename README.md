@@ -76,21 +76,13 @@
 
     ![](https://i.loli.net/2018/07/21/5b52e274d2085.png)
 
-- [XPay个人免签收款支付系统v1.2](https://github.com/Exrick/xpay)
+- [XPay个人免签收款支付系统](https://github.com/Exrick/xpay) 无需挂机App 自动回调
 
-    - 现已支持移动端支付 手机扫码体验
+- [XMall微信小程序APP前端 现已开源！](https://github.com/Exrick/xmall-weapp)
+    
+    [![WX20190924-234416@2x.png](https://s2.ax1x.com/2019/10/06/ucEsBD.md.png)](https://www.bilibili.com/video/av70226175)
 
-    ![](http://p77xsahe9.bkt.clouddn.com/18-7-21/16350122.jpg)
-
-- 微信小程序APP 
-    - [前台源码点我提前获取](http://xpay.exrick.cn/pay) [预览视频](https://v.qq.com/x/page/f0627kf4x1e.html)
-
-    ![](https://i.loli.net/2018/07/21/5b52e1de385e7.png)
-
-- 机器学习笔记
+- 个人机器学习笔记
     - [Machine-Learning](https://github.com/Exrick/Machine-Learning)
 
-### 捐赠
-![](http://p77xsahe9.bkt.clouddn.com/18-7-20/54731550.jpg)
-
-![](http://p77xsahe9.bkt.clouddn.com/18-6-28/32845239.jpg)
+### [捐赠](http://xmall.exrick.cn)
