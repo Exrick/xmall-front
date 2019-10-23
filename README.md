@@ -57,7 +57,6 @@
 - 启动后端 [xmall](https://github.com/Exrick/xmall) 项目后，在 `config/index.js` 中修改你的后端接口地址配置
 - Gitment评论配置见 [Gitment](https://github.com/imsun/gitment) 使用到的页面为 `thanks.vue`
 - `index.html` 中复制粘贴替换你的 [hotjar](https://github.com/Exrick/xmall/blob/master/study/hotjar.md) 代码
-- 若不启动后端项目，勉强预览运行此前端项目可尝试注释掉 `src/main.js` 中第 `8、10、39-61` 行代码
 - 在项目根文件夹下先后执行命令 `npm install` 、 `npm run dev`
 - 商城前台端口默认9999 http://localhost:9999
 ## 部署
