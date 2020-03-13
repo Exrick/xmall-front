@@ -77,7 +77,7 @@
 
 - [X-Boot前后端分离开发平台](https://github.com/Exrick/x-boot)
 
-    ![](https://i.loli.net/2018/07/21/5b52e274d2085.png)
+    ![](https://i.loli.net/2020/03/13/rQGAWv1h8VMeIdi.png)
 
 - [XPay个人免签收款支付系统](https://github.com/Exrick/xpay) 无需挂机App 自动回调
 
